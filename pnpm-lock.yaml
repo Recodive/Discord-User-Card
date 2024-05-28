@@ -43,7 +43,7 @@ importers:
     devDependencies:
       discord-api-types:
         specifier: ^0.37.84
-        version: 0.37.84
+        version: 0.37.85
       sass:
         specifier: ^1.77.2
         version: 1.77.2
@@ -2043,8 +2043,8 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dev: true
 
-  /discord-api-types@0.37.84:
-    resolution: {integrity: sha512-NngmTBW8vermlbO0qNtaS7SHCWB/R96ICqflTwM/cV7zsxyQGd38E2bBlwaxLbXgb2YTF3+Yx6+qGs/3sXedCw==}
+  /discord-api-types@0.37.85:
+    resolution: {integrity: sha512-T75aB9JEw9X0rlMChEMHbr9JlXMqdmdKiZVjBeKs91cJo28IuAIldj+VZoC+I+Q9gCaRjHlwRkcksy2XZY6c3A==}
     dev: true
 
   /dot-prop@5.3.0:
