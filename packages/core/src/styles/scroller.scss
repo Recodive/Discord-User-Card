@@ -1,0 +1,36 @@
+.duc_scroller {
+	overflow: hidden scroll;
+	padding-right: 4px;
+	flex: 0 1 auto;
+	min-height: 0;
+	padding: 0 12px;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.duc_scroller::-webkit-scrollbar-track {
+	margin-bottom: 4px;
+}
+
+.duc_scroller::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.duc_scroller::-webkit-scrollbar-track {
+	border: 2px solid var(--scrollbar-thin-track);
+	background-color: var(--scrollbar-thin-track);
+	border-color: var(--scrollbar-thin-track);
+}
+
+.duc_scroller::-webkit-scrollbar-thumb {
+	background-clip: padding-box;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	background-color: var(--scrollbar-thin-thumb);
+	min-height: 40px;
+}
+
+.duc_scroller::-webkit-scrollbar-corner {
+	background-color: transparent;
+}

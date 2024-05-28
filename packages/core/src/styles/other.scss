@@ -1,0 +1,314 @@
+.duc_emoji_container {
+	display: inline-block;
+}
+
+.duc_emoji {
+	-o-object-fit: contain;
+	object-fit: contain;
+	width: var(--custom-emoji-size-emoji);
+	height: var(--custom-emoji-size-emoji);
+	vertical-align: bottom;
+}
+
+.duc_divider {
+	margin: 12px 12px 0;
+	height: 1px;
+	position: sticky;
+	top: 0;
+	background-color: var(--profile-body-divider-color);
+}
+
+.duc_section {
+	padding-top: 12px;
+}
+
+.duc_section:last-child {
+	padding-bottom: 12px;
+}
+
+.userProfileOuterThemed {
+	background: linear-gradient(
+		var(--profile-gradient-primary-color),
+		var(--profile-gradient-secondary-color)
+	);
+}
+
+.userProfileOuter.userProfileOuterThemed {
+	padding: 4px;
+}
+
+.userProfileOuter {
+	--custom-user-popout-outside-components-height: 1px;
+	box-shadow: var(--elevation-high);
+	max-height: calc(
+		100vh - 20px - var(--custom-user-popout-outside-components-height)
+	);
+	width: var(--custom-user-profile-themed-container-user-popout-width);
+	overflow: hidden;
+	position: relative;
+	border-radius: var(--radius-sm);
+}
+
+.userProfileInner {
+	max-height: calc(
+		100vh - 28px - var(--custom-user-popout-outside-components-height)
+	);
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.userProfileInner::before {
+	content: "";
+	position: absolute;
+	background: var(--profile-gradient-overlay-color);
+	pointer-events: none;
+	border-radius: var(--radius-xs);
+	width: calc(100% - 8px);
+	height: calc(100% - 8px);
+}
+
+.userProfileInnerThemedWithBanner {
+	background: linear-gradient(
+		var(--profile-gradient-primary-color),
+		var(--profile-gradient-primary-color)
+			var(--custom-user-banner-premium-banner-height-popout),
+		var(--profile-gradient-secondary-color)
+	);
+}
+
+.profileBadges {
+	box-sizing: content-box;
+	position: relative;
+	top: 12px;
+	right: 16px;
+	width: fit-content;
+	align-self: flex-end;
+	background-color: var(--profile-body-background-color);
+	border-radius: var(--radius-sm);
+	max-width: 190px;
+	padding: 4px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 2px;
+	min-height: 22px;
+}
+
+.profileBadge {
+	width: 22px;
+	height: 22px;
+	display: block;
+	background-repeat: no-repeat;
+	background-size: contin;
+	background-position: center;
+	overflow: hidden;
+	pointer-events: none;
+	-o-object-fit: cover;
+	object-fit: cover;
+	filter: saturate(1);
+}
+
+.bannerSVGWrapper {
+	z-index: 0;
+	contain: paint;
+}
+
+.banner {
+	transition: background-color 0.1s;
+	width: 100%;
+	border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+}
+
+.bannerPremium {
+	height: var(--custom-user-banner-premium-banner-height-popout);
+	min-height: var(--custom-user-banner-premium-banner-height-popout);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.avatarStack {
+	display: grid;
+	width: 100%;
+	height: 100%;
+}
+
+.avatar {
+	display: block;
+	-o-object-fit: cover;
+	object-fit: cover;
+	pointer-events: none;
+	width: 100%;
+	height: 100%;
+	grid-area: 1 / 1;
+}
+
+.avatarSvg {
+	position: absolute;
+	contain: paint;
+	width: auto;
+	display: block;
+	pointer-events: none;
+}
+
+.avatarDecoration {
+	position: absolute;
+	contain: paint;
+	pointer-events: none;
+	top: var(--custom-avatar-avatar-decoration-border-position);
+	left: var(--custom-avatar-avatar-decoration-border-position);
+}
+
+.avatarWrapper {
+	position: absolute;
+	z-index: 0;
+	top: 80px;
+	left: 22px;
+	border-radius: 50%;
+}
+
+.avatarWrapperPositionPremiumBanner {
+	top: 76px;
+}
+
+.avatarWrapperInner {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+}
+
+.avatar::before {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: var(--background-modifier-accent);
+}
+
+.usernameSection {
+	padding-top: 12px;
+	padding-right: 12px;
+	padding-left: 12px;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+}
+
+.pronouns {
+	display: inline-block;
+	user-select: none;
+	padding-top: 2px;
+	font-family: var(--font-primary);
+	font-size: 14px;
+	line-height: 1.2857142857142858;
+	font-weight: 400;
+	color: var(--text-normal);
+}
+
+.displayName {
+	word-break: break-word;
+	font-family: var(--font-display);
+	font-size: 20px;
+	line-height: 1.2;
+	font-weight: 600;
+	color: var(--header-primary);
+}
+
+.userText {
+	user-select: text;
+}
+
+.userTag {
+	font-family: var(--font-primary);
+	font-size: 14px;
+	line-height: 18px;
+	font-weight: 500;
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.userTagUsername {
+	overflow: auto;
+	word-break: break-all;
+	text-overflow: clip;
+	white-space: normal;
+	color: var(--header-primary);
+	vertical-align: top;
+	display: inline;
+}
+
+.userSection {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	overflow: hidden;
+	border-radius: var(--radius-sm);
+	background-color: var(--profile-body-background-color);
+	margin: 28px 16px 16px;
+	max-height: calc(
+		100vh - 128px - var(--custom-user-popout-outside-components-height)
+	);
+}
+
+.customStatusSection {
+	padding-top: 12px;
+	padding-right: 12px;
+	padding-left: 12px;
+}
+
+.customStatusSection {
+	box-sizing: border-box;
+	position: relative;
+	width: 100%;
+	word-wrap: break-word;
+	font-size: 14px;
+	line-height: 18px;
+	color: var(--text-normal);
+}
+
+.customStatusImg {
+	display: block;
+	margin: -1px 4px -1px 0;
+	float: left;
+	width: 20px;
+	height: 20px;
+	-o-object-fit: contain;
+	object-fit: contain;
+}
+
+.customStatusText {
+	user-select: text;
+}
+
+.aboutMeSection {
+	padding-top: 12px;
+}
+
+.aboutMeTitle {
+	display: flex;
+	font-weight: 700;
+	margin-bottom: 6px;
+	color: var(--header-primary);
+	font-family: var(--font-display);
+	font-size: 12px;
+	line-height: 1.3333333333333333;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+.aboutMeText {
+	-webkit-line-clamp: 6;
+	font-family: var(--font-primary);
+	font-size: 14px;
+	line-height: 1.2857142857142858;
+	font-weight: 400;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	color: var(--text-normal);
+}

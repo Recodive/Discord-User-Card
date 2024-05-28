@@ -1,0 +1,156 @@
+.duc_root {
+	/** Radius */
+	--radius-xs: 4px;
+	--radius-sm: 8px;
+
+	--decoration-to-avatar-ratio: 1.2;
+	--custom-avatar-avatar-decoration-border-position: calc(
+		(1 - var(--decoration-to-avatar-ratio)) / 2 * 100%
+	);
+	--custom-user-banner-premium-banner-height-popout: 120px;
+	--custom-user-profile-themed-container-user-popout-width: 340px;
+	--custom-emoji-size-emoji: 1.375em;
+
+	--primary-130: hsl(var(--primary-130-hsl) / 1);
+	--primary-130-hsl: 220 calc(var(--saturation-factor, 1) * 13%) 95.5%;
+	--primary-230: hsl(var(--primary-230-hsl) / 1);
+	--primary-230-hsl: 210 calc(var(--saturation-factor, 1) * 9.1%) 87.1%;
+	--primary-500-hsl: 228 calc(var(--saturation-factor, 1) * 6%) 32.5%;
+	--black-500-hsl: 0 calc(var(--saturation-factor, 1) * 0%) 0%;
+}
+
+.duc_root {
+	line-height: 1;
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-primary);
+	overflow: hidden;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	background: transparent;
+}
+
+.duc_root {
+	::-moz-placeholder {
+		font-family: var(--font-primary);
+		font-weight: 400;
+		text-rendering: optimizeLegibility;
+	}
+	textarea,
+	input,
+	button,
+	select,
+	::placeholder {
+		font-family: var(--font-primary);
+		font-weight: 400;
+		text-rendering: optimizeLegibility;
+	}
+	a,
+	div,
+	span,
+	strong,
+	button,
+	input,
+	textarea,
+	select,
+	label {
+		outline: 0;
+	}
+	img[alt] {
+		text-indent: -9999px;
+	}
+
+	div,
+	span,
+	applet,
+	object,
+	iframe,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	blockquote,
+	pre,
+	a,
+	abbr,
+	acronym,
+	address,
+	big,
+	cite,
+	code,
+	del,
+	dfn,
+	em,
+	img,
+	ins,
+	kbd,
+	q,
+	s,
+	samp,
+	small,
+	strike,
+	strong,
+	tt,
+	var,
+	dl,
+	dt,
+	dd,
+	ol,
+	ul,
+	li,
+	fieldset,
+	form,
+	label,
+	legend,
+	table,
+	caption,
+	tbody,
+	tfoot,
+	thead,
+	tr,
+	th,
+	td {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-weight: inherit;
+		font-style: inherit;
+		font-family: inherit;
+		font-size: 100%;
+		vertical-align: baseline;
+	}
+	a {
+		color: var(--text-link);
+		-webkit-text-decoration: none;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	a img {
+		border: none;
+	}
+	p {
+		margin: 14px 0;
+	}
+	ol,
+	ul {
+		list-style: none;
+	}
+	strong {
+		font-weight: 600;
+	}
+	button {
+		font-family: var(--font-primary);
+		font-weight: 500;
+		border: 0;
+		cursor: pointer;
+	}
+	code {
+		font-family: var(--font-code);
+		font-size: 14px;
+		line-height: 16px;
+	}
+}

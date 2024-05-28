@@ -13,7 +13,7 @@
 			"require": "./lib/index.cjs",
 			"types": "./lib/index.d.ts"
 		},
-		"./style.css": "./dist/style.css"
+		"./style.css": "./lib/style.css"
 	},
 	"scripts": {
 		"dev": "vite",

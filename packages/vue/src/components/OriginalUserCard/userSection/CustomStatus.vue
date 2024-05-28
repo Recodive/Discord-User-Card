@@ -62,35 +62,3 @@ const customStatus = computed(() => {
 		</div>
 	</div>
 </template>
-
-<style scoped>
-.customStatusSection {
-	padding-top: 12px;
-	padding-right: 12px;
-	padding-left: 12px;
-}
-
-.customStatusSection {
-	box-sizing: border-box;
-	position: relative;
-	width: 100%;
-	word-wrap: break-word;
-	font-size: 14px;
-	line-height: 18px;
-	color: var(--text-normal);
-}
-
-.customStatusImg {
-	display: block;
-	margin: -1px 4px -1px 0;
-	float: left;
-	width: 20px;
-	height: 20px;
-	-o-object-fit: contain;
-	object-fit: contain;
-}
-
-.customStatusText {
-	user-select: text;
-}
-</style>

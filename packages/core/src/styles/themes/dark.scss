@@ -1,0 +1,31 @@
+.duc_root.theme-dark {
+	--header-primary: var(--primary-130);
+	--text-normal: var(--primary-230);
+	--text-link: var(--blue-345);
+
+	--background-modifier-accent: hsl(var(--primary-500-hsl) / 0.48);
+	--elevation-high: 0 8px 16px hsl(var(--black-500-hsl) / 0.24);
+}
+@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)) {
+	.duc_root.theme-dark {
+		--header-primary: color-mix(
+			in oklab,
+			var(--primary-130) 100%,
+			var(--custom-theme-mix-text, black)
+				var(--custom-theme-mix-amount-text, 0%)
+		);
+		--text-normal: color-mix(
+			in oklab,
+			var(--primary-230) 100%,
+			var(--custom-theme-mix-text, black)
+				var(--custom-theme-mix-amount-text, 0%)
+		);
+
+		--background-modifier-accent: color-mix(
+			in oklab,
+			hsl(var(--primary-500-hsl) / 0.48) 100%,
+			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.48)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+	}
+}

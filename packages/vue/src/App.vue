@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { DiscordUserCardProperties } from '@discord-user-card/core';
-import DiscordUserCard from './components/DiscordUserCard.vue'
+import "@discord-user-card/core/style.css";
+import type { DiscordUserCardProperties } from "@discord-user-card/core";
+import DiscordUserCard from "./components/DiscordUserCard.vue";
 
 const a: DiscordUserCardProperties = {
 	user: {
@@ -17,15 +18,12 @@ const a: DiscordUserCardProperties = {
 			id: "92dfc45d41b3936613f5882df1aa45a6",
 			animated: false,
 		},
-		bio: "\u2b50 Creator of **PreMiD**  \u2b50\n\n\ud83d\udcee Feel free to dm\n\ud83d\udc0e Brony  \u2642\ufe0f  **22**\n\ud83d\udc68\u200d\ud83d\udcbb  **GitHub**: @Timeraa"
+		bio: "\u2b50 Creator of **PreMiD**  \u2b50\n\n\ud83d\udcee Feel free to dm\n\ud83d\udc0e Brony  \u2642\ufe0f  **22**\n\ud83d\udc68\u200d\ud83d\udcbb  **GitHub**: @Timeraa",
 	},
-	activities: []
+	activities: [],
 };
 </script>
 
 <template>
-  <DiscordUserCard :user="a.user" :activities="a.activities" />
+	<DiscordUserCard :user="a.user" :activities="a.activities" />
 </template>
-
-<style scoped>
-</style>
