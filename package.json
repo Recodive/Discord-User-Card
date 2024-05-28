@@ -1,0 +1,36 @@
+{
+	"name": "@discord-user-card/monorepo",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Monorepo containing the Discord-User-Card's codebase",
+	"type": "module",
+	"scripts": {
+		"lint": "eslint . --ext .ts && prettier --check .",
+		"lint:fix": "eslint . --ext .ts --fix && prettier --write .",
+		"_build": "pnpm clean && tsc -b tsconfig.build.json && pnpm -r build",
+		"build": "pnpm clean && pnpm -r build",
+		"_dev": "pnpm clean && tsc -b tsconfig.build.json -w",
+		"dev": "pnpm -r dev",
+		"clean": "tsc -b tsconfig.build.json --clean",
+		"test": "vitest --run",
+		"test:ui": "vitest --ui",
+		"release": "pnpm i && pnpm -r build && bumpp package.json packages/*/package.json --commit --push --tag"
+	},
+	"license": "MPL-2.0",
+	"devDependencies": {
+		"@commitlint/cli": "^19.3.0",
+		"@recodive/configs": "^1.8.4",
+		"@types/node": "^20.12.12",
+		"@vitest/browser": "^1.6.0",
+		"@vitest/coverage-istanbul": "^1.6.0",
+		"@vitest/ui": "^1.6.0",
+		"bumpp": "^9.4.1",
+		"playwright": "^1.44.1",
+		"typescript": "^5.4.5",
+		"vitest": "^1.6.0"
+	},
+	"packageManager": "pnpm@8.15.2",
+	"engines": {
+		"node": "^20.0.0"
+	}
+}

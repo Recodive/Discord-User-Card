@@ -1,0 +1,34 @@
+{
+	"name": "@discord-user-card/markdown",
+	"version": "1.0.0",
+	"description": "A markdown parser for Discord",
+	"type": "module",
+	"main": "./lib/index.js",
+	"module": "./lib/index.js",
+	"types": "./lib/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./lib/index.js",
+			"require": "./lib/index.js",
+			"types": "./lib/index.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc -w"
+	},
+	"files": [
+		"lib"
+	],
+	"keywords": [
+		"discord",
+		"card",
+		"profile",
+		"discord-user-card",
+		"markdown"
+	],
+	"dependencies": {
+		"@discord-user-card/core": "workspace:*",
+		"simple-markdown": "^0.7.3"
+	}
+}
