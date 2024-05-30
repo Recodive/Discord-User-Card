@@ -43,7 +43,7 @@ const a: DiscordUserCardProperties = {
 			flags: 0,
 			status: PresenceUpdateStatus.Idle,
 			bannerColor: 145990,
-			bio: "__*underline italics*__\n__**underline bold**__\n__***underline bold italics***__\n~~Strikethrough~~\n`code`\n> quote\n||hi||\n\ud83d\ude04",
+			bio: "__*underline italics*__\n__**underline bold**__\n__***underline bold italics***__\n~~Strikethrough~~\n`code`\n> quote\n||hi||\n\ud83d\ude04\n<:swagcat:708490021853724713>",
 		},
 		activities: [],
 	},

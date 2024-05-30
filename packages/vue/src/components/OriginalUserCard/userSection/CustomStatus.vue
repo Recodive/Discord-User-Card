@@ -56,9 +56,11 @@ const customStatus = computed(() => {
 				:src="customStatus.emoji.url"
 				:alt="customStatus.emoji.name"
 			/>
-			<span v-if="customStatus.state" class="customStatusText">{{
-				customStatus.state
-			}}</span>
+			<span
+				v-if="customStatus.state"
+				class="customStatusText"
+				v-text="customStatus.state"
+			/>
 		</div>
 	</div>
 </template>
