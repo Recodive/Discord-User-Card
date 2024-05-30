@@ -1,6 +1,6 @@
 import { defaultRules, htmlTag } from "simple-markdown";
 import { Rule } from "../functions/extendRule.js";
-import { findEmoji } from "@discord-user-card/core";
+import { findEmoji } from "@discord-user-card/emojis";
 
 export const twemoji: Rule = {
 	order: defaultRules.strong.order,

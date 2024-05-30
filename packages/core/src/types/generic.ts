@@ -13,4 +13,11 @@ export interface DiscordUserCardImage {
 	animated: boolean;
 }
 
-export type DiscordImageScope = "emojis" | "banners" | "avatars" | "avatar-decoration-presets" | "app-icons" | "app-assets";
+export type DiscordImageScope =
+	| "emojis"
+	| "banners"
+	| "avatars"
+	| "avatar-decoration-presets"
+	| "app-icons"
+	| "app-assets"
+	| "embed/avatars";

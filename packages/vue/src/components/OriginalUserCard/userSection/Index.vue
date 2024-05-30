@@ -10,7 +10,7 @@ const props = defineProps<Required<DiscordUserCardProperties>>(),
 </script>
 
 <template>
-	<div class="userSection">
+	<div class="duc_user_section">
 		<!-- Needed? -->
 		<span></span>
 		<Username :user="user" />

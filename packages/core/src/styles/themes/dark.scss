@@ -3,8 +3,16 @@
 	--text-normal: var(--primary-230);
 	--text-link: var(--blue-345);
 
-	--background-modifier-accent: hsl(var(--primary-500-hsl) / 0.48);
 	--elevation-high: 0 8px 16px hsl(var(--black-500-hsl) / 0.24);
+
+	--background-modifier-accent: hsl(var(--primary-500-hsl) / 0.48);
+	--background-secondary-alt: var(--primary-660);
+	--button-secondary-background: var(--primary-500);
+	--background-floating: var(--primary-800);
+	--background-modifier-hover: hsl(var(--primary-500-hsl) / 0.3);
+	--border-faint: hsl(var(--white-500-hsl) / 0.03);
+	--background-tertiary: var(--primary-700);
+	--interactive-normal: var(--primary-330);
 }
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)) {
 	.duc_root.theme-dark {
@@ -26,6 +34,48 @@
 			hsl(var(--primary-500-hsl) / 0.48) 100%,
 			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.48)
 				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-secondary-alt: color-mix(
+			in oklab,
+			var(--primary-660) 100%,
+			var(--custom-theme-mix-base, black)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--button-secondary-background: color-mix(
+			in oklab,
+			var(--primary-500) 100%,
+			var(--custom-theme-mix-base, black)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-floating: color-mix(
+			in oklab,
+			var(--primary-800) 100%,
+			var(--custom-theme-mix-base, black)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-modifier-hover: color-mix(
+			in oklab,
+			hsl(var(--primary-500-hsl) / 0.3) 100%,
+			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.3)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--border-faint: color-mix(
+			in oklab,
+			hsl(var(--white-500-hsl) / 0.03) 100%,
+			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.03)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-tertiary: color-mix(
+			in oklab,
+			var(--primary-700) 100%,
+			var(--custom-theme-mix-base, black)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--interactive-normal: color-mix(
+			in oklab,
+			var(--primary-330) 100%,
+			var(--custom-theme-mix-text, black)
+				var(--custom-theme-mix-amount-text, 0%)
 		);
 	}
 }

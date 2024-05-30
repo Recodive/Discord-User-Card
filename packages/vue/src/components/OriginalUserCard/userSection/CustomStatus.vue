@@ -3,9 +3,9 @@ import {
 	type DiscordUserCardActivity,
 	ActivityType,
 	imageToUrl,
-	findEmoji,
 	type DiscordUserCardActivityCustom,
 } from "@discord-user-card/core";
+import { findEmoji } from "@discord-user-card/emojis";
 import { computed } from "vue";
 
 const props = defineProps<{ activities: DiscordUserCardActivity[] }>();

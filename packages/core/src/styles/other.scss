@@ -57,6 +57,12 @@
 	flex-direction: column;
 	flex-grow: 1;
 	border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+	background: linear-gradient(
+		var(--profile-gradient-primary-color),
+		var(--profile-gradient-primary-color)
+			var(--custom-user-banner-premium-banner-height-popout),
+		var(--profile-gradient-secondary-color)
+	);
 }
 
 .userProfileInner::before {
@@ -67,15 +73,6 @@
 	border-radius: var(--radius-xs);
 	width: calc(100% - 8px);
 	height: calc(100% - 8px);
-}
-
-.userProfileInnerThemedWithBanner {
-	background: linear-gradient(
-		var(--profile-gradient-primary-color),
-		var(--profile-gradient-primary-color)
-			var(--custom-user-banner-premium-banner-height-popout),
-		var(--profile-gradient-secondary-color)
-	);
 }
 
 .profileBadges {
@@ -120,6 +117,7 @@
 	transition: background-color 0.1s;
 	width: 100%;
 	border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+	height: var(--custom-user-banner-banner-height-popout);
 }
 
 .bannerPremium {
@@ -174,6 +172,10 @@
 	top: 76px;
 }
 
+.avatarPositionNormal {
+	top: 16px;
+}
+
 .avatarWrapperInner {
 	position: relative;
 	width: 80px;
@@ -189,7 +191,7 @@
 	background-color: var(--background-modifier-accent);
 }
 
-.usernameSection {
+.duc_username_section {
 	padding-top: 12px;
 	padding-right: 12px;
 	padding-left: 12px;
@@ -198,7 +200,7 @@
 	flex-direction: column;
 }
 
-.pronouns {
+.duc_pronouns {
 	display: inline-block;
 	user-select: none;
 	padding-top: 2px;
@@ -209,7 +211,7 @@
 	color: var(--text-normal);
 }
 
-.displayName {
+.duc_display_name {
 	word-break: break-word;
 	font-family: var(--font-display);
 	font-size: 20px;
@@ -218,11 +220,11 @@
 	color: var(--header-primary);
 }
 
-.userText {
+.duc_user_text {
 	user-select: text;
 }
 
-.userTag {
+.duc_user_tag {
 	font-family: var(--font-primary);
 	font-size: 14px;
 	line-height: 18px;
@@ -232,7 +234,7 @@
 	white-space: nowrap;
 }
 
-.userTagUsername {
+.duc_user_tag_username {
 	overflow: auto;
 	word-break: break-all;
 	text-overflow: clip;
@@ -242,7 +244,7 @@
 	display: inline;
 }
 
-.userSection {
+.duc_user_section {
 	display: flex;
 	position: relative;
 	flex-direction: column;
@@ -253,6 +255,44 @@
 	max-height: calc(
 		100vh - 128px - var(--custom-user-popout-outside-components-height)
 	);
+}
+
+.duc_discriminator {
+	color: var(--header-primary);
+	vertical-align: top;
+}
+
+.duc_bot_tag {
+	height: 15px;
+	padding: 0 4px;
+	margin-top: 1px;
+	border-radius: 4px;
+	margin-bottom: 2px;
+	display: inline-flex;
+	line-height: 15px;
+	margin-left: 1ch;
+	background: var(--brand-experiment);
+	color: var(--white-500);
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	vertical-align: top;
+	align-items: center;
+	text-indent: 0;
+}
+
+.duc_bot_tag_verified {
+	width: 16px;
+	height: 16px;
+	margin-left: -4px;
+	display: inline-block;
+}
+
+.duc_bot_text {
+	font-size: 10px;
+	line-height: 15px;
+	position: relative;
+	font-weight: 500;
+	vertical-align: top;
 }
 
 .customStatusSection {

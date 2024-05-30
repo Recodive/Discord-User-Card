@@ -2,18 +2,20 @@ import type { PresenceUpdateStatus, Snowflake } from "discord-api-types/v10";
 
 import type { DiscordUserCardImage } from "./generic.js";
 
+export { PresenceUpdateStatus } from "discord-api-types/v10";
+
 export interface DiscordUserCardUser {
 	/**
-   * The user's id
-   */
+	 * The user's id
+	 */
 	id: Snowflake;
 	/**
-   * The user's username, not unique across the platform
-   */
+	 * The user's username, not unique across the platform
+	 */
 	username: string;
 	/**
-   * The user's avatar hash
-   */
+	 * The user's avatar hash
+	 */
 	avatar?: DiscordUserCardImage;
 	/**
 	 * The user's avatar decoration hash
@@ -34,7 +36,7 @@ export interface DiscordUserCardUser {
 	/**
 	 * Whether the user belongs to an OAuth2 application
 	 */
-	bot?: boolean;
+	app?: boolean;
 	/**
 	 * The user's Discord-tag
 	 */
@@ -59,4 +61,17 @@ export interface DiscordUserCardUser {
 	 * Whether the user is an Official Discord System user (part of the urgent message system)
 	 */
 	system?: boolean;
+	/**
+	 * The user's profile theme colors
+	 */
+	themeColors?: {
+		/**
+		 * The user's primary theme color encoded as an integer representation of hexadecimal color code
+		 */
+		primary: number;
+		/**
+		 * The user's secondary theme color encoded as an integer representation of hexadecimal color code
+		 */
+		secondary: number;
+	};
 }

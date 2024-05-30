@@ -1,15 +1,16 @@
 {
-	"name": "@discord-user-card/markdown",
+	"name": "@discord-user-card/emojis",
 	"version": "1.0.0",
-	"description": "A markdown parser for Discord",
+	"description": "All the emojis supported by Discord (User Card)",
 	"type": "module",
-	"main": "./lib/index.js",
+	"main": "./lib/index.cjs",
+	"unpkg": "./lib/index.umd.cjs",
 	"module": "./lib/index.js",
 	"types": "./lib/index.d.ts",
 	"exports": {
 		".": {
 			"import": "./lib/index.js",
-			"require": "./lib/index.js",
+			"require": "./lib/index.cjs",
 			"types": "./lib/index.d.ts"
 		}
 	},
@@ -25,11 +26,6 @@
 		"card",
 		"profile",
 		"discord-user-card",
-		"markdown"
-	],
-	"dependencies": {
-		"@discord-user-card/core": "workspace:*",
-		"@discord-user-card/emojis": "workspace:*",
-		"simple-markdown": "^0.7.3"
-	}
+		"emojis"
+	]
 }
