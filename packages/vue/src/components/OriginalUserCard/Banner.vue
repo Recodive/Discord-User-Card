@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import {
 	ColorUtils,
+	discrimToAvatar,
+	getColorFromImage,
 	imageToUrl,
 	type DiscordUserCardUser,
 } from "@discord-user-card/core";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps<{ user: DiscordUserCardUser }>();
 
@@ -19,11 +21,32 @@ const banner = computed(() => {
 
 const randomUUID = crypto.randomUUID().slice(0, 8);
 
+const avatar = computed(() => {
+	if (!props.user.avatar)
+		return discrimToAvatar(props.user.id, props.user.discriminator);
+	return imageToUrl({
+		image: props.user.avatar,
+		scope: "avatars",
+		relatedId: props.user.id,
+	});
+});
+
 const bannerColor = computed(() => {
-	//TODO calc from avatar
-	if (!props.user.bannerColor) return "rgb(49, 134, 170)";
+	if (!props.user.bannerColor) return null;
 	const [r, g, b] = ColorUtils.intToRgb(props.user.bannerColor);
 	return `rgb(${r}, ${g}, ${b})`;
+});
+
+async function getBackgroundColor() {
+	if (bannerColor.value) return bannerColor.value;
+	const [dominantColor] = await getColorFromImage(avatar.value);
+	return `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
+}
+
+const backgroundColor = ref<string>(await getBackgroundColor());
+
+watch([avatar, banner], async () => {
+	backgroundColor.value = await getBackgroundColor();
 });
 </script>
 
@@ -59,7 +82,7 @@ const bannerColor = computed(() => {
 					bannerPremium: banner,
 				}"
 				:style="{
-					'background-color': bannerColor,
+					'background-color': backgroundColor,
 					...(banner && {
 						'background-image': `url(&quot;${banner}?size=480&quot;)`,
 					}),
