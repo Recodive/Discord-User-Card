@@ -41,9 +41,6 @@ importers:
 
   packages/core:
     devDependencies:
-      discord-api-types:
-        specifier: ^0.37.84
-        version: 0.37.84
       sass:
         specifier: ^1.77.2
         version: 1.77.2
@@ -2078,10 +2075,6 @@ packages:
   /diff-sequences@29.6.3:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dev: true
-
-  /discord-api-types@0.37.84:
-    resolution: {integrity: sha512-NngmTBW8vermlbO0qNtaS7SHCWB/R96ICqflTwM/cV7zsxyQGd38E2bBlwaxLbXgb2YTF3+Yx6+qGs/3sXedCw==}
     dev: true
 
   /dot-prop@5.3.0:

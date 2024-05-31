@@ -1,4 +1,4 @@
-import type { Snowflake } from "discord-api-types/globals";
+import type { Snowflake } from "./discordApiTypes.js";
 
 export interface DiscordUserCardImage {
 	/**

@@ -1,9 +1,14 @@
-import type { ActivityType } from "discord-api-types/v10";
-export { ActivityType } from "discord-api-types/v10";
+import type { ActivityType } from "../types/discordApiTypes.js";
 
 import { DiscordUserCardImage } from "./generic.js";
 
-export type DiscordUserCardActivity = DiscordUserCardActivityPlaying | DiscordUserCardActivityStreaming | DiscordUserCardActivityListening | DiscordUserCardActivityWatching | DiscordUserCardActivityCompeting | DiscordUserCardActivityCustom;
+export type DiscordUserCardActivity =
+	| DiscordUserCardActivityPlaying
+	| DiscordUserCardActivityStreaming
+	| DiscordUserCardActivityListening
+	| DiscordUserCardActivityWatching
+	| DiscordUserCardActivityCompeting
+	| DiscordUserCardActivityCustom;
 
 export interface DiscordUserCardActivityBase {
 	/**
@@ -50,7 +55,9 @@ export interface DiscordUserCardActivityButtons {
 	/**
 	 * Buttons to show on the activity
 	 */
-	buttons?: [DiscordUserCardActivityButton] | [DiscordUserCardActivityButton, DiscordUserCardActivityButton];
+	buttons?:
+		| [DiscordUserCardActivityButton]
+		| [DiscordUserCardActivityButton, DiscordUserCardActivityButton];
 }
 
 export interface DiscordUserCardActivityButton {
@@ -64,7 +71,11 @@ export interface DiscordUserCardActivityButton {
 	url: string;
 }
 
-export interface DiscordUserCardActivityPlaying extends DiscordUserCardActivityBase, DiscordUserCardActivityTimestamps, DiscordUserCardActivityAssets, DiscordUserCardActivityButtons {
+export interface DiscordUserCardActivityPlaying
+	extends DiscordUserCardActivityBase,
+		DiscordUserCardActivityTimestamps,
+		DiscordUserCardActivityAssets,
+		DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -83,7 +94,11 @@ export interface DiscordUserCardActivityPlaying extends DiscordUserCardActivityB
 	state?: string;
 }
 
-export interface DiscordUserCardActivityStreaming extends DiscordUserCardActivityBase, DiscordUserCardActivityTimestamps, DiscordUserCardActivityAssets, DiscordUserCardActivityButtons {
+export interface DiscordUserCardActivityStreaming
+	extends DiscordUserCardActivityBase,
+		DiscordUserCardActivityTimestamps,
+		DiscordUserCardActivityAssets,
+		DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -106,7 +121,11 @@ export interface DiscordUserCardActivityStreaming extends DiscordUserCardActivit
 	state?: string;
 }
 
-export interface DiscordUserCardActivityListening extends DiscordUserCardActivityBase, DiscordUserCardActivityTimestamps, DiscordUserCardActivityAssets, DiscordUserCardActivityButtons {
+export interface DiscordUserCardActivityListening
+	extends DiscordUserCardActivityBase,
+		DiscordUserCardActivityTimestamps,
+		DiscordUserCardActivityAssets,
+		DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -125,7 +144,11 @@ export interface DiscordUserCardActivityListening extends DiscordUserCardActivit
 	state?: string;
 }
 
-export interface DiscordUserCardActivityWatching extends DiscordUserCardActivityBase, DiscordUserCardActivityTimestamps, DiscordUserCardActivityAssets, DiscordUserCardActivityButtons {
+export interface DiscordUserCardActivityWatching
+	extends DiscordUserCardActivityBase,
+		DiscordUserCardActivityTimestamps,
+		DiscordUserCardActivityAssets,
+		DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -144,7 +167,11 @@ export interface DiscordUserCardActivityWatching extends DiscordUserCardActivity
 	state?: string;
 }
 
-export interface DiscordUserCardActivityCompeting extends DiscordUserCardActivityBase, DiscordUserCardActivityTimestamps, DiscordUserCardActivityAssets, DiscordUserCardActivityButtons {
+export interface DiscordUserCardActivityCompeting
+	extends DiscordUserCardActivityBase,
+		DiscordUserCardActivityTimestamps,
+		DiscordUserCardActivityAssets,
+		DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -163,7 +190,8 @@ export interface DiscordUserCardActivityCompeting extends DiscordUserCardActivit
 	state?: string;
 }
 
-export interface DiscordUserCardActivityCustom extends DiscordUserCardActivityBase {
+export interface DiscordUserCardActivityCustom
+	extends DiscordUserCardActivityBase {
 	/**
 	 * The type of activity
 	 */
@@ -171,7 +199,7 @@ export interface DiscordUserCardActivityCustom extends DiscordUserCardActivityBa
 	/**
 	 * Emoji that appears infront of the activity
 	 */
-	emoji?: { name: string } | DiscordUserCardImage & { name: string };
+	emoji?: { name: string } | (DiscordUserCardImage & { name: string });
 	/**
 	 * Text that appears after the emoji in the activity
 	 */

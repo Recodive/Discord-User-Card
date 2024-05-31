@@ -1,4 +1,4 @@
-import type { APIUser } from "discord-api-types/v10";
+import type { APIUser } from "../types/discordApiTypes.js";
 
 import type { DiscordUserCardProperties } from "../types/index.js";
 import { mapDiscordImageHash } from "./mapDiscordImageHash.js";

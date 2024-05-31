@@ -32,7 +32,6 @@
 		"discord-user-card"
 	],
 	"devDependencies": {
-		"discord-api-types": "^0.37.84",
 		"sass": "^1.77.2"
 	}
 }

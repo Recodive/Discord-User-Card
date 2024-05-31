@@ -1,8 +1,9 @@
-import type { PresenceUpdateStatus, Snowflake } from "discord-api-types/v10";
+import type {
+	PresenceUpdateStatus,
+	Snowflake,
+} from "../types/discordApiTypes.js";
 
 import type { DiscordUserCardImage } from "./generic.js";
-
-export { PresenceUpdateStatus } from "discord-api-types/v10";
 
 export interface DiscordUserCardUser {
 	/**
