@@ -1,11 +1,11 @@
 @media all and (-webkit-max-device-pixel-ratio: 1) {
-	.duc_root.theme-light ::-moz-placeholder {
+	.duc_root .theme-light ::-moz-placeholder {
 		font-weight: 500;
 	}
-	.duc_root.theme-light select,
-	.duc_root.theme-light textarea,
-	.duc_root.theme-light input,
-	.duc_root.theme-light ::placeholder {
+	.duc_root .theme-light select,
+	.duc_root .theme-light textarea,
+	.duc_root .theme-light input,
+	.duc_root .theme-light ::placeholder {
 		font-weight: 500;
 	}
 }

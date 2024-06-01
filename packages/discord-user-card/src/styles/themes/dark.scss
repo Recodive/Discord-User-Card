@@ -1,4 +1,4 @@
-.duc_root.theme-dark {
+.duc_root .theme-dark {
 	--header-primary: var(--primary-130);
 	--text-normal: var(--primary-230);
 	--text-link: var(--blue-345);
@@ -15,7 +15,7 @@
 	--interactive-normal: var(--primary-330);
 }
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)) {
-	.duc_root.theme-dark {
+	.duc_root .theme-dark {
 		--header-primary: color-mix(
 			in oklab,
 			var(--primary-130) 100%,

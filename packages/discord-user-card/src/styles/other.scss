@@ -131,13 +131,13 @@
 	background-size: cover;
 }
 
-.avatarStack {
+.duc_avatar_stack {
 	display: grid;
 	width: 100%;
 	height: 100%;
 }
 
-.avatar {
+.duc_avatar {
 	display: block;
 	-o-object-fit: cover;
 	object-fit: cover;
@@ -147,7 +147,7 @@
 	grid-area: 1 / 1;
 }
 
-.avatarSvg {
+.duc_avatar_svg {
 	position: absolute;
 	contain: paint;
 	width: auto;
@@ -155,7 +155,7 @@
 	pointer-events: none;
 }
 
-.avatarDecoration {
+.duc_avatar_decoration {
 	position: absolute;
 	contain: paint;
 	pointer-events: none;
@@ -163,7 +163,7 @@
 	left: var(--custom-avatar-avatar-decoration-border-position);
 }
 
-.avatarWrapper {
+.duc_avatar_wrapper {
 	position: absolute;
 	z-index: 0;
 	top: 80px;
@@ -171,22 +171,22 @@
 	border-radius: 50%;
 }
 
-.avatarWrapperPositionPremiumBanner {
+.duc_avatar_position_premium {
 	top: 76px;
 }
 
-.avatarPositionNormal {
+.duc_avatar_position_normal {
 	top: 16px;
 }
 
-.avatarWrapperInner {
+.duc_avatar_wrapper_inner {
 	position: relative;
 	width: 80px;
 	height: 80px;
 	border-radius: 50%;
 }
 
-.avatar::before {
+.duc_avatar::before {
 	content: "";
 	display: block;
 	width: 100%;

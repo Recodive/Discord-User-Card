@@ -57,4 +57,14 @@ export class ColorUtils {
 			Math.round(l * 1000) / 10,
 		];
 	}
+
+	static getDarkness(int: number) {
+		return (
+			1 -
+			(0.299 * ((int >> 16) & 255) +
+				0.587 * ((int >> 8) & 255) +
+				0.114 * (255 & int)) /
+				255
+		);
+	}
 }

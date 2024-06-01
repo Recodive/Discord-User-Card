@@ -1,4 +1,5 @@
 import {
+	DiscordUserCardBadges,
 	DiscordUserCardProperties,
 	flagsToBadges,
 	PresenceUpdateStatus,
@@ -56,6 +57,39 @@ const a: DiscordUserCardProperties = {
 			status: PresenceUpdateStatus.DoNotDisturb,
 		},
 		activities: [],
+	},
+	d: DiscordUserCardProperties = {
+		user: {
+			id: "241278257335500811",
+			username: "bas950",
+			displayName: "Bas950",
+			avatar: {
+				id: "4d1e5fef85948a52a93ef8146fddc4b0",
+				animated: true,
+			},
+			discriminator: "0",
+			badges: [
+				DiscordUserCardBadges.HYPESQUAD_HOUSE_BALANCE,
+				DiscordUserCardBadges.QUEST,
+				DiscordUserCardBadges.LEGACY_USERNAME,
+				DiscordUserCardBadges.ACTIVE_DEVELOPER,
+				DiscordUserCardBadges.GUILD_BOOSTER_LVL9,
+				DiscordUserCardBadges.EARLY_SUPPORTER,
+				DiscordUserCardBadges.PREMIUM,
+			],
+			banner: {
+				id: "6e16d7173d8e1201095c3ca57bcc3eb5",
+				animated: true,
+			},
+			bannerColor: 1579292,
+			bio: "조급할 필요 없어 My Pace\n비교 따윈 하지 마\n천천히 달려도 괜찮아\n나의 길을 따라 My lane\n급한 맘 내려놔\n앞만 보고 달려가",
+			status: PresenceUpdateStatus.DoNotDisturb,
+			themeColors: {
+				primary: 16755370,
+				secondary: 7506394,
+			},
+		},
+		activities: [],
 	};
 
 root.innerHTML = `
@@ -64,18 +98,22 @@ root.innerHTML = `
 		<div id="card-2"></div>
 		<div id="card-3"></div>
 		<div id="card-4"></div>
+		<div id="card-5"></div>
 	</div>
 `;
 
 setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-1")!).render(
-	a
+	{}
 );
 setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-2")!).render(
-	b
+	a
 );
 setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-3")!).render(
-	c
+	b
 );
 setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-4")!).render(
-	{}
+	c
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-5")!).render(
+	d
 );
