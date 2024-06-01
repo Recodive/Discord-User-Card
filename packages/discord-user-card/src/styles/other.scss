@@ -26,18 +26,18 @@
 	padding-bottom: 12px;
 }
 
-.userProfileOuterThemed {
+.duc_user_profile_themed {
 	background: linear-gradient(
 		var(--profile-gradient-primary-color),
 		var(--profile-gradient-secondary-color)
 	);
 }
 
-.userProfileOuter.userProfileOuterThemed {
+.duc_user_profile_outer.duc_user_profile_themed {
 	padding: 4px;
 }
 
-.userProfileOuter {
+.duc_user_profile_outer {
 	--custom-user-popout-outside-components-height: 1px;
 	box-shadow: var(--elevation-high);
 	max-height: calc(
@@ -49,7 +49,7 @@
 	border-radius: var(--radius-sm);
 }
 
-.userProfileInner {
+.duc_user_profile_inner {
 	max-height: calc(
 		100vh - 28px - var(--custom-user-popout-outside-components-height)
 	);
@@ -65,7 +65,7 @@
 	);
 }
 
-.userProfileInner::before {
+.duc_user_profile_inner::before {
 	content: "";
 	position: absolute;
 	background: var(--profile-gradient-overlay-color);
@@ -75,7 +75,7 @@
 	height: calc(100% - 8px);
 }
 
-.profileBadges {
+.duc_profile_badges {
 	box-sizing: content-box;
 	position: relative;
 	top: 12px;
@@ -85,16 +85,19 @@
 	background-color: var(--profile-body-background-color);
 	border-radius: var(--radius-sm);
 	max-width: 190px;
-	padding: 4px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-end;
 	align-items: center;
 	gap: 2px;
 	min-height: 22px;
+
+	&:has(.duc_profile_badge) {
+		padding: 4px;
+	}
 }
 
-.profileBadge {
+.duc_profile_badge {
 	width: 22px;
 	height: 22px;
 	display: block;
@@ -108,19 +111,19 @@
 	filter: saturate(1);
 }
 
-.bannerSVGWrapper {
+.duc_banner_wrapper {
 	z-index: 0;
 	contain: paint;
 }
 
-.banner {
+.duc_banner {
 	transition: background-color 0.1s;
 	width: 100%;
 	border-radius: var(--radius-xs) var(--radius-xs) 0 0;
 	height: var(--custom-user-banner-banner-height-popout);
 }
 
-.bannerPremium {
+.duc_banner_premium {
 	height: var(--custom-user-banner-premium-banner-height-popout);
 	min-height: var(--custom-user-banner-premium-banner-height-popout);
 	background-repeat: no-repeat;
@@ -325,11 +328,7 @@
 	user-select: text;
 }
 
-.aboutMeSection {
-	padding-top: 12px;
-}
-
-.aboutMeTitle {
+.duc_section_title {
 	display: flex;
 	font-weight: 700;
 	margin-bottom: 6px;
@@ -341,7 +340,7 @@
 	letter-spacing: 0.02em;
 }
 
-.aboutMeText {
+.duc_section_text {
 	-webkit-line-clamp: 6;
 	font-family: var(--font-primary);
 	font-size: 14px;

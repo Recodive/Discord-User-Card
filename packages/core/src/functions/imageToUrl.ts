@@ -36,9 +36,9 @@ export function imageToUrl({
 				image.id
 			}.png?passthrough=${animated ? "true" : "false"}`;
 		}
-		case "embed/avatars": {
+		case "badge-icons":
+		case "embed/avatars":
 			return `https://cdn.discordapp.com/${scope}/${image.id}.png`;
-		}
 		default: {
 			if (!relatedId) {
 				return `https://cdn.discordapp.com/${scope}/${animatedPrefix}${

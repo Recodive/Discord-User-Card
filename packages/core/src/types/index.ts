@@ -5,6 +5,7 @@ export * from "./activities.js";
 export * from "./generic.js";
 export * from "./user.js";
 export * from "./discordApiTypes.js";
+export * from "./badges.js";
 
 export interface DiscordUserCardProperties {
 	/**
@@ -16,4 +17,10 @@ export interface DiscordUserCardProperties {
 	 * The activities to display
 	 */
 	activities?: DiscordUserCardActivity[];
+	/**
+	 * The theme of the user card
+	 *
+	 * @default "dark"
+	 */
+	theme?: "light" | "dark" | "darker" | "midnight";
 }

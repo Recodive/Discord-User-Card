@@ -2,8 +2,7 @@
 import {
 	defaultUserCardProperties,
 	DiscordUserCardProperties,
-} from "@discord-user-card/core";
-import Original from "./OriginalUserCard/Original.vue";
+} from "discord-user-card";
 import { withDefaults } from "vue";
 
 withDefaults(
@@ -19,7 +18,7 @@ withDefaults(
 <template>
 	<Suspense>
 		<template v-if="style === 'Original'">
-			<Original :user="user" :activities="activities" />
+			<div>Original</div>
 		</template>
 	</Suspense>
 </template>

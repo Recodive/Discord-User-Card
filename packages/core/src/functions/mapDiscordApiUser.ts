@@ -1,6 +1,11 @@
-import type { APIUser } from "../types/discordApiTypes.js";
+import { UserPremiumType, type APIUser } from "../types/discordApiTypes.js";
 
-import type { DiscordUserCardProperties } from "../types/index.js";
+import {
+	DiscordUserCardBadges,
+	type DiscordUserCardBotBadges,
+	type DiscordUserCardProperties,
+} from "../types/index.js";
+import { flagsToBadges } from "./badges.js";
 import { mapDiscordImageHash } from "./mapDiscordImageHash.js";
 
 /**
@@ -17,8 +22,14 @@ export function mapDiscordApiUser(user: APIUser): DiscordUserCardProperties {
 		banner,
 		accent_color: bannerColor,
 		flags,
+		premium_type: premiumType,
 		avatar_decoration_data: avatarDecoration,
 	} = user;
+	const badges: (DiscordUserCardBadges | DiscordUserCardBotBadges)[] = [];
+	if (premiumType !== undefined && premiumType !== UserPremiumType.None)
+		badges.push(DiscordUserCardBadges.PREMIUM);
+	if (flags !== undefined) badges.push(...flagsToBadges(flags, bot));
+
 	return {
 		user: {
 			avatar: mapDiscordImageHash(avatar),
@@ -27,7 +38,7 @@ export function mapDiscordApiUser(user: APIUser): DiscordUserCardProperties {
 			bannerColor: bannerColor ?? undefined,
 			app: bot,
 			discriminator,
-			flags,
+			badges,
 			id,
 			system,
 			username,

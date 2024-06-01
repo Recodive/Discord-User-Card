@@ -1,11 +1,12 @@
-<script setup lang="ts">
-import "discord-user-card/style.css";
 import {
+	DiscordUserCardProperties,
 	flagsToBadges,
 	PresenceUpdateStatus,
-	type DiscordUserCardProperties,
-} from "discord-user-card";
-import DiscordUserCard from "./components/DiscordUserCard.vue";
+} from "@discord-user-card/core";
+import "./styles/index.scss";
+import { setupDiscordUserCard } from "./html/index.js";
+
+const root = document.querySelector<HTMLDivElement>("#app")!;
 
 const a: DiscordUserCardProperties = {
 		user: {
@@ -57,14 +58,24 @@ const a: DiscordUserCardProperties = {
 		activities: [],
 	};
 
-console.log(a.user);
-</script>
-
-<template>
+root.innerHTML = `
 	<div style="display: flex; max-height: 100vh; flex-wrap: wrap">
-		<DiscordUserCard :user="a.user" :activities="a.activities" />
-		<DiscordUserCard :user="b.user" :activities="b.activities" />
-		<DiscordUserCard :user="c.user" :activities="c.activities" />
-		<DiscordUserCard />
+		<div id="card-1"></div>
+		<div id="card-2"></div>
+		<div id="card-3"></div>
+		<div id="card-4"></div>
 	</div>
-</template>
+`;
+
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-1")!).render(
+	a
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-2")!).render(
+	b
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-3")!).render(
+	c
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-4")!).render(
+	{}
+);

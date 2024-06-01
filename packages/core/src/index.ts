@@ -11,10 +11,10 @@ export const defaultUserCardProperties: Required<DiscordUserCardProperties> = {
 		bio: "Hi! I\u2019m Clyde, Discord's AI chatbot, at your service \ud83e\udee1 Please @ me.",
 		discriminator: "0000",
 		displayName: "Clyde",
-		flags: 0,
 		id: "1081004946872352958",
 		themeColors: { primary: 10594552, secondary: 5793266 },
 		username: "clyde",
 	},
 	activities: [],
+	theme: "dark",
 };

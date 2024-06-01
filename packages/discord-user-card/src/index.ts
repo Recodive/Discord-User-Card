@@ -1,4 +1,30 @@
-import { mapDiscordApiUser } from "@discord-user-card/core";
-
-// eslint-disable-next-line unicorn/no-null
-console.log("hi", mapDiscordApiUser({ avatar: null, discriminator: "0", global_name: null, id: "123", username: "test" }));
+export {
+	ActivityType,
+	type APIUser,
+	type APIAvatarDecorationData,
+	type DiscordUserCardActivity,
+	type DiscordUserCardActivityAssets,
+	type DiscordUserCardActivityBase,
+	type DiscordUserCardActivityButton,
+	type DiscordUserCardActivityButtons,
+	type DiscordUserCardActivityCompeting,
+	type DiscordUserCardActivityCustom,
+	type DiscordUserCardActivityListening,
+	type DiscordUserCardActivityPlaying,
+	type DiscordUserCardActivityStreaming,
+	type DiscordUserCardActivityTimestamps,
+	type DiscordUserCardActivityWatching,
+	DiscordUserCardBadges,
+	DiscordUserCardBotBadges,
+	type DiscordUserCardImage,
+	type DiscordUserCardProperties,
+	type DiscordUserCardUser,
+	PresenceUpdateStatus,
+	type Snowflake,
+	UserFlags,
+	UserPremiumType,
+	defaultUserCardProperties,
+	mapDiscordApiUser,
+	flagsToBadges,
+} from "@discord-user-card/core";
+export { setupDiscordUserCard } from "./html/index.js";

@@ -11,16 +11,11 @@
 			"import": "./lib/index.js",
 			"require": "./lib/index.js",
 			"types": "./lib/index.d.ts"
-		},
-		"./style.css": "./lib/style.css"
+		}
 	},
 	"scripts": {
-		"build:ts": "tsc",
-		"build:scss": "sass src/styles/index.scss lib/style.css",
-		"dev:ts": "tsc -w",
-		"dev:scss": "sass src/styles/index.scss lib/style.css --watch",
-		"dev": "pnpm dev:ts & pnpm dev:scss",
-		"build": "pnpm build:ts && pnpm build:scss"
+		"build": "tsc",
+		"dev": "tsc -w"
 	},
 	"files": [
 		"lib"
@@ -30,8 +25,5 @@
 		"card",
 		"profile",
 		"discord-user-card"
-	],
-	"devDependencies": {
-		"sass": "^1.77.2"
-	}
+	]
 }

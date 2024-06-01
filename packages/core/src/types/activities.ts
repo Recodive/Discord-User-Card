@@ -1,4 +1,4 @@
-import type { ActivityType } from "../types/discordApiTypes.js";
+import type { ActivityType } from "./discordApiTypes.js";
 
 import { DiscordUserCardImage } from "./generic.js";
 

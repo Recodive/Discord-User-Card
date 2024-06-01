@@ -1,4 +1,4 @@
-<template>
+export const masks = `
 	<svg
 		viewBox="0 0 1 1"
 		aria-hidden="true"
@@ -59,4 +59,4 @@
 			<circle fill="black" cx="0.85" cy="0.85" r="0.175"></circle>
 		</mask>
 	</svg>
-</template>
+`;

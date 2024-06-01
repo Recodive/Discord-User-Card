@@ -37,7 +37,7 @@ export enum UserPremiumType {
 /**
  * https://discord.com/developers/docs/resources/user#user-object-user-flags
  */
-export declare enum UserFlags {
+export enum UserFlags {
 	/**
 	 * Discord Employee
 	 */

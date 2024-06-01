@@ -1,11 +1,11 @@
 const DATE_TYPE_FORMATS = {
-	t: { timeStyle: "short" },
-	T: { timeStyle: "medium" },
-	d: { dateStyle: "short" },
-	D: { dateStyle: "long" },
-	f: { dateStyle: "long", timeStyle: "short" },
-	F: { dateStyle: "full", timeStyle: "short" },
-	R: { style: "long", numeric: "auto" },
+	t: { timeStyle: "short" }, // 12:00 AM
+	T: { timeStyle: "medium" }, // 12:00:00 AM
+	d: { dateStyle: "short" }, // 1/1/2020
+	D: { dateStyle: "long" }, // January 1, 2020
+	f: { dateStyle: "long", timeStyle: "short" }, // January 1, 2020 12:00 AM
+	F: { dateStyle: "full", timeStyle: "short" }, // Wednesday, January 1, 2020 12:00 AM
+	R: { style: "long", numeric: "auto" }, // 1 year ago
 } as const;
 
 function automaticRelativeDifference(date: Date): {

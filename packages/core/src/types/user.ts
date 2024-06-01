@@ -1,7 +1,8 @@
+import type { PresenceUpdateStatus, Snowflake } from "./discordApiTypes.js";
 import type {
-	PresenceUpdateStatus,
-	Snowflake,
-} from "../types/discordApiTypes.js";
+	DiscordUserCardBadges,
+	DiscordUserCardBotBadges,
+} from "./badges.js";
 
 import type { DiscordUserCardImage } from "./generic.js";
 
@@ -47,9 +48,9 @@ export interface DiscordUserCardUser {
 	 */
 	displayName?: string;
 	/**
-	 * The flags on a user's account
+	 * The badges the user has
 	 */
-	flags?: number;
+	badges?: (DiscordUserCardBadges | DiscordUserCardBotBadges)[];
 	/**
 	 * The user's chosen pronouns
 	 */

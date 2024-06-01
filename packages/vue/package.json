@@ -33,9 +33,7 @@
 		"vue3"
 	],
 	"dependencies": {
-		"@discord-user-card/core": "workspace:*",
-		"@discord-user-card/emojis": "workspace:*",
-		"@discord-user-card/markdown": "workspace:*",
+		"discord-user-card": "workspace:*",
 		"vue": "^3.4.27"
 	},
 	"devDependencies": {

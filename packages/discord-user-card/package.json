@@ -12,11 +12,16 @@
 			"import": "./lib/index.js",
 			"require": "./lib/index.cjs",
 			"types": "./lib/index.d.ts"
-		}
+		},
+		"./style.css": "./lib/style.css"
 	},
 	"scripts": {
-		"build": "vite build --config vite.config.ts",
-		"dev": "vite build --config vite.config.ts --watch"
+		"dev:ts": "vite --config vite.config.ts",
+		"dev:scss": "sass src/styles/index.scss lib/style.css --watch",
+		"build:ts": "vite build --config vite.config.ts",
+		"build:scss": "sass src/styles/index.scss lib/style.css",
+		"dev": "pnpm dev:ts & pnpm dev:scss",
+		"build": "pnpm build:ts && pnpm build:scss"
 	},
 	"files": [
 		"lib"
@@ -28,9 +33,12 @@
 		"discord-user-card"
 	],
 	"dependencies": {
-		"@discord-user-card/core": "workspace:*"
+		"@discord-user-card/core": "workspace:*",
+		"@discord-user-card/emojis": "workspace:*",
+		"@discord-user-card/markdown": "workspace:*"
 	},
 	"devDependencies": {
+		"sass": "^1.77.2",
 		"vite": "^5.2.11",
 		"vite-plugin-checker": "^0.6.4",
 		"vite-plugin-dts": "^3.9.1"
