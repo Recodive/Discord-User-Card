@@ -1,5 +1,5 @@
-import { DiscordUserCardProperties } from "@discord-user-card/core";
 import { setupOriginalDiscordUserCard } from "./original/index.js";
+import { RenderFunction } from "./util.js";
 
 export function setupDiscordUserCard(
 	element: HTMLDivElement,
@@ -13,9 +13,7 @@ export function setupDiscordUserCard(
 		style: "original",
 		type: "card",
 	}
-): {
-	render: (props: DiscordUserCardProperties) => Promise<void>;
-} {
+): RenderFunction {
 	//? Make sure the element is not null, and that it is a div
 	if (!element || element.tagName !== "DIV") throw new Error("Invalid element");
 

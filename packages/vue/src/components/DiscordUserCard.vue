@@ -4,6 +4,7 @@ import {
 	DiscordUserCardProperties,
 } from "discord-user-card";
 import { withDefaults } from "vue";
+import Original from "./Original.vue";
 
 withDefaults(
 	defineProps<DiscordUserCardProperties & { style?: "Original" }>(),
@@ -11,6 +12,7 @@ withDefaults(
 		user: () => defaultUserCardProperties.user,
 		activities: () => defaultUserCardProperties.activities,
 		style: "Original",
+		theme: "dark",
 	}
 );
 </script>
@@ -18,7 +20,7 @@ withDefaults(
 <template>
 	<Suspense>
 		<template v-if="style === 'Original'">
-			<div>Original</div>
+			<Original :activities="activities" :user="user" :theme="theme" />
 		</template>
 	</Suspense>
 </template>

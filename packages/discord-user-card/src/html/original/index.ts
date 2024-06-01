@@ -7,6 +7,7 @@ import {
 	ClassObject,
 	parseClassObject,
 	parseStyleObject,
+	RenderFunction,
 	StyleObject,
 } from "../util.js";
 import { renderAvatar } from "./avatar.js";
@@ -15,7 +16,9 @@ import { masks } from "./masks.js";
 import { renderProfileBadges } from "./profileBadges.js";
 import { renderInfoSection } from "./infoSection.js";
 
-export function setupOriginalDiscordUserCard(element: HTMLDivElement) {
+export function setupOriginalDiscordUserCard(
+	element: HTMLDivElement
+): RenderFunction {
 	//? Make a render function that takes in the properties of the user card
 	async function render(props: DiscordUserCardProperties): Promise<void> {
 		//? Destructure the user and activities from the props, and set them to the default values if they are not provided

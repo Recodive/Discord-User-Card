@@ -1,11 +1,16 @@
 import {
 	ColorUtils,
+	DiscordUserCardProperties,
 	DiscordUserCardUser,
 	discrimToAvatar,
 	getColorFromImage,
 	imageToUrl,
 	PresenceUpdateStatus,
 } from "@discord-user-card/core";
+
+export type RenderFunction = {
+	render: (props: DiscordUserCardProperties) => Promise<void>;
+};
 
 export type ClassObject = Record<string, boolean>;
 export function parseClassObject(classObject: ClassObject): string {
