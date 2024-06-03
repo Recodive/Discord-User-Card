@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type {
+	DiscordUserCardProperties,
+} from "discord-user-card";
 import {
 	defaultUserCardProperties,
-	DiscordUserCardProperties,
 } from "discord-user-card";
 import { withDefaults } from "vue";
 import Original from "./Original.vue";
@@ -13,7 +15,7 @@ withDefaults(
 		activities: () => defaultUserCardProperties.activities,
 		style: "Original",
 		theme: "dark",
-	}
+	},
 );
 </script>
 

@@ -1,6 +1,8 @@
-import {
+import type {
 	DiscordUserCardActivity,
 	DiscordUserCardUser,
+} from "@discord-user-card/core";
+import {
 	userIdToTimestamp,
 } from "@discord-user-card/core";
 import { renderUsername } from "./username.js";
@@ -10,7 +12,7 @@ import { renderMarkdown } from "./markdown.js";
 
 export function renderInfoSection(
 	user: DiscordUserCardUser,
-	activities: DiscordUserCardActivity[]
+	activities: DiscordUserCardActivity[],
 ) {
 	return `
 		<div class="duc_user_section">
@@ -29,7 +31,8 @@ export function renderInfoSection(
 }
 
 function renderAboutMe(user: DiscordUserCardUser) {
-	if (!user.bio) return "";
+	if (!user.bio)
+		return "";
 
 	return `
 		<div class="duc_section">
@@ -44,7 +47,7 @@ function renderMemberSince(user: DiscordUserCardUser) {
 	const formatter = new Intl.DateTimeFormat(
 		navigator.language || "en",
 		// Sep 8, 2021
-		{ month: "short", day: "numeric", year: "numeric" }
+		{ month: "short", day: "numeric", year: "numeric" },
 	);
 	const memberSince = formatter.format(new Date(timestamp));
 

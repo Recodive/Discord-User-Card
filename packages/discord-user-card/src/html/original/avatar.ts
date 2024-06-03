@@ -1,6 +1,9 @@
-import { ColorUtils, DiscordUserCardUser } from "@discord-user-card/core";
-import {
+import type { DiscordUserCardUser } from "@discord-user-card/core";
+import { ColorUtils } from "@discord-user-card/core";
+import type {
 	ClassObject,
+} from "../util.js";
+import {
 	getUserAvatar,
 	getUserAvatarDecoration,
 	getUserStatus,
@@ -17,8 +20,8 @@ export function renderAvatar(user: DiscordUserCardUser) {
 	const { status, color: statusColor } = getUserStatus(user);
 	let circleColor = "black";
 	if (user.themeColors) {
-		circleColor =
-			ColorUtils.getDarkness(user.themeColors.primary) > 0.5
+		circleColor
+			= ColorUtils.getDarkness(user.themeColors.primary) > 0.5
 				? "black"
 				: "white";
 	}
@@ -42,7 +45,8 @@ export function renderAvatar(user: DiscordUserCardUser) {
 
 function renderAvatarDecoration(user: DiscordUserCardUser) {
 	const decoration = getUserAvatarDecoration(user);
-	if (!decoration) return "";
+	if (!decoration)
+		return "";
 	return `
 		<svg width="108" height="96" viewBox="0 0 108 96" class="duc_avatar_decoration" aria-hidden="true">
 			<foreignObject x="0" y="0" width="96" height="96" mask="url(#svg-mask-avatar-decoration-status-round-80)">

@@ -5,7 +5,7 @@ import {
 import { imageToUrl } from "./imageToUrl.js";
 
 export function badgeToUrl(
-	badge: DiscordUserCardBadges | DiscordUserCardBotBadges
+	badge: DiscordUserCardBadges | DiscordUserCardBotBadges,
 ): string {
 	const id = badgeToId(badge);
 	return imageToUrl({
@@ -15,7 +15,7 @@ export function badgeToUrl(
 }
 
 function badgeToId(
-	badge: DiscordUserCardBadges | DiscordUserCardBotBadges
+	badge: DiscordUserCardBadges | DiscordUserCardBotBadges,
 ): string {
 	switch (badge) {
 		case DiscordUserCardBadges.EARLY_SUPPORTER:
@@ -75,16 +75,6 @@ function badgeToId(
 	}
 }
 
-export function orderBadges(
-	badges: (DiscordUserCardBadges | DiscordUserCardBotBadges)[]
-): (DiscordUserCardBadges | DiscordUserCardBotBadges)[] {
-	return badges.sort((a, b) => {
-		const aOrder = badgeOrder[a],
-			bOrder = badgeOrder[b];
-		return aOrder - bOrder;
-	});
-}
-
 const badgeOrder: Record<
 	DiscordUserCardBadges | DiscordUserCardBotBadges,
 	number
@@ -118,6 +108,16 @@ const badgeOrder: Record<
 	[DiscordUserCardBotBadges.PREMIUM_APP]: 26,
 };
 
+export function orderBadges(
+	badges: (DiscordUserCardBadges | DiscordUserCardBotBadges)[],
+): (DiscordUserCardBadges | DiscordUserCardBotBadges)[] {
+	return badges.sort((a, b) => {
+		const aOrder = badgeOrder[a];
+		const bOrder = badgeOrder[b];
+		return aOrder - bOrder;
+	});
+}
+
 const badgeFlags: Record<DiscordUserCardBadges, number | undefined> = {
 	[DiscordUserCardBadges.STAFF]: 1 << 0, // 1
 	[DiscordUserCardBadges.PARTNER]: 1 << 1, // 2
@@ -131,7 +131,7 @@ const badgeFlags: Record<DiscordUserCardBadges, number | undefined> = {
 	[DiscordUserCardBadges.VERIFIED_DEVELOPER]: 1 << 17, // 131072
 	[DiscordUserCardBadges.CERTIFIED_MODERATOR]: 1 << 18, // 262144
 	[DiscordUserCardBadges.ACTIVE_DEVELOPER]: 1 << 22, // 4194304
-	//? The following badges to do not have a flag
+	// ? The following badges to do not have a flag
 	[DiscordUserCardBadges.PREMIUM]: undefined,
 	[DiscordUserCardBadges.GUILD_BOOSTER_LVL1]: undefined,
 	[DiscordUserCardBadges.GUILD_BOOSTER_LVL2]: undefined,
@@ -153,13 +153,14 @@ const badgeBotFlags: Record<DiscordUserCardBotBadges, number | undefined> = {
 
 export function flagsToBadges(
 	flags: number,
-	bot = false
+	bot = false,
 ): (DiscordUserCardBadges | DiscordUserCardBotBadges)[] {
 	const flagsToBadge = bot ? badgeBotFlags : badgeFlags;
 	const badges: (DiscordUserCardBadges | DiscordUserCardBotBadges)[] = [];
-	for (const [badge, flag] of Object.entries(flagsToBadge))
+	for (const [badge, flag] of Object.entries(flagsToBadge)) {
 		if (flag && flags & flag)
 			badges.push(badge as DiscordUserCardBadges | DiscordUserCardBotBadges);
+	}
 
 	return badges;
 }

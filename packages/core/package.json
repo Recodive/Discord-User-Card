@@ -1,29 +1,29 @@
 {
 	"name": "@discord-user-card/core",
+	"type": "module",
 	"version": "1.0.0",
 	"description": "The core behind the Discord User Card project.",
-	"type": "module",
-	"main": "./lib/index.js",
-	"module": "./lib/index.js",
-	"types": "./lib/index.d.ts",
-	"exports": {
-		".": {
-			"import": "./lib/index.js",
-			"require": "./lib/index.js",
-			"types": "./lib/index.d.ts"
-		}
-	},
-	"scripts": {
-		"build": "tsc",
-		"dev": "tsc -w"
-	},
-	"files": [
-		"lib"
-	],
 	"keywords": [
 		"discord",
 		"card",
 		"profile",
 		"discord-user-card"
-	]
+	],
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js",
+			"require": "./lib/index.js"
+		}
+	},
+	"main": "./lib/index.js",
+	"module": "./lib/index.js",
+	"types": "./lib/index.d.ts",
+	"files": [
+		"lib"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc -w"
+	}
 }

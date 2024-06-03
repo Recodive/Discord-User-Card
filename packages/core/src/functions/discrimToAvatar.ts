@@ -2,10 +2,10 @@ import { imageToUrl } from "./imageToUrl.js";
 
 export function discrimToAvatar(
 	userId: string,
-	discriminator?: string
+	discriminator?: string,
 ): string {
-	const index =
-		discriminator === undefined || discriminator === "0"
+	const index
+		= discriminator === undefined || discriminator === "0"
 			? Number(BigInt(userId) >> 22n) % 6
 			: Number(discriminator) % 5;
 	return imageToUrl({

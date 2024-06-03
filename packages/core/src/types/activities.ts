@@ -1,6 +1,6 @@
 import type { ActivityType } from "./discordApiTypes.js";
 
-import { DiscordUserCardImage } from "./generic.js";
+import type { DiscordUserCardImage } from "./generic.js";
 
 export type DiscordUserCardActivity =
 	| DiscordUserCardActivityPlaying
@@ -73,9 +73,9 @@ export interface DiscordUserCardActivityButton {
 
 export interface DiscordUserCardActivityPlaying
 	extends DiscordUserCardActivityBase,
-		DiscordUserCardActivityTimestamps,
-		DiscordUserCardActivityAssets,
-		DiscordUserCardActivityButtons {
+	DiscordUserCardActivityTimestamps,
+	DiscordUserCardActivityAssets,
+	DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -96,9 +96,9 @@ export interface DiscordUserCardActivityPlaying
 
 export interface DiscordUserCardActivityStreaming
 	extends DiscordUserCardActivityBase,
-		DiscordUserCardActivityTimestamps,
-		DiscordUserCardActivityAssets,
-		DiscordUserCardActivityButtons {
+	DiscordUserCardActivityTimestamps,
+	DiscordUserCardActivityAssets,
+	DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -123,9 +123,9 @@ export interface DiscordUserCardActivityStreaming
 
 export interface DiscordUserCardActivityListening
 	extends DiscordUserCardActivityBase,
-		DiscordUserCardActivityTimestamps,
-		DiscordUserCardActivityAssets,
-		DiscordUserCardActivityButtons {
+	DiscordUserCardActivityTimestamps,
+	DiscordUserCardActivityAssets,
+	DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -146,9 +146,9 @@ export interface DiscordUserCardActivityListening
 
 export interface DiscordUserCardActivityWatching
 	extends DiscordUserCardActivityBase,
-		DiscordUserCardActivityTimestamps,
-		DiscordUserCardActivityAssets,
-		DiscordUserCardActivityButtons {
+	DiscordUserCardActivityTimestamps,
+	DiscordUserCardActivityAssets,
+	DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */
@@ -169,9 +169,9 @@ export interface DiscordUserCardActivityWatching
 
 export interface DiscordUserCardActivityCompeting
 	extends DiscordUserCardActivityBase,
-		DiscordUserCardActivityTimestamps,
-		DiscordUserCardActivityAssets,
-		DiscordUserCardActivityButtons {
+	DiscordUserCardActivityTimestamps,
+	DiscordUserCardActivityAssets,
+	DiscordUserCardActivityButtons {
 	/**
 	 * The type of activity
 	 */

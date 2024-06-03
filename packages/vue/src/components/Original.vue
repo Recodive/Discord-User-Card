@@ -1,13 +1,15 @@
 @ -1,80 +0,0 @@
 <script setup lang="ts">
-import {
+import type {
 	DiscordUserCardProperties,
+} from "discord-user-card";
+import {
 	setupOriginalDiscordUserCard,
 } from "discord-user-card";
-import { watch, toRefs, ref, computed } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 
-const props = defineProps<Required<DiscordUserCardProperties>>(),
-	{ user, activities } = toRefs(props);
+const props = defineProps<Required<DiscordUserCardProperties>>();
+const { user, activities } = toRefs(props);
 
 const div = ref<HTMLDivElement>(document.createElement("div"));
 const renderer = setupOriginalDiscordUserCard(div.value);
@@ -25,7 +27,7 @@ watch(
 			activities: activities.value,
 		});
 	},
-	{ deep: true }
+	{ deep: true },
 );
 
 const innerHTML = computed(() => div.value.innerHTML);

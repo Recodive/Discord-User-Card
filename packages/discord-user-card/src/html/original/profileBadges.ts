@@ -1,6 +1,8 @@
+import type {
+	DiscordUserCardUser,
+} from "@discord-user-card/core";
 import {
 	badgeToUrl,
-	DiscordUserCardUser,
 	orderBadges,
 } from "@discord-user-card/core";
 
@@ -13,5 +15,6 @@ export function renderProfileBadges(user: DiscordUserCardUser) {
 	`;
 }
 
-const renderProfileBadge = (badge: string) =>
-	`<img class="duc_profile_badge" src="${badge}" alt=" " />`;
+function renderProfileBadge(badge: string) {
+	return `<img class="duc_profile_badge" src="${badge}" alt=" " />`;
+}

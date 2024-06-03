@@ -29,21 +29,22 @@ export const getColorFromImage = memoize(
 			};
 
 			image.src = url;
-		})
+		}),
 );
 
 const defaultPalette: [number, number, number][] = [[0, 0, 0]];
 function getPalette(
 	image: HTMLImageElement,
 	colorCount: number = 5,
-	quality: number = 10
+	quality: number = 10,
 ) {
 	// Create a canvas element
-	const canvas = document.createElement("canvas"),
-		context = canvas.getContext("2d");
+	const canvas = document.createElement("canvas");
+	const context = canvas.getContext("2d");
 
 	// No context? Return the default palette
-	if (context === null) return defaultPalette;
+	if (context === null)
+		return defaultPalette;
 
 	// Set the canvas size to the image size
 	const width = (canvas.width = image.width === 0 ? 128 : image.width);

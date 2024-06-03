@@ -5,8 +5,8 @@ const spoilerRegex = /^\|\|([\s\S]+?)\|\|/;
 
 export const spoiler: Rule = {
 	order: 0,
-	match: (source) => spoilerRegex.exec(source),
-	parse: function (capture, parse, state) {
+	match: source => spoilerRegex.exec(source),
+	parse(capture, parse, state) {
 		return {
 			content: parse(capture[1] || "", state),
 		};
@@ -17,17 +17,17 @@ export const spoiler: Rule = {
 			htmlTag(
 				"span",
 				htmlTag("span", output(node.content, state), {
-					class: "duc_spoiler_content",
+					"class": "duc_spoiler_content",
 					"aria-hidden": "true",
 				}),
-				{ class: "duc_spoiler_obscured" }
+				{ class: "duc_spoiler_obscured" },
 			),
 			{
-				class: "duc_spoiler_container",
+				"class": "duc_spoiler_container",
 				"aria-expanded": "false",
-				role: "button",
-				tabindex: "0",
-			}
+				"role": "button",
+				"tabindex": "0",
+			},
 		);
 	},
 };

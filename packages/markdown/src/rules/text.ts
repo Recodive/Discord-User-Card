@@ -1,11 +1,12 @@
 import { anyScopeRegex, defaultRules } from "simple-markdown";
-import { extendRule, type Rule } from "../functions/extendRule.js";
+import { type Rule, extendRule } from "../functions/extendRule.js";
 
-const textRegex = /^[\s\S]+?(?=[^0-9A-Za-z\s]|\n\n|\n|\w+:\S|$)/;
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const textRegex = /^[\s\S]+?(?=[^0-9A-Z\s]|\n\n|\n|\w+:\S|$)/i;
 
 export const text: Rule = extendRule(
 	{
 		match: anyScopeRegex(textRegex),
 	},
-	defaultRules.text
+	defaultRules.text,
 );

@@ -1,31 +1,31 @@
 {
 	"name": "@discord-user-card/emojis",
+	"type": "module",
 	"version": "1.0.0",
 	"description": "All the emojis supported by Discord (User Card)",
-	"type": "module",
-	"main": "./lib/index.cjs",
-	"unpkg": "./lib/index.umd.cjs",
-	"module": "./lib/index.js",
-	"types": "./lib/index.d.ts",
-	"exports": {
-		".": {
-			"import": "./lib/index.js",
-			"require": "./lib/index.cjs",
-			"types": "./lib/index.d.ts"
-		}
-	},
-	"scripts": {
-		"build": "tsc",
-		"dev": "tsc -w"
-	},
-	"files": [
-		"lib"
-	],
 	"keywords": [
 		"discord",
 		"card",
 		"profile",
 		"discord-user-card",
 		"emojis"
-	]
+	],
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js",
+			"require": "./lib/index.cjs"
+		}
+	},
+	"main": "./lib/index.cjs",
+	"module": "./lib/index.js",
+	"unpkg": "./lib/index.umd.cjs",
+	"types": "./lib/index.d.ts",
+	"files": [
+		"lib"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc -w"
+	}
 }

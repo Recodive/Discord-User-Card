@@ -1,11 +1,11 @@
 import type { DiscordUserCardUser } from "@discord-user-card/core";
 import {
 	type ClassObject,
+	type StyleObject,
 	getUserBanner,
 	getUserBannerColor,
 	parseClassObject,
 	parseStyleObject,
-	type StyleObject,
 } from "../util.js";
 
 export async function renderBanner(user: DiscordUserCardUser) {

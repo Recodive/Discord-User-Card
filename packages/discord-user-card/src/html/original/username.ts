@@ -1,4 +1,4 @@
-import { DiscordUserCardUser } from "@discord-user-card/core";
+import type { DiscordUserCardUser } from "@discord-user-card/core";
 
 export function renderUsername(user: DiscordUserCardUser) {
 	return `
@@ -21,12 +21,14 @@ export function renderUsername(user: DiscordUserCardUser) {
 }
 
 function renderDiscriminator(user: DiscordUserCardUser) {
-	if (!user.discriminator || user.discriminator === "0") return "";
+	if (!user.discriminator || user.discriminator === "0")
+		return "";
 	return `<span class="duc_discriminator">#${user.discriminator}</span>`;
 }
 
 function renderBotTag(user: DiscordUserCardUser) {
-	if (!user.app && !user.system) return "";
+	if (!user.app && !user.system)
+		return "";
 	return `
 		<span class="duc_bot_tag">
 			<svg
@@ -53,6 +55,7 @@ function renderBotTag(user: DiscordUserCardUser) {
 }
 
 function renderPronouns(user: DiscordUserCardUser) {
-	if (!user.pronouns) return "";
+	if (!user.pronouns)
+		return "";
 	return `<div class="duc_pronouns">${user.pronouns}</div>`;
 }

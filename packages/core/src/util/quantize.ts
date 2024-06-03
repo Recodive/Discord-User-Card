@@ -35,27 +35,37 @@ const MMCQ = (() => {
 			this.contents.sort(this.comparator);
 			this.sorted = true;
 		}
+
 		push(o: T) {
 			this.contents.push(o);
 			this.sorted = false;
 		}
+
 		peek(index: number) {
-			if (!this.sorted) this.sort();
-			if (index === undefined) index = this.contents.length - 1;
+			if (!this.sorted)
+				this.sort();
+			if (index === undefined)
+				index = this.contents.length - 1;
 			return this.contents[index];
 		}
+
 		pop() {
-			if (!this.sorted) this.sort();
+			if (!this.sorted)
+				this.sort();
 			return this.contents.pop();
 		}
+
 		size() {
 			return this.contents.length;
 		}
+
 		map<A>(f: (value: T, index: number, array: T[]) => A): A[] {
 			return this.contents.map<A>(f);
 		}
+
 		debug() {
-			if (!this.sorted) this.sort();
+			if (!this.sorted)
+				this.sort();
 			return this.contents;
 		}
 	}
@@ -73,15 +83,15 @@ const MMCQ = (() => {
 			public g2: number,
 			public b1: number,
 			public b2: number,
-			public histo: number[]
+			public histo: number[],
 		) {}
 
 		volume(force?: boolean): number {
 			if (!this._volume || force) {
-				this._volume =
-					(this.r2 - this.r1 + 1) *
-					(this.g2 - this.g1 + 1) *
-					(this.b2 - this.b1 + 1);
+				this._volume
+					= (this.r2 - this.r1 + 1)
+					* (this.g2 - this.g1 + 1)
+					* (this.b2 - this.b1 + 1);
 			}
 			return this._volume;
 		}
@@ -95,7 +105,7 @@ const MMCQ = (() => {
 				for (i = this.r1; i <= this.r2; i++) {
 					for (j = this.g1; j <= this.g2; j++) {
 						for (k = this.b1; k <= this.b2; k++) {
-							let index = getColorIndex(i, j, k);
+							const index = getColorIndex(i, j, k);
 							npix += this.histo[index] || 0;
 						}
 					}
@@ -114,7 +124,7 @@ const MMCQ = (() => {
 				this.g2,
 				this.b1,
 				this.b2,
-				this.histo
+				this.histo,
 			);
 		}
 
@@ -139,7 +149,8 @@ const MMCQ = (() => {
 				}
 				if (ntot) {
 					this._avg = [~~(rsum / ntot), ~~(gsum / ntot), ~~(bsum / ntot)];
-				} else {
+				}
+				else {
 					this._avg = [
 						~~((mult * (this.r1 + this.r2 + 1)) / 2),
 						~~((mult * (this.g1 + this.g2 + 1)) / 2),
@@ -152,15 +163,15 @@ const MMCQ = (() => {
 
 		contains(pixel: [number, number, number]): boolean {
 			const rval = pixel[0] >> rshift;
-			let gval = pixel[1] >> rshift;
-			let bval = pixel[2] >> rshift;
+			const gval = pixel[1] >> rshift;
+			const bval = pixel[2] >> rshift;
 			return (
-				rval >= this.r1 &&
-				rval <= this.r2 &&
-				gval >= this.g1 &&
-				gval <= this.g2 &&
-				bval >= this.b1 &&
-				bval <= this.b2
+				rval >= this.r1
+				&& rval <= this.r2
+				&& gval >= this.g1
+				&& gval <= this.g2
+				&& bval >= this.b1
+				&& bval <= this.b2
 			);
 		}
 	}
@@ -172,8 +183,8 @@ const MMCQ = (() => {
 			this.vboxes = new PQueue((a, b) =>
 				protovis.naturalOrder(
 					a.vbox.count() * a.vbox.volume(),
-					b.vbox.count() * b.vbox.volume()
-				)
+					b.vbox.count() * b.vbox.volume(),
+				),
 			);
 		}
 
@@ -185,7 +196,7 @@ const MMCQ = (() => {
 		}
 
 		palette(): [number, number, number][] {
-			return this.vboxes.map((vb) => vb.color);
+			return this.vboxes.map(vb => vb.color);
 		}
 
 		size() {
@@ -209,9 +220,9 @@ const MMCQ = (() => {
 			let pColor;
 			for (let i = 0; i < vboxes.size(); i++) {
 				d2 = Math.sqrt(
-					Math.pow(color[0] - vboxes.peek(i)!.color[0], 2) +
-						Math.pow(color[1] - vboxes.peek(i)!.color[1], 2) +
-						Math.pow(color[2] - vboxes.peek(i)!.color[2], 2)
+					(color[0] - vboxes.peek(i)!.color[0]) ** 2
+					+ (color[1] - vboxes.peek(i)!.color[1]) ** 2
+					+ (color[2] - vboxes.peek(i)!.color[2]) ** 2,
 				);
 				if (d1 === undefined || d2 < d1) {
 					d1 = d2;
@@ -225,7 +236,7 @@ const MMCQ = (() => {
 	// histo (1-d array, giving the number of pixels in
 	// each quantized region of color space), or null on error
 	function getHisto(pixels: [number, number, number][]): number[] {
-		const histo: number[] = new Array(1 << (3 * sigbits));
+		const histo: number[] = Array.from({ length: 1 << (3 * sigbits) });
 		pixels.forEach((pixel) => {
 			const rval = pixel[0] >> rshift;
 			const gval = pixel[1] >> rshift;
@@ -238,7 +249,7 @@ const MMCQ = (() => {
 
 	function vboxFromPixels(
 		pixels: [number, number, number][],
-		histo: number[]
+		histo: number[],
 	): VBox {
 		let rmin = 1e6;
 		let rmax = 0;
@@ -251,24 +262,31 @@ const MMCQ = (() => {
 			const rval = pixel[0] >> rshift;
 			const gval = pixel[1] >> rshift;
 			const bval = pixel[2] >> rshift;
-			if (rval < rmin) rmin = rval;
-			else if (rval > rmax) rmax = rval;
-			if (gval < gmin) gmin = gval;
-			else if (gval > gmax) gmax = gval;
-			if (bval < bmin) bmin = bval;
-			else if (bval > bmax) bmax = bval;
+			if (rval < rmin)
+				rmin = rval;
+			else if (rval > rmax)
+				rmax = rval;
+			if (gval < gmin)
+				gmin = gval;
+			else if (gval > gmax)
+				gmax = gval;
+			if (bval < bmin)
+				bmin = bval;
+			else if (bval > bmax)
+				bmax = bval;
 		});
 		return new VBox(rmin, rmax, gmin, gmax, bmin, bmax, histo);
 	}
 	function medianCutApply(histo: number[], vbox: VBox) {
-		if (!vbox.count()) return;
+		if (!vbox.count())
+			return;
 
 		const rw = vbox.r2 - vbox.r1 + 1;
 		const gw = vbox.g2 - vbox.g1 + 1;
 		const bw = vbox.b2 - vbox.b1 + 1;
 		const maxw = protovis.max([rw, gw, bw]);
 		// only one pixel, no split
-		if (vbox.count() == 1) {
+		if (vbox.count() === 1) {
 			return [vbox.copy()];
 		}
 
@@ -282,7 +300,7 @@ const MMCQ = (() => {
 		let k;
 		let sum;
 		let index;
-		if (maxw == rw) {
+		if (maxw === rw) {
 			for (i = vbox.r1; i <= vbox.r2; i++) {
 				sum = 0;
 				for (j = vbox.g1; j <= vbox.g2; j++) {
@@ -294,7 +312,8 @@ const MMCQ = (() => {
 				total += sum;
 				partialsum[i] = total;
 			}
-		} else if (maxw == gw) {
+		}
+		else if (maxw === gw) {
 			for (i = vbox.g1; i <= vbox.g2; i++) {
 				sum = 0;
 				for (j = vbox.r1; j <= vbox.r2; j++) {
@@ -306,8 +325,9 @@ const MMCQ = (() => {
 				total += sum;
 				partialsum[i] = total;
 			}
-		} else {
-			/* maxw == bw */
+		}
+		else {
+			/* maxw === bw */
 			for (i = vbox.b1; i <= vbox.b2; i++) {
 				sum = 0;
 				for (j = vbox.r1; j <= vbox.r2; j++) {
@@ -338,7 +358,8 @@ const MMCQ = (() => {
 					vbox2 = vbox.copy();
 					left = i - vbox[dim1];
 					right = vbox[dim2] - i;
-					if (left <= right) d2 = Math.min(vbox[dim2] - 1, ~~(i + right / 2));
+					if (left <= right)
+						d2 = Math.min(vbox[dim2] - 1, ~~(i + right / 2));
 					else d2 = Math.max(vbox[dim1], ~~(i - 1 - left / 2));
 					// avoid 0-count boxes
 					while (!partialsum[d2]) d2++;
@@ -352,26 +373,21 @@ const MMCQ = (() => {
 			}
 		}
 		// determine the cut planes
-		return maxw == rw ? doCut("r") : maxw == gw ? doCut("g") : doCut("b");
+		return maxw === rw ? doCut("r") : maxw === gw ? doCut("g") : doCut("b");
 	}
 
 	function quantize(pixels: [number, number, number][], maxcolors: number) {
 		// short-circuit
-		if (!pixels.length || maxcolors < 2 || maxcolors > 256) return false;
+		if (!pixels.length || maxcolors < 2 || maxcolors > 256)
+			return false;
 
 		const histo = getHisto(pixels);
-
-		// check that we aren't below maxcolors already
-		let nColors = 0;
-		histo.forEach(() => {
-			nColors++;
-		});
 
 		// get the beginning vbox from the colors
 		const vbox = vboxFromPixels(pixels, histo);
 
 		const pq = new PQueue<VBox>((a, b) =>
-			protovis.naturalOrder(a.count(), b.count())
+			protovis.naturalOrder(a.count(), b.count()),
 		);
 		pq.push(vbox);
 
@@ -395,15 +411,18 @@ const MMCQ = (() => {
 				const vbox1 = vboxes?.[0];
 				const vbox2 = vboxes?.[1];
 
-				if (!vbox1) return;
+				if (!vbox1)
+					return;
 				lh.push(vbox1);
 				if (vbox2) {
 					/* vbox2 can be null */
 					lh.push(vbox2);
 					ncolors++;
 				}
-				if (ncolors >= target) return;
-				if (niters++ > maxIterations)					return;
+				if (ncolors >= target)
+					return;
+				if (niters++ > maxIterations)
+					return;
 			}
 		}
 
@@ -412,7 +431,7 @@ const MMCQ = (() => {
 
 		// Re-sort by the product of pixel occupancy times the size in color space.
 		const pq2 = new PQueue<VBox>((a, b) =>
-			protovis.naturalOrder(a.count() * a.volume(), b.count() * b.volume())
+			protovis.naturalOrder(a.count() * a.volume(), b.count() * b.volume()),
 		);
 		while (pq.size()) pq2.push(pq.pop()!);
 

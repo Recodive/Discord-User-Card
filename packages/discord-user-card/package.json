@@ -1,20 +1,29 @@
 {
 	"name": "discord-user-card",
+	"type": "module",
 	"version": "1.0.0",
 	"description": "Display Discord users' profile cards just like in Discord.",
-	"type": "module",
-	"main": "./lib/index.cjs",
-	"unpkg": "./lib/index.umd.cjs",
-	"module": "./lib/index.js",
-	"types": "./lib/index.d.ts",
+	"keywords": [
+		"discord",
+		"card",
+		"profile",
+		"discord-user-card"
+	],
 	"exports": {
 		".": {
+			"types": "./lib/index.d.ts",
 			"import": "./lib/index.js",
-			"require": "./lib/index.cjs",
-			"types": "./lib/index.d.ts"
+			"require": "./lib/index.cjs"
 		},
 		"./style.css": "./lib/style.css"
 	},
+	"main": "./lib/index.cjs",
+	"module": "./lib/index.js",
+	"unpkg": "./lib/index.umd.cjs",
+	"types": "./lib/index.d.ts",
+	"files": [
+		"lib"
+	],
 	"scripts": {
 		"dev:ts": "vite --config vite.config.ts",
 		"dev:scss": "sass src/styles/index.scss lib/style.css --watch",
@@ -23,15 +32,6 @@
 		"dev": "pnpm dev:ts & pnpm dev:scss",
 		"build": "pnpm build:ts && pnpm build:scss"
 	},
-	"files": [
-		"lib"
-	],
-	"keywords": [
-		"discord",
-		"card",
-		"profile",
-		"discord-user-card"
-	],
 	"dependencies": {
 		"@discord-user-card/core": "workspace:*",
 		"@discord-user-card/emojis": "workspace:*",

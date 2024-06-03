@@ -14,7 +14,6 @@ function automaticRelativeDifference(date: Date): {
 } {
 	const diff = -((new Date().getTime() - date.getTime()) / 1000) | 0;
 	const absDiff = Math.abs(diff);
-	console.log(diff);
 	if (absDiff > 86400 * 30 * 10) {
 		return { duration: Math.round(diff / (86400 * 365)), unit: "years" };
 	}
@@ -35,20 +34,21 @@ function automaticRelativeDifference(date: Date): {
 
 export function formatTimestamp(
 	number: number,
-	format: keyof typeof DATE_TYPE_FORMATS
+	format: keyof typeof DATE_TYPE_FORMATS,
 ): string {
 	const date = new Date(number);
 	if (format === "R") {
 		const formatter = new Intl.RelativeTimeFormat(
 			navigator.language || "en",
-			DATE_TYPE_FORMATS[format]
+			DATE_TYPE_FORMATS[format],
 		);
 		const relative = automaticRelativeDifference(date);
 		return formatter.format(relative.duration, relative.unit);
-	} else {
+	}
+	else {
 		const formatter = new Intl.DateTimeFormat(
 			navigator.language || "en",
-			DATE_TYPE_FORMATS[format]
+			DATE_TYPE_FORMATS[format],
 		);
 		return formatter.format(date);
 	}
