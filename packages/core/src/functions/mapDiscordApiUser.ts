@@ -1,4 +1,4 @@
-import { UserPremiumType, type APIUser } from "../types/discordApiTypes.js";
+import { type APIUser, UserPremiumType } from "../types/discordApiTypes.js";
 
 import {
 	DiscordUserCardBadges,
@@ -28,7 +28,8 @@ export function mapDiscordApiUser(user: APIUser): DiscordUserCardProperties {
 	const badges: (DiscordUserCardBadges | DiscordUserCardBotBadges)[] = [];
 	if (premiumType !== undefined && premiumType !== UserPremiumType.None)
 		badges.push(DiscordUserCardBadges.PREMIUM);
-	if (flags !== undefined) badges.push(...flagsToBadges(flags, bot));
+	if (flags !== undefined)
+		badges.push(...flagsToBadges(flags, bot));
 
 	return {
 		user: {

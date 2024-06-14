@@ -1,14 +1,17 @@
-import {
-	ActivityType,
+import type {
 	DiscordUserCardActivity,
 	DiscordUserCardActivityCustom,
+} from "@discord-user-card/core";
+import {
+	ActivityType,
 	imageToUrl,
 } from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
 
 export function renderCustomStatus(activities: DiscordUserCardActivity[]) {
 	const customStatus = findCustomStatus(activities);
-	if (!customStatus) return "";
+	if (!customStatus)
+		return "";
 
 	const img = customStatus.emoji
 		? `<img class="customStatusImg" src="${customStatus.emoji.url}" alt="${customStatus.emoji.name}"/>`
@@ -18,27 +21,28 @@ export function renderCustomStatus(activities: DiscordUserCardActivity[]) {
 		: "";
 
 	return `
-		<div class="customStatusSection">
-			<div class="customStatus">
-				${img}
-				${span}
-			</div>
-		</div>
-	`;
+<div class="customStatusSection">
+<div class="customStatus">
+${img}
+${span}
+</div>
+</div>
+`;
 }
 
 function findCustomStatus(activities: DiscordUserCardActivity[]) {
 	const activity = activities.find(
 		(activity): activity is DiscordUserCardActivityCustom =>
-			activity.type === ActivityType.Custom
+			activity.type === ActivityType.Custom,
 	);
-	if (!activity) return undefined;
+	if (!activity)
+		return undefined;
 
 	let emoji:
 		| {
-				name: string;
-				url: string;
-		  }
+			name: string;
+			url: string;
+		}
 		| undefined;
 	if (activity.emoji && "id" in activity.emoji) {
 		emoji = {
@@ -48,7 +52,8 @@ function findCustomStatus(activities: DiscordUserCardActivity[]) {
 				image: activity.emoji,
 			}),
 		};
-	} else if (activity.emoji) {
+	}
+	else if (activity.emoji) {
 		const foundEmoji = findEmoji(activity.emoji.name);
 		if (foundEmoji) {
 			emoji = {

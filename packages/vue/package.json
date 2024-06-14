@@ -1,29 +1,8 @@
 {
 	"name": "@discord-user-card/vue",
+	"type": "module",
 	"version": "1.0.0",
 	"description": "Display Discord users' profile cards just like in Discord.",
-	"type": "module",
-	"main": "./lib/index.cjs",
-	"unpkg": "./lib/index.umd.cjs",
-	"module": "./lib/index.js",
-	"types": "./lib/index.d.ts",
-	"exports": {
-		".": {
-			"import": "./lib/index.js",
-			"require": "./lib/index.cjs",
-			"types": "./lib/index.d.ts"
-		},
-		"./style.css": "./lib/style.css"
-	},
-	"scripts": {
-		"dev": "vite",
-		"build": "vite build && vue-tsc --emitDeclarationOnly",
-		"types": "vue-tsc",
-		"preview": "vite preview"
-	},
-	"files": [
-		"lib"
-	],
 	"keywords": [
 		"discord",
 		"card",
@@ -32,6 +11,27 @@
 		"vue",
 		"vue3"
 	],
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js",
+			"require": "./lib/index.cjs"
+		},
+		"./style.css": "./lib/style.css"
+	},
+	"main": "./lib/index.cjs",
+	"module": "./lib/index.js",
+	"unpkg": "./lib/index.umd.cjs",
+	"types": "./lib/index.d.ts",
+	"files": [
+		"lib"
+	],
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build && vue-tsc --emitDeclarationOnly",
+		"types": "vue-tsc",
+		"preview": "vite preview"
+	},
 	"dependencies": {
 		"discord-user-card": "workspace:*",
 		"vue": "^3.4.27"

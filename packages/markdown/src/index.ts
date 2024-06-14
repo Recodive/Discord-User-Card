@@ -1,4 +1,4 @@
-import {outputFor, parserFor} from "simple-markdown";
+import { outputFor, parserFor } from "simple-markdown";
 import type { Rule } from "./functions/extendRule.js";
 import { autolink } from "./rules/autolink.js";
 import { blockQuote } from "./rules/blockQuote.js";
@@ -54,16 +54,16 @@ export const rules = {
 	url,
 	user,
 } satisfies {
-	[key: string]: Rule
+	[key: string]: Rule;
 };
 
 export interface SingleASTNode {
-    type: RuleType,
-    [prop: string]: any,
+	type: RuleType;
+	[prop: string]: any;
 }
 
 export function parseMarkdown(markdown: string): SingleASTNode[] {
-	return parserFor(rules)(markdown, {inline: true}) as SingleASTNode[];
+	return parserFor(rules)(markdown, { inline: true }) as SingleASTNode[];
 }
 
 export function toHTML(markdown: string): string {

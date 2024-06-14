@@ -5,9 +5,9 @@ import { version } from "./package.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
-  build: {
-    emptyOutDir: true,
+	plugins: [vue()],
+	build: {
+		emptyOutDir: true,
 		lib: {
 			entry: {
 				index: "src/index.ts",
@@ -27,5 +27,5 @@ export default defineConfig({
 			},
 		},
 		sourcemap: true,
-  },
+	},
 });

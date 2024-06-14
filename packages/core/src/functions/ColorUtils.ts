@@ -14,7 +14,7 @@ export class ColorUtils {
 	 * @returns The RGB color code
 	 */
 	static intToRgb(int: number): [number, number, number] {
-		return [(int >> 16) & 0xff, (int >> 8) & 0xff, int & 0xff];
+		return [(int >> 16) & 0xFF, (int >> 8) & 0xFF, int & 0xFF];
 	}
 
 	/**
@@ -23,10 +23,10 @@ export class ColorUtils {
 	 * @returns The HSL color code
 	 */
 	static intToHsl(int: number): [number, number, number] {
-		const [r, g, b] = ColorUtils.intToRgb(int).map((c) => c / 255) as [
+		const [r, g, b] = ColorUtils.intToRgb(int).map(c => c / 255) as [
 			number,
 			number,
-			number
+			number,
 		];
 		const max = Math.max(r, g, b);
 		const min = Math.min(r, g, b);
@@ -60,11 +60,11 @@ export class ColorUtils {
 
 	static getDarkness(int: number) {
 		return (
-			1 -
-			(0.299 * ((int >> 16) & 255) +
-				0.587 * ((int >> 8) & 255) +
-				0.114 * (255 & int)) /
-				255
+			1
+			- (0.299 * ((int >> 16) & 255)
+			+ 0.587 * ((int >> 8) & 255)
+			+ 0.114 * (255 & int))
+			/ 255
 		);
 	}
 }

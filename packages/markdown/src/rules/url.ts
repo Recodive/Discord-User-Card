@@ -1,5 +1,5 @@
 import { defaultRules } from "simple-markdown";
-import { extendRule, type Rule } from "../functions/extendRule.js";
+import { type Rule, extendRule } from "../functions/extendRule.js";
 
 export const url: Rule = extendRule(
 	{
@@ -15,5 +15,5 @@ export const url: Rule = extendRule(
 			};
 		},
 	},
-	defaultRules.url
+	defaultRules.url,
 );

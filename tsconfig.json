@@ -2,10 +2,10 @@
 	// extend your base config to share compilerOptions, etc
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
-		// ensure that nobody can accidentally use this config for a build
-		"noEmit": true,
+		"types": ["vitest"],
 		"allowJs": true,
-		"types": ["vitest"]
+		// ensure that nobody can accidentally use this config for a build
+		"noEmit": true
 	},
 	"include": ["**/*.ts", ".eslintrc.cjs", "packages/vue/tsconfig.node.json"]
 }

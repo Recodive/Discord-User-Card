@@ -1,9 +1,9 @@
 {
 	"name": "@discord-user-card/generate-emojis",
-	"private": true,
-	"version": "1.0.0",
-	"description": "Get all the emojis supported by Discord",
 	"type": "module",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Get all the emojis supported by Discord",
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc -w",

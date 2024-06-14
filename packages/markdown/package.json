@@ -1,25 +1,8 @@
 {
 	"name": "@discord-user-card/markdown",
+	"type": "module",
 	"version": "1.0.0",
 	"description": "A markdown parser for Discord",
-	"type": "module",
-	"main": "./lib/index.js",
-	"module": "./lib/index.js",
-	"types": "./lib/index.d.ts",
-	"exports": {
-		".": {
-			"import": "./lib/index.js",
-			"require": "./lib/index.js",
-			"types": "./lib/index.d.ts"
-		}
-	},
-	"scripts": {
-		"build": "tsc",
-		"dev": "tsc -w"
-	},
-	"files": [
-		"lib"
-	],
 	"keywords": [
 		"discord",
 		"card",
@@ -27,6 +10,23 @@
 		"discord-user-card",
 		"markdown"
 	],
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js",
+			"require": "./lib/index.js"
+		}
+	},
+	"main": "./lib/index.js",
+	"module": "./lib/index.js",
+	"types": "./lib/index.d.ts",
+	"files": [
+		"lib"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc -w"
+	},
 	"dependencies": {
 		"@discord-user-card/core": "workspace:*",
 		"@discord-user-card/emojis": "workspace:*",

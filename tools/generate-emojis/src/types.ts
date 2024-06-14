@@ -2,9 +2,9 @@ import { scope } from "arktype";
 
 export const types = scope({
 	emoji: {
-		names: "string[]",
-		surrogates: "string",
-		unicodeVersion: "number",
+		"names": "string[]",
+		"surrogates": "string",
+		"unicodeVersion": "number",
 		"hasDiversity?": "boolean",
 		"diversity?": "string[]",
 		"diversityChildren?": "emoji[]",
@@ -22,7 +22,7 @@ export const types = scope({
 		"[string]": "emoji[]",
 		"+": "reject",
 	},
-	svgPath: /^\.\/[\dabcdef]+(-[\dabcdef]+)*\.svg$/,
+	svgPath: /^\.\/[\da-f]+(-[\da-f]+)*\.svg$/,
 	svgMap: {
 		"[svgPath]": "digits>0",
 		"+": "reject",

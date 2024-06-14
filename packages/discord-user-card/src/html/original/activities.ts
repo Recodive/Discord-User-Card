@@ -1,5 +1,5 @@
-import { DiscordUserCardActivity } from "@discord-user-card/core";
+import type { DiscordUserCardActivity } from "@discord-user-card/core";
 
-export function renderActivities(activities: DiscordUserCardActivity[]) {
+export function renderActivities(_activities: DiscordUserCardActivity[]) {
 	return "";
 }

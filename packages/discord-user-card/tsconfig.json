@@ -1,9 +1,9 @@
 {
 	"extends": "../../tsconfig.base.json",
-	"exclude": ["lib", "dist", "**/*.test.ts", "**/*.config.*"],
 	"compilerOptions": {
+		"composite": true,
 		"rootDir": "./src",
-		"noEmit": true,
-		"composite": true
-	}
+		"noEmit": true
+	},
+	"exclude": ["lib", "dist", "**/*.test.ts", "**/*.config.*"]
 }

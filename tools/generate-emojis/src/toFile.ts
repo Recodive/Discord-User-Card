@@ -1,5 +1,6 @@
-import { readFile, writeFile } from "fs/promises";
-import { UnicodeEmoji } from "./UnicodeEmoji.js";
+/* eslint-disable no-console */
+import { readFile, writeFile } from "node:fs/promises";
+import type { UnicodeEmoji } from "./UnicodeEmoji.js";
 import type { FinalEmoji } from "./types.js";
 import { uploadToCdn } from "./uploadToCdn.js";
 
@@ -8,8 +9,8 @@ const header = `/**
  * Do not modify this file manually.
  *
  * @version ${new Date().toISOString()}
- */`,
-	interfaceText = `export interface Emoji {
+ */`;
+const interfaceText = `export interface Emoji {
 	category: string;
 	names: string[];
 	surrogates: string[];
@@ -17,27 +18,28 @@ const header = `/**
 }`;
 export async function toFile(
 	emojis: UnicodeEmoji[],
-	svgMap: Record<string, string>
+	svgMap: Record<string, string>,
 ) {
 	const allEmojis = emojis.flatMap((emoji) => {
 		return [emoji, ...emoji.diversityChildrenArray];
 	});
 
 	console.log(
-		"A total of " +
-			allEmojis.length +
-			" emojis were found (including diversity children)."
+		`A total of ${
+			allEmojis.length
+			} emojis were found (including diversity children).`,
 	);
 
 	const finalEmojis: FinalEmoji[] = [];
 	for (const emoji of allEmojis) {
 		const url = emoji.getDiscordURL(svgMap);
-		if (!url) continue;
+		if (!url)
+			continue;
 
 		const emojiObject: FinalEmoji = {
 			asset: await uploadToCdn(
 				url,
-				`https://cdn.rcd.gg/discord/emojis/${emoji.emoji.names[0]}.svg`
+				`https://cdn.rcd.gg/discord/emojis/${emoji.emoji.names[0]}.svg`,
 			),
 			category: emoji.category,
 			names: emoji.emoji.names,
@@ -52,7 +54,7 @@ export async function toFile(
 		finalEmojis.push(emojiObject);
 
 		console.log(
-			`Processed ${finalEmojis.length}/${allEmojis.length} emojis...`
+			`Processed ${finalEmojis.length}/${allEmojis.length} emojis...`,
 		);
 	}
 
@@ -62,21 +64,21 @@ ${interfaceText}
 
 export const emojis: Emoji[] = ${JSON.stringify(finalEmojis, null, 2)}`;
 
-	//? Compare this snippet to the existing file at packages/emojis/src/emojis.ts
+	// ? Compare this snippet to the existing file at packages/emojis/src/emojis.ts
 	const existingFileLocation = new URL(
 		"../../../packages/emojis/src/emojis.ts",
-		import.meta.url
+		import.meta.url,
 	).pathname;
 	const existingFile = await readFile(existingFileLocation, "utf-8");
 
-	//? Compare without the header
+	// ? Compare without the header
 	const existingFileWithoutHeader = existingFile.slice(
 		existingFile.indexOf("export interface Emoji"),
-		existingFile.length
+		existingFile.length,
 	);
 	const newFileWithoutHeader = finalFile.slice(
 		finalFile.indexOf("export interface Emoji"),
-		finalFile.length
+		finalFile.length,
 	);
 	if (existingFileWithoutHeader === newFileWithoutHeader) {
 		console.log("No changes detected.");
@@ -86,6 +88,6 @@ export const emojis: Emoji[] = ${JSON.stringify(finalEmojis, null, 2)}`;
 	console.log("Writing to file...");
 	await writeFile(
 		new URL("../../../packages/emojis/src/emojis.ts", import.meta.url).pathname,
-		finalFile
+		finalFile,
 	);
 }

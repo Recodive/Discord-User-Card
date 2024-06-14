@@ -1,4 +1,5 @@
-import { ColorUtils, DiscordUserCardUser } from "@discord-user-card/core";
+import type { DiscordUserCardUser } from "@discord-user-card/core";
+import { ColorUtils } from "@discord-user-card/core";
 import chroma from "chroma-js";
 
 export function getUserTheming(user: DiscordUserCardUser): {
@@ -15,7 +16,7 @@ export function getUserTheming(user: DiscordUserCardUser): {
 	themeMixAmountText?: string;
 	themeOverwrite?: string;
 } {
-	if (!user.themeColors)
+	if (!user.themeColors) {
 		return {
 			primaryColor: "var(--background-secondary-alt)",
 			secondaryColor: "var(--background-secondary-alt)",
@@ -24,22 +25,23 @@ export function getUserTheming(user: DiscordUserCardUser): {
 			backgroundColor: "var(--background-floating)",
 			dividerColor: "var(--background-modifier-accent)",
 		};
+	}
 
 	function getHslString(color: [number, number, number], opacity = 1): string {
 		return `hsla(${color[0].toFixed(0)}, ${(color[1] * 100).toFixed(1)}%, ${(
 			color[2] * 100
 		).toFixed(1)}%, ${opacity})`;
 	}
-	const theme =
-		ColorUtils.getDarkness(user.themeColors.primary) > 0.5 ? "dark" : "light";
+	const theme
+		= ColorUtils.getDarkness(user.themeColors.primary) > 0.5 ? "dark" : "light";
 	const buttonColor = getContrastingColor(user.themeColors.primary, "#FFFFFF");
 	const dividerOpactity = theme === "dark" ? 0.24 : 0.12;
-	const diverColor: [number, number, number] =
-		theme === "dark" ? [0, 0, 100] : buttonColor;
+	const diverColor: [number, number, number]
+		= theme === "dark" ? [0, 0, 100] : buttonColor;
 
 	return {
 		primaryColor: getHslString(
-			chroma(ColorUtils.intToHex(user.themeColors.primary)).hsl()
+			chroma(ColorUtils.intToHex(user.themeColors.primary)).hsl(),
 		),
 		secondaryColor: getHslString(chroma(user.themeColors.secondary).hsl()),
 		overlayColor:
@@ -76,11 +78,12 @@ function getContrastingColor(color: string | number, base: string | number) {
 
 		const isBrighterThanBase = adjustedColor.luminance() > baseLuminance;
 		if (
-			(isAboveMaxContrast && isBrighterThanBase) ||
-			(isBelowMinContrast && !isBrighterThanBase)
+			(isAboveMaxContrast && isBrighterThanBase)
+			|| (isBelowMinContrast && !isBrighterThanBase)
 		) {
 			adjustedColor = adjustedColor.darken();
-		} else {
+		}
+		else {
 			adjustedColor = adjustedColor.brighten();
 		}
 
@@ -97,25 +100,25 @@ interface ThemeOptions {
 }
 
 function getThemeMix(options: ThemeOptions) {
-	let { primaryColor, secondaryColor, isDarkTheme } = options;
+	const { primaryColor, secondaryColor, isDarkTheme } = options;
 
-	let primaryColorObj = chroma(primaryColor);
-	let secondaryColorObj = chroma(secondaryColor);
+	const primaryColorObj = chroma(primaryColor);
+	const secondaryColorObj = chroma(secondaryColor);
 
-	let [darkerColor, lighterColor] =
-		primaryColorObj.luminance() > secondaryColorObj.luminance()
+	const [darkerColor, lighterColor]
+		= primaryColorObj.luminance() > secondaryColorObj.luminance()
 			? [primaryColorObj, secondaryColorObj]
 			: [secondaryColorObj, primaryColorObj];
 
-	let textColor = isDarkTheme
+	const textColor = isDarkTheme
 		? darkerColor.set("lch.l", 98).set("lch.c", 15)
 		: lighterColor.set("lch.l", 10);
 
-	let baseColor = isDarkTheme
+	const baseColor = isDarkTheme
 		? lighterColor.set("hsl.s", 1).set("hsl.l", 0.05)
 		: darkerColor.set("hsl.s", 1).set("hsl.l", 0.94);
 
-	let [hue, saturation, lightness] = baseColor.hsl();
+	const [hue, saturation, lightness] = baseColor.hsl();
 
 	return {
 		themeMixBaseHsl: `${Number.isNaN(hue) ? 0 : hue} ${100 * saturation}% ${

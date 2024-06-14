@@ -27,8 +27,8 @@ export function imageToUrl({
 	 */
 	animation?: boolean;
 }): string {
-	const animatedPrefix = image.animated ? "a_" : "",
-		animated = animation && image.animated;
+	const animatedPrefix = image.animated ? "a_" : "";
+	const animated = animation && image.animated;
 
 	switch (scope) {
 		case "avatar-decoration-presets": {

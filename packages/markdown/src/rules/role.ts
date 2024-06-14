@@ -5,14 +5,14 @@ const roleMentionRegex = /^<@&(\d{17,20})>/;
 
 export const role: Rule = {
 	order: defaultRules.strong.order,
-	match: (source) => roleMentionRegex.exec(source),
-	parse: function (capture) {
+	match: source => roleMentionRegex.exec(source),
+	parse(capture) {
 		return {
 			id: capture[1],
 		};
 	},
-	html: (node) =>
-		htmlTag("span", htmlTag("span", "@" + node.id), {
+	html: node =>
+		htmlTag("span", htmlTag("span", `@${node.id}`), {
 			class: "duc_role_mention",
 		}),
 };

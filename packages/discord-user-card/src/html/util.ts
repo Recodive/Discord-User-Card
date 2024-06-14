@@ -1,16 +1,18 @@
-import {
-	ColorUtils,
+import type {
 	DiscordUserCardProperties,
 	DiscordUserCardUser,
+} from "@discord-user-card/core";
+import {
+	ColorUtils,
+	PresenceUpdateStatus,
 	discrimToAvatar,
 	getColorFromImage,
 	imageToUrl,
-	PresenceUpdateStatus,
 } from "@discord-user-card/core";
 
-export type RenderFunction = {
+export interface RenderFunction {
 	render: (props: DiscordUserCardProperties) => Promise<void>;
-};
+}
 
 export type ClassObject = Record<string, boolean>;
 export function parseClassObject(classObject: ClassObject): string {
@@ -29,7 +31,8 @@ export function parseStyleObject(styleObject: StyleObject): string {
 }
 
 export function getUserAvatar(user: DiscordUserCardUser) {
-	if (!user.avatar) return discrimToAvatar(user.id, user.discriminator);
+	if (!user.avatar)
+		return discrimToAvatar(user.id, user.discriminator);
 	return imageToUrl({
 		image: user.avatar,
 		scope: "avatars",
@@ -38,7 +41,8 @@ export function getUserAvatar(user: DiscordUserCardUser) {
 }
 
 export function getUserBanner(user: DiscordUserCardUser) {
-	if (!user.banner) return;
+	if (!user.banner)
+		return;
 	return imageToUrl({
 		image: user.banner,
 		scope: "banners",
@@ -47,14 +51,15 @@ export function getUserBanner(user: DiscordUserCardUser) {
 }
 
 export async function getUserBannerColor(user: DiscordUserCardUser) {
-	if (!user.bannerColor) return getBackgroundColor(user);
+	if (!user.bannerColor)
+		return getBackgroundColor(user);
 	const [r, g, b] = ColorUtils.intToRgb(user.bannerColor);
 	return `rgb(${r}, ${g}, ${b})`;
 }
 
 async function getBackgroundColor(user: DiscordUserCardUser) {
 	const [dominantColor] = (await getColorFromImage(getUserAvatar(user))) as [
-		[number, number, number]
+		[number, number, number],
 	];
 	return `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
 }
@@ -66,14 +71,16 @@ export function getUserStatus(user: DiscordUserCardUser): {
 	const { status } = user;
 	if (status === PresenceUpdateStatus.Online)
 		return { status, color: "#23a55a" };
-	if (status === PresenceUpdateStatus.Idle) return { status, color: "#f0b232" };
+	if (status === PresenceUpdateStatus.Idle)
+		return { status, color: "#f0b232" };
 	if (status === PresenceUpdateStatus.DoNotDisturb)
 		return { status, color: "#f23f43" };
 	return { status: PresenceUpdateStatus.Offline, color: "#80848e" };
 }
 
 export function getUserAvatarDecoration(user: DiscordUserCardUser) {
-	if (!user.avatarDecoration) return;
+	if (!user.avatarDecoration)
+		return;
 	return imageToUrl({
 		image: user.avatarDecoration,
 		scope: "avatar-decoration-presets",
