@@ -50,6 +50,7 @@ function findCustomStatus(activities: DiscordUserCardActivity[]) {
 			url: imageToUrl({
 				scope: "emojis",
 				image: activity.emoji,
+				animation: document.hasFocus(),
 			}),
 		};
 	}

@@ -1,4 +1,5 @@
-import { outputFor, parserFor } from "simple-markdown";
+import type { HtmlArrayRule } from "simple-markdown";
+import { defaultRules, outputFor, parserFor } from "simple-markdown";
 import type { Rule } from "./functions/extendRule.js";
 import { autolink } from "./rules/autolink.js";
 import { blockQuote } from "./rules/blockQuote.js";
@@ -53,8 +54,35 @@ export const rules = {
 	underline,
 	url,
 	user,
+	Array: {
+		html: defaultRules.Array.html,
+		rerenderInterval(arr, output, state) {
+			const result: (number | undefined)[] = [];
+
+			// map output over the ast, except group any text
+			// nodes together into a single string output.
+			for (let i = 0; i < arr.length; i++) {
+				let node = arr[i]!;
+				if (node.type === "text") {
+					node = { type: "text", content: node.content };
+					for (; i + 1 < arr.length && arr[i + 1]!.type === "text"; i++) {
+						node.content += arr[i + 1]!.content;
+					}
+				}
+
+				if (rules[node.type as keyof typeof rules]?.rerenderInterval)
+					result.push(output(node, state));
+			}
+
+			const nonUndefined = result.filter((x): x is number => x !== undefined);
+			if (nonUndefined.length === 0)
+				return undefined;
+			return Math.min(...nonUndefined);
+		},
+	},
 } satisfies {
-	[key: string]: Rule;
+	[key: string]: Rule | HtmlArrayRule;
+	Array: HtmlArrayRule;
 };
 
 export interface SingleASTNode {
@@ -68,6 +96,10 @@ export function parseMarkdown(markdown: string): SingleASTNode[] {
 
 export function toHTML(markdown: string): string {
 	return outputFor(rules, "html")(parseMarkdown(markdown));
+}
+
+export function rerenderInterval(markdown: string): number | undefined {
+	return outputFor(rules, "rerenderInterval")(parseMarkdown(markdown));
 }
 
 export type RuleType = keyof typeof rules;

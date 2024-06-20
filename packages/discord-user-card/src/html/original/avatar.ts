@@ -51,7 +51,7 @@ function renderAvatarDecoration(user: DiscordUserCardUser) {
 		<svg width="108" height="96" viewBox="0 0 108 96" class="duc_avatar_decoration" aria-hidden="true">
 			<foreignObject x="0" y="0" width="96" height="96" mask="url(#svg-mask-avatar-decoration-status-round-80)">
 				<div class="duc_avatar_stack">
-					<img class="duc_avatar" src="${decoration}&amp;size=966" alt=" " aria-hidden="true">
+					<img class="duc_avatar" src="${decoration}&amp;size=96" alt=" " aria-hidden="true">
 				</div>
 			</foreignObject>
 		</svg>

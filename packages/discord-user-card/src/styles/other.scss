@@ -351,3 +351,183 @@
 	overflow: hidden;
 	color: var(--text-normal);
 }
+
+.duc_activity {
+	position: relative;
+}
+
+.duc_activity_header_container {
+	width: 100%;
+	min-width: 0;
+	margin-bottom: 8px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.duc_activity_header {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-bottom: 0;
+}
+
+.duc_activity_content {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.duc_activity_image {
+	position: relative;
+	align-self: flex-start;
+
+	.duc_activity_image_hang {
+		width: 40px;
+		height: 40px;
+		object-fit: cover;
+		display: block;
+		border-radius: 8px;
+		-webkit-user-drag: none;
+		font-size: 100%;
+	}
+
+	.duc_activity_image_large {
+		width: 60px;
+		height: 60px;
+		object-fit: cover;
+		display: block;
+		border-radius: 8px;
+		-webkit-user-drag: none;
+
+		&.duc_spotify_image {
+			border-radius: 0;
+		}
+
+		&.duc_has_small_image {
+			mask: url(https://cdn.rcd.gg/discord/activity-mask.svg);
+		}
+
+	}
+
+	.duc_activity_image_small {
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		bottom: -4px;
+		right: -4px;
+		border-radius: 50%;
+		-webkit-user-drag: none;
+	}
+}
+
+.duc_activity_details {
+	color: var(--text-normal);
+	margin-left: 10px;
+	flex: 1 1 auto;
+	overflow: hidden;
+
+	.duc_activity_details_line {
+		display: block;
+		font-size: 14px;
+		line-height: 18px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		&:first-child {
+			font-family: var(--font-primary);
+			font-size: 14px;
+			line-height: 1.2857142857142858;
+			font-weight: 600;
+		}
+	}
+}
+
+.duc_activity_timebar_container {
+	margin-top: 12px;
+
+	.duc_activity_timebar {
+		margin-bottom: 4px;
+		background-color: hsl(var(--primary-500-hsl)/.16);
+    border-radius: 2px;
+    height: 4px;
+
+		.duc_activity_timebar_fill {
+			background-color: var(--text-normal);
+			border-radius: 2px;
+			height: 100%;
+			min-width: 4px;
+
+			transition-property: width;
+			transition-duration: 0.5s;
+			transition-timing-function: linear;
+		}
+	}
+
+	.duc_activity_timebar_time {
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		justify-content: flex-start;
+		flex-wrap: nowrap;
+
+		.duc_activity_timebar_time_left,
+		.duc_activity_timebar_time_right {
+			color: var(--text-normal);
+			line-height: 12px;
+			font-size: 12px;
+			font-weight: 500;
+		}
+
+		.duc_activity_timebar_time_left {
+			flex: 1 1 auto;
+		}
+
+		.duc_activity_timebar_time_right {
+			flex: 0 1 auto;
+		}
+	}
+}
+
+.duc_activity_buttons {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	margin-top: 12px;
+
+	.duc_activity_button {
+		position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: none;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    padding: 2px 16px;
+    user-select: none;
+		width: auto;
+		height: 32px;
+    min-height: 32px;
+		background-color: var(--profile-gradient-button-color);
+    color: var(--white-500);
+    transition: opacity .2s ease-in-out;
+
+		&:hover {
+			opacity: .8;
+		}
+
+		.duc_activity_button_label {
+			margin: 0 auto;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			background-image: linear-gradient(to top,transparent,transparent var(--custom-button-link-underline-offset),var(--button--underline-color)var(--custom-button-link-underline-offset),var(--button--underline-color)var(--custom-button-link-underline-stop),transparent var(--custom-button-link-underline-stop));
+		}
+	}
+}

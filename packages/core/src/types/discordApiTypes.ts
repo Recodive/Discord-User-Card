@@ -281,4 +281,8 @@ export enum ActivityType {
 	 * Competing in {name}
 	 */
 	Competing = 5,
+	/**
+	 * Right now, I'm -
+	 */
+	Hang = 6,
 }

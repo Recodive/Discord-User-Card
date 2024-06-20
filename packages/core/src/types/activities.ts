@@ -8,7 +8,8 @@ export type DiscordUserCardActivity =
 	| DiscordUserCardActivityListening
 	| DiscordUserCardActivityWatching
 	| DiscordUserCardActivityCompeting
-	| DiscordUserCardActivityCustom;
+	| DiscordUserCardActivityCustom
+	| DiscordUserCardActivityHang;
 
 export interface DiscordUserCardActivityBase {
 	/**
@@ -199,9 +200,30 @@ export interface DiscordUserCardActivityCustom
 	/**
 	 * Emoji that appears infront of the activity
 	 */
-	emoji?: { name: string } | (DiscordUserCardImage & { name: string });
+	emoji?: ActivityEmoji;
 	/**
 	 * Text that appears after the emoji in the activity
 	 */
 	state?: string;
 }
+
+export interface DiscordUserCardActivityHang extends DiscordUserCardActivityBase {
+	/**
+	 * The type of activity
+	 */
+	type: ActivityType.Hang;
+	/**
+	 * The activity the user is doing
+	 */
+	state: "eating" | "gaming" | "chilling" | "focusing" | "brb" | "in-transit" | "watching" | "custom";
+	/**
+	 * If the user is in a custom state, this is the custom state
+	 */
+	details?: string;
+	/**
+	 * Emoji that appears infront of the activity
+	 */
+	emoji?: ActivityEmoji;
+}
+
+export type ActivityEmoji = { name: string } | (DiscordUserCardImage & { name: string });

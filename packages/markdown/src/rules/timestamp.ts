@@ -15,9 +15,12 @@ export const timestamp: Rule = {
 		};
 	},
 	html: (node) => {
-		return htmlTag("span", formatTimestamp(node.timestamp, node.format), {
-			"aria-label": formatTimestamp(node.timestamp, "F"),
+		return htmlTag("span", formatTimestamp(node.timestamp, node.format)[0], {
+			"aria-label": formatTimestamp(node.timestamp, "F")[0],
 			"class": "duc_timestamp",
 		});
+	},
+	rerenderInterval: (node) => {
+		return formatTimestamp(node.timestamp, node.format)[1];
 	},
 };

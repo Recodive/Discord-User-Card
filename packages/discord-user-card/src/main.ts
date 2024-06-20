@@ -11,6 +11,8 @@ import { setupDiscordUserCard } from "./html/index.js";
 
 const root = document.querySelector<HTMLDivElement>("#app")!;
 
+const now = Date.now();
+
 const a: DiscordUserCardProperties = {
 	user: {
 		id: "223238938716798978",
@@ -33,7 +35,24 @@ const a: DiscordUserCardProperties = {
 			secondary: 4827185,
 		},
 	},
-	activities: [],
+	activities: [
+		{
+			type: 4,
+			name: "Custom Status",
+			state: "In the end, only kindness matters",
+		},
+		{
+			type: 6,
+			name: "Hang Status",
+			state: "custom",
+			details: "Horsing rounds",
+			emoji: {
+				id: "511956534578774056",
+				name: "FlyingTimeraa",
+				animated: true,
+			},
+		},
+	],
 };
 const b: DiscordUserCardProperties = {
 	user: {
@@ -49,7 +68,18 @@ const b: DiscordUserCardProperties = {
 		bannerColor: 145990,
 		bio: "__*underline italics*__\n__**underline bold**__\n__***underline bold italics***__\n~~Strikethrough~~\n`code`\n> quote\n||hi||\n\uD83D\uDE04\n<:swagcat:708490021853724713>",
 	},
-	activities: [],
+	activities: [
+		{
+			type: 2,
+			name: "Spotify",
+			state: "YOUHA",
+			details: "ICE T",
+			startTimestamp: now,
+			endTimestamp: now + 200173,
+			largeImage: "spotify:ab67616d0000b27304988621bc00de8c6df69330",
+			largeImageText: "Sweet-Tea",
+		},
+	],
 };
 const c: DiscordUserCardProperties = {
 	user: {
@@ -58,7 +88,13 @@ const c: DiscordUserCardProperties = {
 		displayName: "Mustafa Yildirim",
 		status: PresenceUpdateStatus.DoNotDisturb,
 	},
-	activities: [],
+	activities: [
+		{
+			name: "Hang Status",
+			type: 6,
+			state: "chilling",
+		},
+	],
 };
 const d: DiscordUserCardProperties = {
 	user: {
@@ -90,8 +126,41 @@ const d: DiscordUserCardProperties = {
 			primary: 16755370,
 			secondary: 7506394,
 		},
+		avatarDecoration: {
+			id: "3e1fc3c7ee2e34e8176f4737427e8f4f",
+			animated: true,
+		},
 	},
-	activities: [],
+	activities: [
+		{
+			type: 4,
+			name: "Custom Status",
+			emoji: {
+				id: "440704948653785101",
+				name: "DayoungKms",
+				animated: true,
+			},
+			state: "Life is a rollercoaster...",
+		},
+		{
+			type: 0,
+			name: "Visual Studio Code",
+			state: "📂 Discord-User-Card • Discord-User-Card",
+			details: "📝 root.scss • 5/189",
+			startTimestamp: now - 10000000,
+			largeImage: "565945350897008640",
+			largeImageText: "scss",
+			smallImage: "565945770067623946",
+			smallImageText: "Visual Studio Code",
+			applicationId: "383226320970055681",
+			buttons: [
+				{
+					label: "View Repository",
+					url: "https://github.com/Recodive/Discord-User-Card",
+				},
+			],
+		},
+	],
 };
 
 root.innerHTML = `

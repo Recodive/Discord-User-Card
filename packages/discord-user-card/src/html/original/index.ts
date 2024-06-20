@@ -13,6 +13,7 @@ import {
 	parseStyleObject,
 } from "../util.js";
 import { getUserTheming } from "../../functions/getUserTheming.js";
+import { renderElement } from "../../functions/renderElement.js";
 import { renderAvatar } from "./avatar.js";
 import { renderBanner } from "./banner.js";
 import { masks } from "./masks.js";
@@ -22,18 +23,26 @@ import { renderInfoSection } from "./infoSection.js";
 export function setupOriginalDiscordUserCard(
 	element: HTMLDivElement,
 ): RenderFunction {
+	let renderTimeout: NodeJS.Timeout | null = null;
+
 	// ? Make a render function that takes in the properties of the user card
 	async function render(props: DiscordUserCardProperties): Promise<void> {
+		// ? Clear the timeout if it exists
+		if (renderTimeout)
+			clearTimeout(renderTimeout);
+
 		// ? Destructure the user and activities from the props, and set them to the default values if they are not provided
 		const { user, activities, theme } = {
 			...defaultUserCardProperties,
 			...props,
 		};
 
+		const newElement = document.createElement("div");
+
 		// ? Set the aria-label of the element to the username of the user
-		element.setAttribute("aria-label", user.username);
+		newElement.setAttribute("aria-label", user.username);
 		// ? Add the class "duc_root" to the element
-		element.classList.add("duc_root");
+		newElement.classList.add("duc_root");
 
 		// ? Generate the style for the user car
 		const {
@@ -50,6 +59,11 @@ export function setupOriginalDiscordUserCard(
 			themeMixText,
 			themeOverwrite,
 		} = getUserTheming(user);
+
+		const rerenderInMs: number[] = [];
+		function rerenderIn(ms: number) {
+			rerenderInMs.push(ms);
+		}
 
 		const style = {
 			"--profile-gradient-primary-color": primaryColor,
@@ -85,17 +99,29 @@ export function setupOriginalDiscordUserCard(
 		};
 
 		// ? Set the innerHTML of the element to the user card
-		element.innerHTML = `
+		newElement.innerHTML = `
 			${masks}
 			<div class="${parseClassObject(classes)}" style="${parseStyleObject(style)}">
 				<div class="duc_user_profile_inner">
 					${await renderBanner(user)}
 					${renderAvatar(user)}
 					${renderProfileBadges(user)}
-					${renderInfoSection(user, activities)}
+					${renderInfoSection(user, activities, rerenderIn)}
 				</div>
 			</div>
 		`;
+
+		renderElement(element, newElement);
+
+		// ? Remove the newElement from the DOM
+		newElement.remove();
+
+		// ? Rerender if needed
+		if (rerenderInMs.length > 0) {
+			if (renderTimeout)
+				clearTimeout(renderTimeout);
+			renderTimeout =	setTimeout(() => render(props), Math.min(...rerenderInMs));
+		}
 	}
 
 	return {

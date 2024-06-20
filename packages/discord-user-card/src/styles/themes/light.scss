@@ -1,3 +1,86 @@
+.duc_root .theme-light {
+	--header-primary: var(--primary-860);
+	--text-normal: var(--primary-600);
+	--text-link: var(--blue-430);
+
+	--elevation-high: 0 8px 16px hsl(var(--black-500-hsl) / 0.16);
+
+	--background-modifier-accent: hsl(var(--primary-400-hsl) / 0.24);
+	--background-secondary-alt: var(--primary-160);
+	--button-secondary-background: var(--primary-430);
+	--background-floating: var(--white-500);
+	--background-modifier-hover: hsl(var(--primary-400-hsl) / 0.16);
+	--border-faint: hsl(var(--black-500-hsl) / 0.04);
+	--background-tertiary:var(--primary-200);
+	--interactive-normal: var(--primary-500);
+}
+@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)) {
+	.duc_root .theme-light {
+		--header-primary: color-mix(
+			in oklab,
+			var(--primary-860) 100%,
+			var(--custom-theme-mix-text, black)
+				var(--custom-theme-mix-amount-text, 0%)
+		);
+		--text-normal: color-mix(
+			in oklab,
+			var(--primary-600) 100%,
+			var(--custom-theme-mix-text, black)
+				var(--custom-theme-mix-amount-text, 0%)
+		);
+
+		--background-modifier-accent: color-mix(
+			in oklab,
+			hsl(var(--primary-400-hsl) / 0.24) 100%,
+			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.24)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-secondary-alt: color-mix(
+			in oklab,
+			var(--primary-160) 100%,
+			var(--custom-theme-mix-base, black)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--button-secondary-background: color-mix(
+			in oklab,
+			var(--primary-430) 100%,
+			var(--custom-theme-mix-base, black)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-floating: color-mix(
+			in oklab,
+			var(--white-500) 100%,
+			var(--custom-theme-mix-base, black)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-modifier-hover: color-mix(
+			in oklab,
+			hsl(var(--primary-400-hsl) / 0.16) 100%,
+			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.16)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--border-faint: color-mix(
+			in oklab,
+			hsl(var(--black-500-hsl) / 0.04) 100%,
+			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.04)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-tertiary: color-mix(
+			in oklab,
+			var(--primary-200) 100%,
+			var(--custom-theme-mix-base, black)
+				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--interactive-normal: color-mix(
+			in oklab,
+			var(--primary-500) 100%,
+			var(--custom-theme-mix-text, black)
+				var(--custom-theme-mix-amount-text, 0%)
+		);
+	}
+}
+
+
 @media all and (-webkit-max-device-pixel-ratio: 1) {
 	.duc_root .theme-light ::-moz-placeholder {
 		font-weight: 500;

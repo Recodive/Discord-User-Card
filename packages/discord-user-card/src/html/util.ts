@@ -37,6 +37,7 @@ export function getUserAvatar(user: DiscordUserCardUser) {
 		image: user.avatar,
 		scope: "avatars",
 		relatedId: user.id,
+		animation: document.hasFocus(),
 	});
 }
 
@@ -47,6 +48,7 @@ export function getUserBanner(user: DiscordUserCardUser) {
 		image: user.banner,
 		scope: "banners",
 		relatedId: user.id,
+		animation: document.hasFocus(),
 	});
 }
 
@@ -85,5 +87,6 @@ export function getUserAvatarDecoration(user: DiscordUserCardUser) {
 		image: user.avatarDecoration,
 		scope: "avatar-decoration-presets",
 		relatedId: user.id,
+		animation: document.hasFocus(),
 	});
 }

@@ -11,6 +11,7 @@ const DATE_TYPE_FORMATS = {
 function automaticRelativeDifference(date: Date): {
 	duration: number;
 	unit: Intl.RelativeTimeFormatUnit;
+	rerenderInterval?: number;
 } {
 	const diff = -((new Date().getTime() - date.getTime()) / 1000) | 0;
 	const absDiff = Math.abs(diff);
@@ -24,18 +25,21 @@ function automaticRelativeDifference(date: Date): {
 		return { duration: Math.round(diff / 86400), unit: "days" };
 	}
 	if (absDiff > 60 * 44) {
-		return { duration: Math.round(diff / 3600), unit: "hours" };
+		return { duration: Math.round(diff / 3600), unit: "hours", rerenderInterval: 60_000 };
 	}
 	if (absDiff > 30) {
-		return { duration: Math.round(diff / 60), unit: "minutes" };
+		return { duration: Math.round(diff / 60), unit: "minutes", rerenderInterval: 60_000 };
 	}
-	return { duration: diff, unit: "seconds" };
+	return { duration: diff, unit: "seconds", rerenderInterval: 1000 };
 }
 
 export function formatTimestamp(
 	number: number,
 	format: keyof typeof DATE_TYPE_FORMATS,
-): string {
+): [
+		string, // formatted date
+		number | undefined, // rerender interval
+	] {
 	const date = new Date(number);
 	if (format === "R") {
 		const formatter = new Intl.RelativeTimeFormat(
@@ -43,13 +47,13 @@ export function formatTimestamp(
 			DATE_TYPE_FORMATS[format],
 		);
 		const relative = automaticRelativeDifference(date);
-		return formatter.format(relative.duration, relative.unit);
+		return [formatter.format(relative.duration, relative.unit), relative.rerenderInterval];
 	}
 	else {
 		const formatter = new Intl.DateTimeFormat(
 			navigator.language || "en",
 			DATE_TYPE_FORMATS[format],
 		);
-		return formatter.format(date);
+		return [formatter.format(date), undefined];
 	}
 }

@@ -13,6 +13,7 @@ import { renderMarkdown } from "./markdown.js";
 export function renderInfoSection(
 	user: DiscordUserCardUser,
 	activities: DiscordUserCardActivity[],
+	rerenderIn: (ms: number) => void,
 ) {
 	return `
 		<div class="duc_user_section">
@@ -22,22 +23,26 @@ export function renderInfoSection(
 			${renderCustomStatus(activities)}
 			<div class="duc_divider"></div>
 			<div class="duc_scroller">
-				${renderAboutMe(user)}
+				${renderAboutMe(user, rerenderIn)}
 				${renderMemberSince(user)}
-				${renderActivities(activities)}
+				${renderActivities(activities, rerenderIn)}
 			</div>
 		</div>
 	`;
 }
 
-function renderAboutMe(user: DiscordUserCardUser) {
+function renderAboutMe(user: DiscordUserCardUser, rerenderIn: (ms: number) => void) {
 	if (!user.bio)
 		return "";
+
+	const [bioHTML, rerenderInterval] = renderMarkdown(user.bio, "duc_section_text");
+	if (rerenderInterval)
+		rerenderIn(rerenderInterval);
 
 	return `
 		<div class="duc_section">
 			<h2 class="duc_section_title">About Me</h2>
-			${renderMarkdown(user.bio, "duc_section_text")}
+			${bioHTML}
 		</div>
 	`;
 }

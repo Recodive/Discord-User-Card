@@ -25,6 +25,7 @@ export const emoji: Rule = {
 						animated: node.animated,
 						id: node.id,
 					},
+					animation: document ? document.hasFocus() : true,
 				}),
 				"alt": node.name,
 				"draggable": "false",
