@@ -426,8 +426,8 @@ class ElapsedLeftLineRenderer implements Renderer<Activity> {
 				start = now;
 			const elapsed = new Date(now - start);
 
-			// ? If the activity has no largeImageKey set render relative time
-			if (!("largeImageKey" in activity) || !activity.largeImageKey) {
+			// ? If the activity has no largeImage set render relative time
+			if (!("largeImage" in activity) || !activity.largeImage) {
 				const [relativeTime, timeoutTime] = formatTimestamp(start, "R", "en");
 				if (timeoutTime) {
 					this.timeout = setTimeout(() => {
