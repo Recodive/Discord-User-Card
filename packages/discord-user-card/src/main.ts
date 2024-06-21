@@ -130,6 +130,7 @@ const d: DiscordUserCardProperties = {
 			id: "3e1fc3c7ee2e34e8176f4737427e8f4f",
 			animated: true,
 		},
+		profileEffect: "1174460912699191336",
 	},
 	activities: [
 		{
@@ -162,6 +163,16 @@ const d: DiscordUserCardProperties = {
 		},
 	],
 };
+const e: DiscordUserCardProperties = {
+	activities: [
+		{
+			type: 0,
+			name: "The Forest",
+			startTimestamp: 1718981704172,
+			applicationId: "363409179668512788",
+		},
+	],
+};
 
 root.innerHTML = `
 	<div style="display: flex; max-height: 100vh; flex-wrap: wrap">
@@ -170,6 +181,7 @@ root.innerHTML = `
 		<div id="card-3"></div>
 		<div id="card-4"></div>
 		<div id="card-5"></div>
+		<div id="card-6"></div>
 	</div>
 `;
 
@@ -187,4 +199,7 @@ setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-4")!).render(
 );
 setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-5")!).render(
 	d,
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-6")!).render(
+	e,
 );

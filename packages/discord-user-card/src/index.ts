@@ -30,6 +30,5 @@ export {
 	flagsToBadges,
 } from "@discord-user-card/core";
 export { setupDiscordUserCard } from "./html/index.js";
-export { setupOriginalDiscordUserCard } from "./html/original/index.js";
-export { type RenderFunction } from "./html/util.js";
+export type { Renderer } from "./functions/Renderer.js";
 export default setupDiscordUserCard;

@@ -1,217 +1,561 @@
-import { ActivityType, type DiscordUserCardActivity, type DiscordUserCardActivityButton, imageToUrl } from "@discord-user-card/core";
+import { ActivityType, type DiscordUserCardActivityCompeting, type DiscordUserCardActivityHang, type DiscordUserCardActivityListening, type DiscordUserCardActivityPlaying, type DiscordUserCardActivityStreaming, type DiscordUserCardActivityWatching, type DiscordUserCardProperties, formatTimestamp, imageToUrl } from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
+import type { Renderer } from "../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses, setStyles } from "../util.js";
 
-export function renderActivities(
-	activities: DiscordUserCardActivity[],
-	rerenderIn: (ms: number) => void,
-) {
-	const validActivities = activities.filter(activity => activity.type !== ActivityType.Custom);
-	if (validActivities.length === 0)
-		return "";
-	const activity = validActivities[0]!;
+const appIconCache = new Map<string, string>();
 
-	let title = "";
-	let line1: string | undefined;
-	let line2: string | undefined;
-	let line3: string | undefined;
-	switch (activity.type) {
-		case ActivityType.Playing: {
-			title = "Playing a game";
-			line1 = activity.name;
-			line2 = activity.details;
-			line3 = activity.state;
-			break;
+interface Activity {
+	activity:
+		| DiscordUserCardActivityPlaying
+		| DiscordUserCardActivityStreaming
+		| DiscordUserCardActivityListening
+		| DiscordUserCardActivityWatching
+		| DiscordUserCardActivityCompeting
+		| DiscordUserCardActivityHang;
+	title: string;
+	line1: string | undefined;
+	line2: string | undefined;
+	line3: string | undefined;
+};
+
+export class ActivitiesRender implements Renderer {
+	elements = {
+		section: document.createElement("div"),
+		headerContainer: document.createElement("div"),
+		header: document.createElement("h2"),
+		content: document.createElement("div"),
+	};
+
+	children = {
+		content: new ActivityContentRenderer(this.elements.content),
+		timebar: new TimebarRenderer(this.elements.section),
+		buttons: new ButtonsRenderer(this.elements.section),
+	};
+
+	constructor(public readonly parent: Element) { }
+
+	getActivity({ activities }: Required<DiscordUserCardProperties>): Activity | undefined {
+		const activity = activities.find(activity => activity.type !== ActivityType.Custom);
+		if (!activity)
+			return;
+
+		let title = "";
+		let line1: string | undefined;
+		let line2: string | undefined;
+		let line3: string | undefined;
+		switch (activity.type) {
+			case ActivityType.Playing: {
+				title = "Playing a game";
+				line1 = activity.name;
+				line2 = activity.details;
+				line3 = activity.state;
+				break;
+			}
+			case ActivityType.Streaming: {
+				title = `Live on ${activity.name}`;
+				line1 = activity.details;
+				line2 = activity.state;
+				line3 = activity.largeImageText;
+				break;
+			}
+			case ActivityType.Listening: {
+				const isSpotify = activity.name === "Spotify" && activity.largeImage?.startsWith("spotify:");
+				title = `Listening to ${activity.name}`;
+				line1 = activity.details;
+				line2 = `${isSpotify ? "by " : ""}${activity.state}`;
+				line3 = `${isSpotify ? "on " : ""}${activity.largeImageText}`;
+				break;
+			}
+			case ActivityType.Watching: {
+				title = `Watching ${activity.name}`;
+				line1 = activity.details;
+				line2 = activity.state;
+				line3 = activity.largeImageText;
+				break;
+			}
+			case ActivityType.Competing: {
+				title = `Competing in ${activity.name}`;
+				line1 = activity.details;
+				line2 = activity.state;
+				line3 = activity.largeImageText;
+				break;
+			}
+			case ActivityType.Hang: {
+				title = "Right now, I'm -";
+				line1 = {
+					"eating": "Grubbin",
+					"gaming": "GAMING",
+					"chilling": "Chilling",
+					"focusing": "In the zone",
+					"brb": "Gonna BRB",
+					"in-transit": "Wandering IRL",
+					"watching": "Watchin' stuff",
+					"custom": activity.details,
+				}[activity.state];
+				line2 = "in a Voice Channel";
+				break;
+			}
+			default:
+				return;
 		}
-		case ActivityType.Streaming: {
-			title = `Live on ${activity.name}`;
-			line1 = activity.details;
-			line2 = activity.state;
-			line3 = activity.largeImageText;
-			break;
-		}
-		case ActivityType.Listening: {
-			const isSpotify = activity.name === "Spotify" && activity.largeImage?.startsWith("spotify:");
-			title = `Listening to ${activity.name}`;
-			line1 = activity.details;
-			line2 = `${isSpotify ? "by " : ""}${activity.state}`;
-			line3 = `${isSpotify ? "on " : ""}${activity.largeImageText}`;
-			break;
-		}
-		case ActivityType.Watching: {
-			title = `Watching ${activity.name}`;
-			line1 = activity.details;
-			line2 = activity.state;
-			line3 = activity.largeImageText;
-			break;
-		}
-		case ActivityType.Competing: {
-			title = `Competing in ${activity.name}`;
-			line1 = activity.details;
-			line2 = activity.state;
-			line3 = activity.largeImageText;
-			break;
-		}
-		case ActivityType.Hang: {
-			title = "Right now, I'm -";
-			line1 = {
-				"eating": "Grubbin",
-				"gaming": "GAMING",
-				"chilling": "Chilling",
-				"focusing": "In the zone",
-				"brb": "Gonna BRB",
-				"in-transit": "Wandering IRL",
-				"watching": "Watchin' stuff",
-				"custom": activity.details,
-			}[activity.state];
-			line2 = "in a Voice Channel";
-			break;
-		}
-		default:
-			return "";
+		return { activity, title, line1, line2, line3 };
 	}
 
-	return `
-		<div class="duc_section duc_activity">
-			<div class="duc_activity_header_container">
-				<h2 class="duc_section_title duc_activity_header">${title}</h2>
-			</div>
-			<div class="duc_activity_content">
-				${renderImages(activity)}
-				<div class="duc_activity_details">
-					${line1 ? `<div class="duc_activity_details_line">${line1}</div>` : ""}
-					${line2 ? `<div class="duc_activity_details_line">${line2}</div>` : ""}
-					${line3 ? `<div class="duc_activity_details_line">${line3}</div>` : ""}
-					${renderElapsedOrLeft(activity, rerenderIn)}
-				</div>
-			</div>
-			${renderTimebar(activity, rerenderIn)}
-			${renderButtons(activity)}
-			</div>
-		</div>
-	`;
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		// ? Get the activity
+		const activity = this.getActivity(props);
+
+		// ? If there is no activity, remove the element
+		if (!activity) {
+			return removeElement(this.parent, this.elements.section);
+		}
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.section, ["class"]);
+		clearUnexpectedAttributes(this.elements.headerContainer, ["class"]);
+		clearUnexpectedAttributes(this.elements.header, ["class"]);
+		clearUnexpectedAttributes(this.elements.content, ["class"]);
+
+		// ? Set the class of the elements
+		setClasses(this.elements.section, {
+			duc_section: true,
+			duc_activity: true,
+		});
+		setClasses(this.elements.headerContainer, {
+			duc_activity_header_container: true,
+		});
+		setClasses(this.elements.header, {
+			duc_section_title: true,
+			duc_activity_header: true,
+		});
+		setClasses(this.elements.content, {
+			duc_activity_content: true,
+		});
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.section);
+		addElement(this.elements.section, this.elements.headerContainer);
+		this.elements.header.textContent = "Playing a game";
+		addElement(this.elements.headerContainer, this.elements.header);
+		addElement(this.elements.section, this.elements.content);
+		await renderChildren(this.children, activity);
+	}
+
+	destroy(): void {
+		destoryChildren(this.children);
+	}
 }
 
-function renderImages(activity: DiscordUserCardActivity) {
-	if ("emoji" in activity && activity.emoji) {
-		let emoji: {
-			name: string;
-			url: string;
-		} | undefined;
-		if ("id" in activity.emoji) {
-			emoji = {
-				name: activity.emoji.name,
-				url: imageToUrl({
-					scope: "emojis",
-					image: activity.emoji,
-					animation: document.hasFocus(),
-				}),
-			};
+class ActivityContentRenderer implements Renderer<Activity> {
+	elements = {
+		imageContainer: document.createElement("div"),
+		largeImage: document.createElement("img"),
+		smallImage: document.createElement("img"),
+		details: document.createElement("div"),
+		line1: document.createElement("div"),
+		line2: document.createElement("div"),
+		line3: document.createElement("div"),
+	};
+
+	children = {
+		elapsedLeftLine: new ElapsedLeftLineRenderer(this.elements.details),
+	};
+
+	lastProps: Activity | null = null;
+
+	rerender() {
+		if (!this.lastProps)
+			return;
+		this.render(this.lastProps);
+	}
+
+	boundRerender = this.rerender.bind(this);
+
+	constructor(public readonly parent: Element) {
+		window.addEventListener("focus", this.boundRerender);
+		window.addEventListener("blur", this.boundRerender);
+	}
+
+	async render(props: Activity): Promise<void> {
+		this.lastProps = props;
+		const { activity, line1, line2, line3 } = props;
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.imageContainer, ["class"]);
+		clearUnexpectedAttributes(this.elements.largeImage, ["class", "src", "alt"]);
+		clearUnexpectedAttributes(this.elements.smallImage, ["class", "src", "alt"]);
+		clearUnexpectedAttributes(this.elements.details, ["class"]);
+		clearUnexpectedAttributes(this.elements.line1, ["class"]);
+		clearUnexpectedAttributes(this.elements.line2, ["class"]);
+		clearUnexpectedAttributes(this.elements.line3, ["class"]);
+
+		// ? Set the class of the elements
+		setClasses(this.elements.imageContainer, {
+			duc_activity_image: true,
+		});
+		setClasses(this.elements.largeImage, {
+			duc_activity_image_large: true,
+			duc_activity_image_hang: activity.type === ActivityType.Hang || "emoji" in activity,
+			duc_spotify_image: activity.type !== ActivityType.Hang && activity.name === "Spotify" && !!activity.largeImage?.startsWith("spotify:"),
+			duc_activity_image_app_icon: activity.type !== ActivityType.Hang && !("largeImage" in activity) && !!activity.applicationId,
+		});
+		setClasses(this.elements.smallImage, {
+			duc_activity_image_small: true,
+		});
+		setClasses(this.elements.details, {
+			duc_activity_details: true,
+		});
+		setClasses(this.elements.line1, {
+			duc_activity_details_line: true,
+		});
+		setClasses(this.elements.line2, {
+			duc_activity_details_line: true,
+		});
+		setClasses(this.elements.line3, {
+			duc_activity_details_line: true,
+		});
+
+		// ? Render the elements
+		const renderLargeImage = await this.setLargeImage(props);
+		if (!renderLargeImage) {
+			removeElement(this.parent, this.elements.imageContainer);
 		}
 		else {
-			const foundEmoji = findEmoji(activity.emoji.name);
-			if (foundEmoji) {
-				emoji = {
-					name: foundEmoji.names[0]!,
-					url: foundEmoji.asset,
-				};
+			addElement(this.parent, this.elements.imageContainer);
+			addElement(this.elements.imageContainer, this.elements.largeImage);
+
+			const renderSmallImage = this.setSmallImage(props);
+			if (renderSmallImage) {
+				addElement(this.elements.imageContainer, this.elements.smallImage);
+			}
+			else {
+				removeElement(this.elements.imageContainer, this.elements.smallImage);
 			}
 		}
 
-		if (!emoji)
-			return "";
+		addElement(this.parent, this.elements.details);
+		if (line1) {
+			this.elements.line1.textContent = line1;
+			addElement(this.elements.details, this.elements.line1);
+		}
+		if (line2) {
+			this.elements.line2.textContent = line2;
+			addElement(this.elements.details, this.elements.line2);
+		}
+		if (line3) {
+			this.elements.line3.textContent = line3;
+			addElement(this.elements.details, this.elements.line3);
+		}
 
-		return `
-		<div class="duc_activity_image">
-			<img class="duc_activity_image_hang" src="${emoji.url}" alt="${emoji.name}">
-		</div>`;
+		await renderChildren(this.children, props);
 	}
 
-	if (activity.type === ActivityType.Hang) {
-		return `
-		<div class="duc_activity_image">
-			<img class="duc_activity_image_hang" src="https://cdn.rcd.gg/discord/hang/${activity.state}.svg" alt="${activity.state}">
-		</div>`;
+	async setLargeImage({ activity }: Activity): Promise<boolean> {
+		// ? If the activity has an emoji, render the emoji
+		if ("emoji" in activity && activity.emoji) {
+			let emoji: {
+				name: string;
+				url: string;
+			} | undefined;
+
+			// ? If the emoji is a custom emoji, get the emoji from the API using the ID
+			if ("id" in activity.emoji) {
+				emoji = {
+					name: activity.emoji.name,
+					url: imageToUrl({
+						scope: "emojis",
+						image: activity.emoji,
+						animation: document.hasFocus(),
+					}),
+				};
+			}
+			else {
+				// ? If the emoji is a default emoji, get the emoji from the default emojis
+				const foundEmoji = findEmoji(activity.emoji.name);
+				if (foundEmoji) {
+					emoji = {
+						name: foundEmoji.names[0]!,
+						url: foundEmoji.asset,
+					};
+				}
+			}
+
+			// ? If the emoji does not exist, return
+			if (!emoji)
+				return false;
+
+			// ? Set the source and alt of the image
+			this.elements.largeImage.src = emoji.url;
+			this.elements.largeImage.alt = emoji.name;
+			return true;
+		}
+
+		// ? If the activity is a hang activity, render the hang activity image
+		if (activity.type === ActivityType.Hang) {
+			this.elements.largeImage.src = `https://cdn.rcd.gg/discord/hang/${activity.state}.svg`;
+			this.elements.largeImage.alt = activity.state;
+			return true;
+		}
+
+		// ? If the activity does not have a large image, return
+		if (!("largeImage" in activity) || !activity.largeImage) {
+			// ? If the activity does not have an application ID, return
+			if (!("applicationId" in activity) || !activity.applicationId)
+				return false;
+
+			// ? Fetch the appIcon hash from the API
+			const appIcon = await this.getAppIcon(activity.applicationId);
+			if (!appIcon)
+				return false;
+
+			// ? Set the source of the image to the application icon
+			this.elements.largeImage.src = imageToUrl({
+				scope: "app-icons",
+				image: {
+					id: appIcon,
+					animated: false,
+				},
+				relatedId: activity.applicationId,
+			});
+			this.elements.largeImage.alt = "";
+			return true;
+		}
+
+		// ? Get the source of the large image
+		const largeImageSrc = this.getAsset(activity.largeImage, activity.applicationId);
+
+		// ? Set the source of the image
+		this.elements.largeImage.src = largeImageSrc;
+		this.elements.largeImage.alt = activity.largeImageText ?? "";
+
+		return true;
 	}
 
-	if (!("largeImage" in activity) || !activity.largeImage) {
-		if (!("applicationId" in activity) || !activity.applicationId)
-			return "";
+	setSmallImage({ activity }: Activity): boolean {
+		if (activity.type === ActivityType.Hang || !activity.smallImage)
+			return false;
 
-		return `
-			<div class="duc_activity_image">
-				<img class="duc_activity_image_large" src="${imageToUrl({
-					scope: "app-icons",
-					image: {
-						id: activity.applicationId,
-						animated: false,
-					},
-				})}" alt="">
-			</div>
-		`;
+		const smallImageSrc = this.getAsset(activity.smallImage, activity.applicationId);
+
+		this.elements.smallImage.src = smallImageSrc;
+		this.elements.smallImage.alt = activity.smallImageText ?? "";
+
+		return true;
 	}
 
-	const largeImageSrc = getAsset(activity.largeImage, activity.applicationId);
-	const smallImageSrc = activity.smallImage ? getAsset(activity.smallImage, activity.applicationId) : "";
+	async getAppIcon(applicationId: string): Promise<string | undefined> {
+		if (appIconCache.has(applicationId))
+			return appIconCache.get(applicationId)!;
 
-	const smallImage = smallImageSrc ? `<img class="duc_activity_image_small" src="${smallImageSrc}" alt="${activity.smallImageText ?? ""}">` : "";
+		const response = await fetch(`https://discord.com/api/v9/applications/${applicationId}/rpc`);
+		if (!response.ok)
+			return;
 
-	const isSpotify = activity.name === "Spotify" && activity.largeImage?.startsWith("spotify:");
+		const asset = await response.json();
+		if (!asset.icon)
+			return;
 
-	return `
-		<div class="duc_activity_image">
-			<img class="duc_activity_image_large${isSpotify ? " duc_spotify_image" : ""}${smallImage ? " duc_has_small_image" : ""}" src="${largeImageSrc}" alt="${activity.largeImageText ?? ""}">
-			${smallImage}
-		</div>
-	`;
+		appIconCache.set(applicationId, asset.icon);
+		return asset.icon;
+	}
+
+	getAsset(asset: string, relatedId?: string) {
+		if (asset.startsWith("mp:external"))
+			return `https://media.discordapp.net/${asset.replace("mp:", "")}`;
+
+		if (asset.startsWith("spotify:"))
+			return `https://i.scdn.co/image/${asset.replace("spotify:", "")}`;
+
+		const animated = asset.startsWith("a_");
+
+		return imageToUrl({
+			image: {
+				animated,
+				id: animated ? asset.slice(2) : asset,
+			},
+			scope: "app-assets",
+			relatedId,
+			animation: document.hasFocus(),
+		});
+	}
+
+	destroy(): void {
+		window.removeEventListener("focus", this.boundRerender);
+		window.removeEventListener("blur", this.boundRerender);
+		destoryChildren(this.children);
+	}
 }
 
-function getAsset(asset: string, relatedId?: string) {
-	if (asset.startsWith("mp:external"))
-		return `https://media.discordapp.net/${asset.replace("mp:", "")}`;
+class ElapsedLeftLineRenderer implements Renderer<Activity> {
+	elements = {
+		line: document.createElement("div"),
+	};
 
-	if (asset.startsWith("spotify:"))
-		return `https://i.scdn.co/image/${asset.replace("spotify:", "")}`;
+	timeout: NodeJS.Timeout | null = null;
 
-	const animated = asset.startsWith("a_");
+	constructor(public readonly parent: Element) {
+	}
 
-	return imageToUrl({
-		image: {
-			animated,
-			id: animated ? asset.slice(2) : asset,
-		},
-		scope: "app-assets",
-		relatedId,
-		animation: document.hasFocus(),
-	});
+	async render(props: Activity): Promise<void> {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+
+		const { activity } = props;
+		// ? If the activity does not have a start or end timestamp, or has both, return
+		if (((!("startTimestamp" in activity) || !activity.startTimestamp) && (!("endTimestamp" in activity) || !activity.endTimestamp)) || (activity.startTimestamp && activity.endTimestamp)) {
+			return removeElement(this.parent, this.elements.line);
+		}
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.line, ["class"]);
+
+		// ? Set the class of the elements
+		setClasses(this.elements.line, {
+			duc_activity_details_line: true,
+		});
+
+		// ? Get the content of the line
+		let content: string;
+		const now = Date.now();
+
+		if (activity.startTimestamp) {
+			let start = activity.startTimestamp;
+			if (now <= start)
+				start = now;
+			const elapsed = new Date(now - start);
+
+			// ? If the activity has no largeImageKey set render relative time
+			if (!("largeImageKey" in activity) || !activity.largeImageKey) {
+				const [relativeTime, timeoutTime] = formatTimestamp(start, "R", "en");
+				if (timeoutTime) {
+					this.timeout = setTimeout(() => {
+						this.render(props);
+					}, timeoutTime);
+				}
+
+				content = `for ${relativeTime.replace("ago", "")}`;
+			}
+			else {
+				if (+elapsed > 0) {
+					this.timeout = setTimeout(() => {
+						this.render(props);
+					}, 1000);
+				}
+
+				content = `${formatDate(elapsed)} elapsed`;
+			}
+		}
+		else {
+			const end = Math.max(activity.endTimestamp!, now);
+			const left = new Date(end - now);
+			if (+left > 0) {
+				this.timeout = setTimeout(() => {
+					this.render(props);
+				}, 1000);
+			}
+			content = `${formatDate(left)} left`;
+		}
+
+		// ? Render the elements
+		this.elements.line.textContent = content;
+		addElement(this.parent, this.elements.line);
+	}
+
+	destroy(): void {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+	}
 }
 
-function renderTimebar(activity: DiscordUserCardActivity, rerenderIn: (ms: number) => void) {
-	if (!("startTimestamp" in activity) || !activity.startTimestamp || !("endTimestamp" in activity) || !activity.endTimestamp)
-		return "";
+class TimebarRenderer implements Renderer<Activity> {
+	elements = {
+		container: document.createElement("div"),
+		timebar: document.createElement("div"),
+		fill: document.createElement("div"),
+		time: document.createElement("div"),
+		timeLeft: document.createElement("div"),
+		timeRight: document.createElement("div"),
+	};
 
-	const now = Date.now();
-	let start = activity.startTimestamp;
-	const end = activity.endTimestamp;
-	if (now <= start)
-		start = now;
-	const elapsedTime = new Date(now - start);
-	const endTime = new Date(end - start);
-	const percentage = Math.min(((elapsedTime.getTime() / endTime.getTime()) * 10000) / 100, 100);
+	timeout: NodeJS.Timeout | null = null;
 
-	if (+elapsedTime < +endTime)
-		rerenderIn(1000);
+	constructor(public readonly parent: Element) {
+	}
 
-	return `
-		<div class="duc_activity_timebar_container">
-			<div class="duc_activity_timebar">
-				<div class="duc_activity_timebar_fill" style="width: ${percentage}%"></div>
-			</div>
-			<div class="duc_activity_timebar_time">
-				<div class="duc_activity_timebar_time_left">${formatDate(elapsedTime, 1)}</div>
-				<div class="duc_activity_timebar_time_right">${formatDate(endTime, 1)}</div>
-			</div>
-		</div>
-	`;
+	async render(props: Activity): Promise<void> {
+		const { activity } = props;
+		if (!("startTimestamp" in activity) || !activity.startTimestamp || !("endTimestamp" in activity) || !activity.endTimestamp)
+			return removeElement(this.parent, this.elements.container);
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.container, ["class"]);
+		clearUnexpectedAttributes(this.elements.timebar, ["class"]);
+		clearUnexpectedAttributes(this.elements.fill, ["class", "style"]);
+		clearUnexpectedAttributes(this.elements.time, ["class"]);
+		clearUnexpectedAttributes(this.elements.timeLeft, ["class"]);
+		clearUnexpectedAttributes(this.elements.timeRight, ["class"]);
+
+		// ? Set the class of the elements
+		setClasses(this.elements.container, {
+			duc_activity_timebar_container: true,
+		});
+		setClasses(this.elements.timebar, {
+			duc_activity_timebar: true,
+		});
+		setClasses(this.elements.fill, {
+			duc_activity_timebar_fill: true,
+		});
+		setClasses(this.elements.time, {
+			duc_activity_timebar_time: true,
+		});
+		setClasses(this.elements.timeLeft, {
+			duc_activity_timebar_time_left: true,
+		});
+		setClasses(this.elements.timeRight, {
+			duc_activity_timebar_time_right: true,
+		});
+
+		// ? Get the time elapsed, end left and the percentage
+		const now = Date.now();
+		let start = activity.startTimestamp;
+		const end = activity.endTimestamp;
+		if (now <= start)
+			start = now;
+		const elapsed = new Date(now - start);
+		const endTime = new Date(end - start);
+		const percentage = Math.min(((elapsed.getTime() / endTime.getTime()) * 10000) / 100, 100);
+
+		// ? If the time has not ended, rerender in 1 second
+		if (+elapsed < +endTime) {
+			this.timeout = setTimeout(() => {
+				this.render(props);
+			}, 1000);
+		}
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.container);
+		addElement(this.elements.container, this.elements.timebar);
+		setStyles(this.elements.fill, {
+			width: `${percentage}%`,
+		});
+		addElement(this.elements.timebar, this.elements.fill);
+		addElement(this.elements.container, this.elements.time);
+		this.elements.timeLeft.textContent = `${formatDate(elapsed, 1)}`;
+		addElement(this.elements.time, this.elements.timeLeft);
+		this.elements.timeRight.textContent = `${formatDate(endTime, 1)}`;
+		addElement(this.elements.time, this.elements.timeRight);
+	}
+
+	destroy(): void {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+	}
 }
 
 function formatDate(date: Date, padMinutes = 2) {
@@ -219,50 +563,67 @@ function formatDate(date: Date, padMinutes = 2) {
 	return `${hours}${date.getUTCMinutes().toString().padStart(padMinutes, "0")}:${date.getUTCSeconds().toString().padStart(2, "0")}`;
 }
 
-function renderElapsedOrLeft(activity: DiscordUserCardActivity, rerenderIn: (ms: number) => void) {
-	if ((!("startTimestamp" in activity) || !activity.startTimestamp) && (!("endTimestamp" in activity) || !activity.endTimestamp))
-		return "";
-	if (activity.startTimestamp && activity.endTimestamp)
-		return "";
+class ButtonsRenderer implements Renderer<Activity> {
+	elements = {
+		buttons: document.createElement("div"),
+		one: document.createElement("a"),
+		oneLabel: document.createElement("div"),
+		two: document.createElement("a"),
+		twoLabel: document.createElement("div"),
+	};
 
-	const now = Date.now();
+	constructor(public readonly parent: Element) {}
 
-	if (activity.startTimestamp) {
-		let start = activity.startTimestamp;
-		if (now <= start)
-			start = now;
-		const elapsed = new Date(now - start);
-		if (+elapsed > 0)
-			rerenderIn(1000);
-		return `<div class="duc_activity_details_line">${formatDate(elapsed)} elapsed</div>`;
+	async render({ activity }: Activity): Promise<void> {
+		if (!("buttons" in activity) || !activity.buttons?.length)
+			return removeElement(this.parent, this.elements.buttons);
+
+		const [button1, button2] = activity.buttons;
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.buttons, ["class"]);
+		clearUnexpectedAttributes(this.elements.one, ["class", "href", "target"]);
+		clearUnexpectedAttributes(this.elements.oneLabel, ["class"]);
+		clearUnexpectedAttributes(this.elements.two, ["class", "href", "target"]);
+		clearUnexpectedAttributes(this.elements.twoLabel, ["class"]);
+
+		// ? Set the class of the elements
+		setClasses(this.elements.buttons, {
+			duc_activity_buttons: true,
+		});
+		setClasses(this.elements.one, {
+			duc_activity_button: true,
+		});
+		setClasses(this.elements.oneLabel, {
+			duc_activity_button_label: true,
+		});
+		setClasses(this.elements.two, {
+			duc_activity_button: true,
+		});
+		setClasses(this.elements.twoLabel, {
+			duc_activity_button_label: true,
+		});
+
+		// ? Set the attributes of the elements and render the elements
+		addElement(this.parent, this.elements.buttons);
+
+		this.elements.one.href = button1.url;
+		this.elements.one.target = "_blank";
+		this.elements.oneLabel.textContent = button1.label;
+		addElement(this.elements.buttons, this.elements.one);
+		addElement(this.elements.one, this.elements.oneLabel);
+
+		if (button2) {
+			this.elements.two.href = button2.url;
+			this.elements.two.target = "_blank";
+			this.elements.twoLabel.textContent = button2.label;
+			addElement(this.elements.buttons, this.elements.two);
+			addElement(this.elements.two, this.elements.twoLabel);
+		}
+		else {
+			removeElement(this.elements.buttons, this.elements.two);
+		}
 	}
-	else {
-		const end = Math.max(activity.endTimestamp!, now);
-		const left = new Date(end - now);
-		if (+left > 0)
-			rerenderIn(1000);
-		return `<div class="duc_activity_details_line">${formatDate(left)} left</div>`;
-	}
-}
 
-function renderButtons(activity: DiscordUserCardActivity) {
-	if (!("buttons" in activity) || !activity.buttons?.length)
-		return "";
-
-	const [button1, button2] = activity.buttons;
-
-	return `
-		<div class="duc_activity_buttons">
-			${renderButton(button1)}
-			${button2 ? renderButton(button2) : ""}
-		</div>
-	`;
-}
-
-function renderButton(button: DiscordUserCardActivityButton) {
-	return `
-		<a class="duc_activity_button" href="${button.url}" target="_blank">
-			<div class="duc_activity_button_label">${button.label}</div>
-		</a>
-	`;
+	destroy(): void {}
 }

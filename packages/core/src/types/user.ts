@@ -76,4 +76,8 @@ export interface DiscordUserCardUser {
 		 */
 		secondary: number;
 	};
+	/**
+	 * The user's profile effect
+	 */
+	profileEffect?: string;
 }

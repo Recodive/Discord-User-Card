@@ -16,5 +16,4 @@ export const defaultUserCardProperties: Required<DiscordUserCardProperties> = {
 		username: "clyde",
 	},
 	activities: [],
-	theme: "dark",
 };

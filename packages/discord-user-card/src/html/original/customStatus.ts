@@ -1,33 +1,93 @@
 import type {
 	DiscordUserCardActivity,
 	DiscordUserCardActivityCustom,
+	DiscordUserCardProperties,
 } from "@discord-user-card/core";
 import {
 	ActivityType,
 	imageToUrl,
 } from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
+import type { Renderer } from "../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, removeElement, setClasses } from "../util.js";
 
-export function renderCustomStatus(activities: DiscordUserCardActivity[]) {
-	const customStatus = findCustomStatus(activities);
-	if (!customStatus)
-		return "";
+export class CustomStatusRenderer implements Renderer {
+	elements = {
+		status: document.createElement("div"),
+		img: document.createElement("img"),
+		text: document.createElement("span"),
+	};
 
-	const img = customStatus.emoji
-		? `<img class="customStatusImg" src="${customStatus.emoji.url}" alt="${customStatus.emoji.name}"/>`
-		: "";
-	const span = customStatus.state
-		? `<span class="customStatusText">${customStatus.state}</span>`
-		: "";
+	lastProps: Required<DiscordUserCardProperties> | null = null;
 
-	return `
-<div class="customStatusSection">
-<div class="customStatus">
-${img}
-${span}
-</div>
-</div>
-`;
+	rerender() {
+		if (!this.lastProps)
+			return;
+		this.render(this.lastProps);
+	}
+
+	boundRerender = this.rerender.bind(this);
+
+	constructor(public readonly parent: Element) {
+		window.addEventListener("focus", this.boundRerender);
+		window.addEventListener("blur", this.boundRerender);
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		this.lastProps = props;
+		const { activities } = props;
+
+		const customStatus = findCustomStatus(activities);
+		if (!customStatus) {
+			return removeElement(this.parent, this.elements.status);
+		}
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.status, ["class"]);
+		clearUnexpectedAttributes(this.elements.img, ["src", "alt", "class"]);
+		clearUnexpectedAttributes(this.elements.text, ["class"]);
+
+		// ? Set the class of the elements
+		setClasses(this.elements.status, {
+			duc_custom_status: true,
+		});
+		setClasses(this.elements.img, {
+			duc_custom_status_img: true,
+		});
+		setClasses(this.elements.text, {
+			duc_custom_status_text: true,
+		});
+
+		// ? Set the attributes of the elements
+		if (customStatus.emoji) {
+			this.elements.img.src = customStatus.emoji.url;
+			this.elements.img.alt = customStatus.emoji.name;
+		}
+
+		if (customStatus.state) {
+			this.elements.text.textContent = customStatus.state;
+		}
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.status);
+		if (customStatus.emoji) {
+			addElement(this.elements.status, this.elements.img);
+		}
+		else {
+			removeElement(this.elements.status, this.elements.img);
+		}
+		if (customStatus.state) {
+			addElement(this.elements.status, this.elements.text);
+		}
+		else {
+			removeElement(this.elements.status, this.elements.text);
+		}
+	}
+
+	destroy(): void {
+		window.removeEventListener("focus", this.boundRerender);
+		window.removeEventListener("blur", this.boundRerender);
+	}
 }
 
 function findCustomStatus(activities: DiscordUserCardActivity[]) {

@@ -9,10 +9,7 @@ import {
 	getColorFromImage,
 	imageToUrl,
 } from "@discord-user-card/core";
-
-export interface RenderFunction {
-	render: (props: DiscordUserCardProperties) => Promise<void>;
-}
+import type { Renderer } from "../functions/Renderer.js";
 
 export type ClassObject = Record<string, boolean>;
 export function parseClassObject(classObject: ClassObject): string {
@@ -28,6 +25,62 @@ export function parseStyleObject(styleObject: StyleObject): string {
 		.filter(([, value]) => value !== undefined)
 		.map(([key, value]) => `${key}: ${value};`)
 		.join(" ");
+}
+
+export function setClasses(element: Element, classObject: ClassObject) {
+	element.setAttribute("class", parseClassObject(classObject));
+}
+
+export function setStyles(element: Element, styleObject: StyleObject) {
+	element.setAttribute("style", parseStyleObject(styleObject));
+}
+
+export function clearUnexpectedAttributes(
+	element: Element,
+	expectedAttributes: string[],
+) {
+	for (const attribute of Array.from(element.attributes)) {
+		if (!expectedAttributes.includes(attribute.name))
+			element.removeAttribute(attribute.name);
+	}
+}
+
+export function addElement(
+	parent: Element,
+	childToAppend: Element,
+) {
+	if (parent.contains(childToAppend))
+		return;
+	parent.appendChild(childToAppend);
+}
+
+export function removeElement(
+	parent: Element,
+	childToRemove: Element,
+) {
+	if (!parent.contains(childToRemove))
+		return;
+	parent.removeChild(childToRemove);
+}
+
+export async function renderChildren<
+		Props = Required<DiscordUserCardProperties>,
+	>(children: {
+	[key: string]: Renderer<Props> | Element | undefined;
+}, props: Props) {
+	for (const child of Object.values(children)) {
+		if (child && "render" in child)
+			await child.render(props);
+	}
+}
+
+export function destoryChildren(children: {
+	[key: string]: Renderer<unknown> | Element | undefined;
+}) {
+	for (const child of Object.values(children)) {
+		if (child && "destroy" in child)
+			child.destroy();
+	}
 }
 
 export function getUserAvatar(user: DiscordUserCardUser) {

@@ -17,10 +17,4 @@ export interface DiscordUserCardProperties {
 	 * The activities to display
 	 */
 	activities?: DiscordUserCardActivity[];
-	/**
-	 * The theme of the user card
-	 *
-	 * @default "dark"
-	 */
-	theme?: "light" | "dark" | "darker" | "midnight";
 }

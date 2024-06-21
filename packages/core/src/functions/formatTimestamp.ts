@@ -36,6 +36,7 @@ function automaticRelativeDifference(date: Date): {
 export function formatTimestamp(
 	number: number,
 	format: keyof typeof DATE_TYPE_FORMATS,
+	language?: string,
 ): [
 		string, // formatted date
 		number | undefined, // rerender interval
@@ -43,7 +44,7 @@ export function formatTimestamp(
 	const date = new Date(number);
 	if (format === "R") {
 		const formatter = new Intl.RelativeTimeFormat(
-			navigator.language || "en",
+			language || navigator.language || "en",
 			DATE_TYPE_FORMATS[format],
 		);
 		const relative = automaticRelativeDifference(date);
@@ -51,7 +52,7 @@ export function formatTimestamp(
 	}
 	else {
 		const formatter = new Intl.DateTimeFormat(
-			navigator.language || "en",
+			language || navigator.language || "en",
 			DATE_TYPE_FORMATS[format],
 		);
 		return [formatter.format(date), undefined];

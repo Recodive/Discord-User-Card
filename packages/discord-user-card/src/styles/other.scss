@@ -298,13 +298,10 @@
 	vertical-align: top;
 }
 
-.customStatusSection {
+.duc_custom_status {
 	padding-top: 12px;
 	padding-right: 12px;
 	padding-left: 12px;
-}
-
-.customStatusSection {
 	box-sizing: border-box;
 	position: relative;
 	width: 100%;
@@ -314,7 +311,7 @@
 	color: var(--text-normal);
 }
 
-.customStatusImg {
+.duc_custom_status_img {
 	display: block;
 	margin: -1px 4px -1px 0;
 	float: left;
@@ -324,7 +321,7 @@
 	object-fit: contain;
 }
 
-.customStatusText {
+.duc_custom_status_text {
 	user-select: text;
 }
 
@@ -381,16 +378,6 @@
 	position: relative;
 	align-self: flex-start;
 
-	.duc_activity_image_hang {
-		width: 40px;
-		height: 40px;
-		object-fit: cover;
-		display: block;
-		border-radius: 8px;
-		-webkit-user-drag: none;
-		font-size: 100%;
-	}
-
 	.duc_activity_image_large {
 		width: 60px;
 		height: 60px;
@@ -398,6 +385,20 @@
 		display: block;
 		border-radius: 8px;
 		-webkit-user-drag: none;
+
+		&.duc_activity_image_hang {
+			width: 40px;
+			height: 40px;
+			font-size: 100%;
+		}
+
+		&.duc_activity_image_app_icon {
+			width: 40px;
+			height: 40px;
+			border-radius: 12px;
+			background-size: 100%;
+			color: var(--header-primary);
+		}
 
 		&.duc_spotify_image {
 			border-radius: 0;
