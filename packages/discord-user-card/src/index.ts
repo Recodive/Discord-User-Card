@@ -1,4 +1,4 @@
-import { setupDiscordUserCard } from "./html/index.js";
+import { setupDiscordUserCard } from "./renderers/index.js";
 
 export {
 	ActivityType,
@@ -29,6 +29,6 @@ export {
 	mapDiscordApiUser,
 	flagsToBadges,
 } from "@discord-user-card/core";
-export { setupDiscordUserCard } from "./html/index.js";
+export { setupDiscordUserCard } from "./renderers/index.js";
 export type { Renderer } from "./functions/Renderer.js";
 export default setupDiscordUserCard;

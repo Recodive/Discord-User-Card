@@ -7,7 +7,7 @@ import {
 	flagsToBadges,
 } from "@discord-user-card/core";
 import "./styles/index.scss";
-import { setupDiscordUserCard } from "./html/index.js";
+import { setupDiscordUserCard } from "./renderers/index.js";
 
 const root = document.querySelector<HTMLDivElement>("#app")!;
 
