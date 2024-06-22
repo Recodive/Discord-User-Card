@@ -1,6 +1,6 @@
 import process from "node:process";
 import twemoji from "twemoji";
-import type { Emoji } from "./types.js";
+import type { Category, Emoji } from "./types.js";
 
 const specialCharacters = new Set([
 	"™",
@@ -11,7 +11,7 @@ const specialCharacters = new Set([
 	"\xAE️",
 ]);
 export class UnicodeEmoji {
-	constructor(public emoji: Emoji, public category: string) {}
+	constructor(public emoji: Emoji, public category: Category) {}
 
 	getDiscordURL(svgMap: Record<string, string>): string | undefined {
 		const emoji = this.emoji.surrogates;

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { readFile, writeFile } from "node:fs/promises";
 import type { UnicodeEmoji } from "./UnicodeEmoji.js";
-import type { FinalEmoji } from "./types.js";
+import type { Category, FinalEmoji } from "./types.js";
 import { uploadToCdn } from "./uploadToCdn.js";
 
 const header = `/**
@@ -9,13 +9,8 @@ const header = `/**
  * Do not modify this file manually.
  *
  * @version ${new Date().toISOString()}
- */`;
-const interfaceText = `export interface Emoji {
-	category: string;
-	names: string[];
-	surrogates: string[];
-	asset: string;
-}`;
+ */
+import type { Emoji } from "../emojis.js";`;
 export async function toFile(
 	emojis: UnicodeEmoji[],
 	svgMap: Record<string, string>,
@@ -58,36 +53,37 @@ export async function toFile(
 		);
 	}
 
-	const finalFile = `${header}
-
-${interfaceText}
-
-export const emojis: Emoji[] = ${JSON.stringify(finalEmojis, null, 2)}`;
-
-	// ? Compare this snippet to the existing file at packages/emojis/src/emojis.ts
-	const existingFileLocation = new URL(
-		"../../../packages/emojis/src/emojis.ts",
-		import.meta.url,
-	).pathname;
-	const existingFile = await readFile(existingFileLocation, "utf-8");
-
-	// ? Compare without the header
-	const existingFileWithoutHeader = existingFile.slice(
-		existingFile.indexOf("export interface Emoji"),
-		existingFile.length,
-	);
-	const newFileWithoutHeader = finalFile.slice(
-		finalFile.indexOf("export interface Emoji"),
-		finalFile.length,
-	);
-	if (existingFileWithoutHeader === newFileWithoutHeader) {
-		console.log("No changes detected.");
-		return;
+	const emojisByCategory = {} as Record<Category, FinalEmoji[]>;
+	for (const emoji of finalEmojis) {
+		if (!emojisByCategory[emoji.category])
+			emojisByCategory[emoji.category] = [];
+		emojisByCategory[emoji.category]!.push(emoji);
 	}
 
-	console.log("Writing to file...");
-	await writeFile(
-		new URL("../../../packages/emojis/src/emojis.ts", import.meta.url).pathname,
-		finalFile,
-	);
+	for (const [category, emojis] of Object.entries(emojisByCategory)) {
+		console.log(`Category: ${category}, Emoji count: ${emojis.length}`);
+
+		const finalFile = `${header}
+
+export const ${category}: Emoji[] = ${JSON.stringify(emojis, null, 2)}`;
+
+		// ? Compare this snippet to the existing file at packages/emojis/src/emojis/[category].ts
+		const existingFileLocation = new URL(
+			`../../../packages/emojis/src/emojis/${category}.ts`,
+			import.meta.url,
+		).pathname;
+		const existingFile = await readFile(existingFileLocation, "utf-8");
+
+		// ? Compare without the header
+		if (existingFile === finalFile) {
+			console.log("No changes detected.");
+			continue;
+		}
+
+		console.log(`Writing ${emojis.length} emojis to ${category}.ts`);
+		await writeFile(
+			new URL(`../../../packages/emojis/src/emojis/${category}.ts`, import.meta.url).pathname,
+			finalFile,
+		);
+	}
 }

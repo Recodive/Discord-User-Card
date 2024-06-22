@@ -3,6 +3,7 @@ import process from "node:process";
 import { writeFile } from "node:fs/promises";
 import { type } from "arktype";
 import ky from "ky";
+import type { Category, Emoji } from "./types.js";
 import { types } from "./types.js";
 import { UnicodeEmoji } from "./UnicodeEmoji.js";
 import { toFile } from "./toFile.js";
@@ -105,7 +106,7 @@ async function emojisFromJSIndex(js: string, index: number) {
 	}
 
 	console.log("Found emojis!");
-	for (const [category, emojisOut] of Object.entries(out)) {
+	for (const [category, emojisOut] of Object.entries(out) as [Category, Emoji[]][]) {
 		console.log("Category:", category, "Emoji count:", emojisOut.length);
 		for (const emoji of emojisOut) {
 			const emojiObject = new UnicodeEmoji(emoji, category);
