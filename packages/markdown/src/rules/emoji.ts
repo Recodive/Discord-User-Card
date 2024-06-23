@@ -25,7 +25,7 @@ export const emoji: Rule = {
 						animated: node.animated,
 						id: node.id,
 					},
-					animation: document ? document.hasFocus() : true,
+					animation: document ? document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches : true,
 				}),
 				"alt": node.name,
 				"draggable": "false",

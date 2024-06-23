@@ -36,6 +36,7 @@
 		"@discord-user-card/core": "workspace:*",
 		"@discord-user-card/emojis": "workspace:*",
 		"@discord-user-card/markdown": "workspace:*",
+		"@discord-user-card/profile-effects": "workspace:*",
 		"chroma-js": "^2.4.2"
 	},
 	"devDependencies": {

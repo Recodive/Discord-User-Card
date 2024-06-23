@@ -38,10 +38,12 @@ export class AvatarRenderer implements Renderer {
 	}
 
 	boundRerender = this.rerender.bind(this);
+	reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 	constructor(public readonly parent: Element) {
 		window.addEventListener("focus", this.boundRerender);
 		window.addEventListener("blur", this.boundRerender);
+		this.reduceMotion.addEventListener("change", this.boundRerender);
 	}
 
 	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
@@ -145,6 +147,7 @@ export class AvatarRenderer implements Renderer {
 	destroy(): void {
 		window.removeEventListener("focus", this.boundRerender);
 		window.removeEventListener("blur", this.boundRerender);
+		this.reduceMotion.removeEventListener("change", this.boundRerender);
 	}
 }
 

@@ -28,11 +28,19 @@ export function parseStyleObject(styleObject: StyleObject): string {
 }
 
 export function setClasses(element: Element, classObject: ClassObject) {
-	element.setAttribute("class", parseClassObject(classObject));
+	const currentClasses = element.getAttribute("class") || "";
+	const newClasses = parseClassObject(classObject);
+	if (currentClasses === newClasses)
+		return;
+	element.setAttribute("class", newClasses);
 }
 
 export function setStyles(element: Element, styleObject: StyleObject) {
-	element.setAttribute("style", parseStyleObject(styleObject));
+	const currentStyle = element.getAttribute("style") || "";
+	const newStyle = parseStyleObject(styleObject);
+	if (currentStyle === newStyle)
+		return;
+	element.setAttribute("style", newStyle);
 }
 
 export function clearUnexpectedAttributes(
@@ -90,7 +98,7 @@ export function getUserAvatar(user: DiscordUserCardUser) {
 		image: user.avatar,
 		scope: "avatars",
 		relatedId: user.id,
-		animation: document.hasFocus(),
+		animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 	});
 }
 
@@ -101,7 +109,7 @@ export function getUserBanner(user: DiscordUserCardUser) {
 		image: user.banner,
 		scope: "banners",
 		relatedId: user.id,
-		animation: document.hasFocus(),
+		animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 	});
 }
 
@@ -140,6 +148,6 @@ export function getUserAvatarDecoration(user: DiscordUserCardUser) {
 		image: user.avatarDecoration,
 		scope: "avatar-decoration-presets",
 		relatedId: user.id,
-		animation: document.hasFocus(),
+		animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 	});
 }

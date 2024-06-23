@@ -171,10 +171,12 @@ class ActivityContentRenderer implements Renderer<Activity> {
 	}
 
 	boundRerender = this.rerender.bind(this);
+	prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 	constructor(public readonly parent: Element) {
 		window.addEventListener("focus", this.boundRerender);
 		window.addEventListener("blur", this.boundRerender);
+		this.prefersReducedMotion.addEventListener("change", this.boundRerender);
 	}
 
 	async render(props: Activity): Promise<void> {
@@ -265,7 +267,7 @@ class ActivityContentRenderer implements Renderer<Activity> {
 					url: imageToUrl({
 						scope: "emojis",
 						image: activity.emoji,
-						animation: document.hasFocus(),
+						animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 					}),
 				};
 			}
@@ -375,13 +377,14 @@ class ActivityContentRenderer implements Renderer<Activity> {
 			},
 			scope: "app-assets",
 			relatedId,
-			animation: document.hasFocus(),
+			animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 		});
 	}
 
 	destroy(): void {
 		window.removeEventListener("focus", this.boundRerender);
 		window.removeEventListener("blur", this.boundRerender);
+		this.prefersReducedMotion.removeEventListener("change", this.boundRerender);
 		destoryChildren(this.children);
 	}
 }
