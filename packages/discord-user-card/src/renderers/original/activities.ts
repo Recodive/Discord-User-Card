@@ -136,7 +136,7 @@ export class ActivitiesRender implements Renderer {
 		// ? Render the elements
 		addElement(this.parent, this.elements.section);
 		addElement(this.elements.section, this.elements.headerContainer);
-		this.elements.header.textContent = "Playing a game";
+		this.elements.header.textContent = activity.title;
 		addElement(this.elements.headerContainer, this.elements.header);
 		addElement(this.elements.section, this.elements.content);
 		await renderChildren(this.children, activity);
