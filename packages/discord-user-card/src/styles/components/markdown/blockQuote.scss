@@ -1,0 +1,16 @@
+.duc_blockquote_container {
+	display: flex;
+
+	.duc_blockquote_divider {
+		width: 4px;
+		border-radius: 4px;
+		background-color: var(--interactive-muted);
+	}
+
+	blockquote {
+    padding: 0 8px 0 12px;
+    box-sizing: border-box;
+    text-indent: 0;
+		max-width: 90%;
+	}
+}

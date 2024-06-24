@@ -34,6 +34,7 @@ const a: DiscordUserCardProperties = {
 			primary: 3245224,
 			secondary: 4827185,
 		},
+		profileEffect: "1139323099251232829",
 	},
 	activities: [
 		{
@@ -66,7 +67,7 @@ const b: DiscordUserCardProperties = {
 		discriminator: "0",
 		status: PresenceUpdateStatus.Idle,
 		bannerColor: 145990,
-		bio: "__*underline italics*__\n__**underline bold**__\n__***underline bold italics***__\n~~Strikethrough~~\n`code`\n> quote\n||hi||\n\uD83D\uDE04\n<:swagcat:708490021853724713>",
+		bio: "<a:ViViClap:639956089990807572>",
 	},
 	activities: [
 		{

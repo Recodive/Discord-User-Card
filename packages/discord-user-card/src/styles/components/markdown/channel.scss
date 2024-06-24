@@ -1,0 +1,32 @@
+.duc_channel {
+	transition: background-color 50ms ease-out, color 50ms ease-out;
+	cursor: pointer;
+	border-radius: 3px;
+	padding: 0 2px;
+	font-weight: 500;
+	unicode-bidi: plaintext;
+	color: var(--mention-foreground);
+	background: var(--mention-background);
+
+	&:hover {
+		color: var(--white-500);
+    background-color: var(--brand-500);
+	}
+
+	.duc_nowrap {
+		white-space: nowrap;
+
+		.duc_channel_icon {
+			width: 1em;
+			height: 1em;
+			vertical-align: middle;
+			margin-bottom: .2rem;
+			margin-right: 4px
+		}
+	}
+
+	.duc_channel_name {
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+}

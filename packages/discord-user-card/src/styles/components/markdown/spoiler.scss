@@ -1,0 +1,36 @@
+.duc_spoiler_container {
+	--__current--spoiler-content-opacity: 1;
+	--__current--spoiler-background-color: var(--__spoiler-background-color--revealed);
+
+	border-radius: 4px;
+	background-color: var(--__current--spoiler-background-color);
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+
+	&[aria-expanded="false"] {
+		cursor: pointer;
+
+		--__current--spoiler-content-opacity: 0;
+		--__current--spoiler-text-color: var(--__spoiler-text-color--hidden);
+		--__current--spoiler-background-color: var(--__spoiler-background-color--hidden);
+
+		.duc_spoiler_obscured {
+			cursor: pointer;
+			pointer-events: none;
+		}
+	}
+
+	&:hover {
+		--__current--spoiler-background-color: var(--__spoiler-background-color--hidden--hover);
+	}
+
+
+	.duc_spoiler_content {
+		color: var(--__current--spoiler-text-color);
+
+		span {
+			opacity: var(--__current--spoiler-content-opacity);
+			transition: opacity .1s ease;
+		}
+	}
+}

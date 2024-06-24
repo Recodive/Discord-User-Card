@@ -34,3 +34,19 @@
 .duc_scroller::-webkit-scrollbar-corner {
 	background-color: transparent;
 }
+
+.duc_scrollbar_ghost_hairline::-webkit-scrollbar {
+    width: 4px;
+    height: 4px
+}
+
+.duc_scrollbar_ghost_hairline::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--primary-800-hsl)/.6);
+    border-radius: 2px;
+    cursor: move
+}
+
+.duc_scrollbar_ghost_hairline::-webkit-scrollbar-track {
+    background-color: transparent;
+    border: none
+}

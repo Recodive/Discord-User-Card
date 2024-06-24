@@ -1,0 +1,31 @@
+.duc_markdown {
+	font-size: 1rem;
+	line-height: 1.375rem;
+	white-space: pre-wrap;
+	white-space: break-spaces;
+	word-wrap: break-word;
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	user-select: text;
+	color: var(--text-normal);
+
+	@import "./blockQuote.scss";
+	@import "./channel.scss";
+	@import "./codeblock.scss";
+	@import "./em.scss";
+	@import "./heading.scss";
+	@import "./inlineCode.scss";
+	@import "./link.scss";
+	@import "./roleMention.scss";
+	@import "./spoiler.scss";
+	@import "./strong.scss";
+	@import "./timestamp.scss";
+	@import "./userMention.scss";
+}
+
+
+@media all and (-webkit-max-device-pixel-ratio: 1) {
+	.theme-light .duc_markdown {
+		font-weight: 500;
+	}
+}

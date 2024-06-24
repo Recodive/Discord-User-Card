@@ -6,6 +6,7 @@
 	--elevation-high: 0 8px 16px hsl(var(--black-500-hsl) / 0.24);
 
 	--background-modifier-accent: hsl(var(--primary-500-hsl) / 0.48);
+	--background-secondary: var(--primary-630);
 	--background-secondary-alt: var(--primary-660);
 	--button-secondary-background: var(--primary-500);
 	--background-floating: var(--primary-800);
@@ -13,6 +14,14 @@
 	--border-faint: hsl(var(--white-500-hsl) / 0.03);
 	--background-tertiary: var(--primary-700);
 	--interactive-normal: var(--primary-330);
+	--interactive-muted: var(--primary-500);
+	--mention-background: hsl(var(--brand-500-hsl) / 0.3);
+	--mention-foreground: var(--brand-260);
+
+	--__spoiler-background-color--revealed: hsl(var(--white-500-hsl) / 0.1);
+	--__spoiler-text-color--hidden: transparent;
+	--__spoiler-background-color--hidden: var(--primary-700);
+  --__spoiler-background-color--hidden--hover: hsl(var(--primary-700-hsl) / 0.8);
 }
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)) {
 	.duc_root .theme-dark {
@@ -34,6 +43,12 @@
 			hsl(var(--primary-500-hsl) / 0.48) 100%,
 			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.48)
 				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-secondary: color-mix(
+			in oklab,
+			var(--primary-630) 100%,
+			var(--theme-base-color, black)
+				var(--theme-base-color-amount, 0%)
 		);
 		--background-secondary-alt: color-mix(
 			in oklab,
@@ -77,5 +92,112 @@
 			var(--custom-theme-mix-text, black)
 				var(--custom-theme-mix-amount-text, 0%)
 		);
+		--interactive-muted: color-mix(
+			in oklab,
+			var(--primary-500) 100%,
+			var(--theme-text-color, black)
+				var(--theme-text-color-amount, 0%)
+		);
+		--mention-background: color-mix(
+			in oklab,
+			hsl(var(--brand-500-hsl) / 0.3) 100%,
+			hsl(var(--theme-base-color-hsl, 0 0% 0%) / 0.3)
+				var(--theme-base-color-amount, 0%)
+		);
+		--mention-foreground: color-mix(
+			in oklab,
+			var(--brand-260) 100%,
+			var(--theme-text-color, black)
+				var(--theme-text-color-amount, 0%)
+		);
+	}
+}
+
+.duc_root .theme-dark {
+	.hljs-doctag,
+	.hljs-keyword,
+	.hljs-meta .hljs-keyword,
+	.hljs-template-tag,
+	.hljs-template-variable,
+	.hljs-type,
+	.hljs-variable.language_ {
+			color: #ff7b72
+	}
+
+	.hljs-title,
+	.hljs-title.class_,
+	.hljs-title.class_.inherited__,
+	.hljs-title.function_ {
+			color: #d2a8ff
+	}
+
+	.hljs-attr,
+	.hljs-attribute,
+	.hljs-literal,
+	.hljs-meta,
+	.hljs-number,
+	.hljs-operator,
+	.hljs-variable,
+	.hljs-selector-attr,
+	.hljs-selector-class,
+	.hljs-selector-id {
+			color: #79c0ff
+	}
+
+	.hljs-regexp,
+	.hljs-string,
+	.hljs-meta .hljs-string {
+			color: #a5d6ff
+	}
+
+	.hljs-built_in,
+	.hljs-symbol {
+			color: #ffa657
+	}
+
+	.hljs-comment,
+	.hljs-code,
+	.hljs-formula {
+			color: #8b949e
+	}
+
+	.hljs-name,
+	.hljs-quote,
+	.hljs-selector-tag,
+	.hljs-selector-pseudo {
+			color: #7ee787
+	}
+
+	.hljs-subst {
+			color: #c9d1d9
+	}
+
+	.hljs-section {
+			color: #1f6feb;
+			font-weight: 700
+	}
+
+	.hljs-bullet {
+			color: #f2cc60
+	}
+
+	.hljs-emphasis {
+			color: #c9d1d9;
+			font-style: italic
+	}
+
+	.hljs-strong {
+			color: #c9d1d9;
+			font-weight: 700
+	}
+
+	.hljs-addition {
+			color: #aff5b4;
+			background-color: #033a16
+	}
+
+	.hljs-deletion {
+			color: #ffdcd7;
+			background-color: #67060c
 	}
 }

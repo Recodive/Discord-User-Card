@@ -1,0 +1,15 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-display);
+	margin: 0;
+  font-weight: 600;
+  font-size: inherit;
+  white-space: normal;
+  padding-right: 16px;
+  line-height: 1.25em;
+  color: inherit;
+}

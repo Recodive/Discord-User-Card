@@ -6,6 +6,7 @@
 	--elevation-high: 0 8px 16px hsl(var(--black-500-hsl) / 0.16);
 
 	--background-modifier-accent: hsl(var(--primary-400-hsl) / 0.24);
+	--background-secondary: var(--primary-130);
 	--background-secondary-alt: var(--primary-160);
 	--button-secondary-background: var(--primary-430);
 	--background-floating: var(--white-500);
@@ -13,6 +14,14 @@
 	--border-faint: hsl(var(--black-500-hsl) / 0.04);
 	--background-tertiary:var(--primary-200);
 	--interactive-normal: var(--primary-500);
+	--interactive-muted: var(--primary-300);
+	--mention-background: hsl(var(--brand-500-hsl) / 0.15);
+	--mention-foreground: var(--brand-500);
+
+	--__spoiler-background-color--revealed: hsl(var(--black-500-hsl) / 0.1);
+	--__spoiler-text-color--hidden: transparent;
+	--__spoiler-background-color--hidden: var(--primary-300);
+  --__spoiler-background-color--hidden--hover: hsl(var(--primary-300-hsl) / 0.8);
 }
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)) {
 	.duc_root .theme-light {
@@ -34,6 +43,12 @@
 			hsl(var(--primary-400-hsl) / 0.24) 100%,
 			hsl(var(--custom-theme-mix-base-hsl, 0 0% 0%) / 0.24)
 				var(--custom-theme-mix-amount-base, 0%)
+		);
+		--background-secondary: color-mix(
+			in oklab,
+			var(--primary-130) 100%,
+			var(--theme-base-color, black)
+				var(--theme-base-color-amount, 0%)
 		);
 		--background-secondary-alt: color-mix(
 			in oklab,
@@ -77,6 +92,24 @@
 			var(--custom-theme-mix-text, black)
 				var(--custom-theme-mix-amount-text, 0%)
 		);
+		--interactive-muted: color-mix(
+			in oklab,
+			var(--primary-300) 100%,
+			var(--theme-text-color, black)
+				var(--theme-text-color-amount, 0%)
+		);
+		--mention-background: color-mix(
+			in oklab,
+			hsl(var(--brand-500-hsl) / 0.15) 100%,
+			hsl(var(--theme-base-color-hsl, 0 0% 0%) / 0.15)
+				var(--theme-base-color-amount, 0%)
+		);
+		--mention-foreground: color-mix(
+			in oklab,
+			var(--brand-500) 100%,
+			var(--theme-text-color, black)
+				var(--theme-text-color-amount, 0%)
+		);
 	}
 }
 
@@ -90,5 +123,94 @@
 	.duc_root .theme-light input,
 	.duc_root .theme-light ::placeholder {
 		font-weight: 500;
+	}
+}
+
+.duc_root .theme-light {
+	.hljs-doctag,
+	.hljs-keyword,
+	.hljs-meta .hljs-keyword,
+	.hljs-template-tag,
+	.hljs-template-variable,
+	.hljs-type,
+	.hljs-variable.language_ {
+			color: #d73a49
+	}
+
+	.hljs-title,
+	.hljs-title.class_,
+	.hljs-title.class_.inherited__,
+	.hljs-title.function_ {
+			color: #6f42c1
+	}
+
+	.hljs-attr,
+	.hljs-attribute,
+	.hljs-literal,
+	.hljs-meta,
+	.hljs-number,
+	.hljs-operator,
+	.hljs-variable,
+	.hljs-selector-attr,
+	.hljs-selector-class,
+	.hljs-selector-id {
+			color: #005cc5
+	}
+
+	.hljs-regexp,
+	.hljs-string,
+	.hljs-meta .hljs-string {
+			color: #032f62
+	}
+
+	.hljs-built_in,
+	.hljs-symbol {
+			color: #e36209
+	}
+
+	.hljs-comment,
+	.hljs-code,
+	.hljs-formula {
+			color: #6a737d
+	}
+
+	.hljs-name,
+	.hljs-quote,
+	.hljs-selector-tag,
+	.hljs-selector-pseudo {
+			color: #22863a
+	}
+
+	.hljs-subst {
+			color: #24292e
+	}
+
+	.hljs-section {
+			color: #005cc5;
+			font-weight: 700
+	}
+
+	.hljs-bullet {
+			color: #735c0f
+	}
+
+	.hljs-emphasis {
+			color: #24292e;
+			font-style: italic
+	}
+
+	.hljs-strong {
+			color: #24292e;
+			font-weight: 700
+	}
+
+	.hljs-addition {
+			color: #22863a;
+			background-color: #f0fff4
+	}
+
+	.hljs-deletion {
+			color: #b31d28;
+			background-color: #ffeef0
 	}
 }

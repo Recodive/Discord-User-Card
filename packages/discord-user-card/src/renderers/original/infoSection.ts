@@ -103,7 +103,22 @@ class AboutMeRender implements Renderer {
 		this.elements.title.textContent = "About Me";
 
 		// ? Generate the HTML for the bio
-		this.elements.markdown.innerHTML = toHTML(user.bio);
+		const newHTML = toHTML(user.bio);
+
+		// ? Set the HTML of the markdown element (if it changed, aria-expanded, aria-hidden)
+		const currentWithoutChangeables = this.elements.markdown.innerHTML.replace(/aria-(expanded|hidden)="(true|false)"/g, "");
+		if (currentWithoutChangeables !== newHTML.replace(/aria-(expanded|hidden)="(true|false)"/g, "")) {
+			this.elements.markdown.innerHTML = newHTML;
+		}
+
+		this.elements.markdown.querySelectorAll(".duc_spoiler_container").forEach((element) => {
+			// ? When the spoiler is clicked, set aria-expanded to true
+			element.addEventListener("click", () => {
+				element.setAttribute("aria-expanded", "true");
+				element.querySelector(".duc_spoiler_obscured")?.setAttribute("aria-hidden", "false");
+			});
+		});
+
 		const interval = rerenderInterval(user.bio);
 		if (interval)
 			this.timeout = setTimeout(() => this.render(props), interval);

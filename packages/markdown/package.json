@@ -30,6 +30,7 @@
 	"dependencies": {
 		"@discord-user-card/core": "workspace:*",
 		"@discord-user-card/emojis": "workspace:*",
+		"highlight.js": "^11.9.0",
 		"simple-markdown": "^0.7.3"
 	}
 }

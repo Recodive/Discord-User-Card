@@ -4,7 +4,7 @@
 @import "./themes/light.scss";
 
 .duc_root {
-	@import "./markdown.scss";
+	@import "./components/index.scss";
 	@import "./scroller.scss";
 	@import "./other.scss";
 }

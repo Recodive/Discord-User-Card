@@ -1,0 +1,32 @@
+.duc_profile_effect {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	z-index: 2;
+	transition: opacity .6s ease-in-out;
+
+	&.duc_profile_effect_hover {
+		opacity: 0.35;
+	}
+
+	.duc_profile_effect_inner {
+		overflow: hidden;
+    position: absolute;
+    border-radius: 8px;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
+		.duc_profile_effect_img {
+			top: 0;
+			left: 0;
+			width: 100%;
+			position: absolute;
+		}
+	}
+}

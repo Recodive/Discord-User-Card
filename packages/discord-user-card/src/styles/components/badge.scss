@@ -1,0 +1,35 @@
+.duc_profile_badges {
+	box-sizing: content-box;
+	position: relative;
+	top: 12px;
+	right: 16px;
+	width: fit-content;
+	align-self: flex-end;
+	background-color: var(--profile-body-background-color);
+	border-radius: var(--radius-sm);
+	max-width: 190px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 2px;
+	min-height: 22px;
+
+	&:has(.duc_profile_badge) {
+		padding: 4px;
+	}
+}
+
+.duc_profile_badge {
+	width: 22px;
+	height: 22px;
+	display: block;
+	background-repeat: no-repeat;
+	background-size: contin;
+	background-position: center;
+	overflow: hidden;
+	pointer-events: none;
+	-o-object-fit: cover;
+	object-fit: cover;
+	filter: saturate(1);
+}

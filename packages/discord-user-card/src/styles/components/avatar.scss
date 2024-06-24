@@ -1,0 +1,62 @@
+.duc_avatar_stack {
+	display: grid;
+	width: 100%;
+	height: 100%;
+}
+
+.duc_avatar {
+	display: block;
+	-o-object-fit: cover;
+	object-fit: cover;
+	pointer-events: none;
+	width: 100%;
+	height: 100%;
+	grid-area: 1 / 1;
+}
+
+.duc_avatar_svg {
+	position: absolute;
+	contain: paint;
+	width: auto;
+	display: block;
+	pointer-events: none;
+}
+
+.duc_avatar_decoration {
+	position: absolute;
+	contain: paint;
+	pointer-events: none;
+	top: var(--custom-avatar-avatar-decoration-border-position);
+	left: var(--custom-avatar-avatar-decoration-border-position);
+}
+
+.duc_avatar_wrapper {
+	position: absolute;
+	z-index: 0;
+	top: 80px;
+	left: 22px;
+	border-radius: 50%;
+}
+
+.duc_avatar_position_premium {
+	top: 76px;
+}
+
+.duc_avatar_position_normal {
+	top: 16px;
+}
+
+.duc_avatar_wrapper_inner {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+}
+
+.duc_avatar::before {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: var(--background-modifier-accent);
+}

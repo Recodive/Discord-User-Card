@@ -1,0 +1,32 @@
+.hljs {
+	display: block;
+	overflow-x: auto;
+	padding: .5em;
+	border-radius: 4px;
+	text-size-adjust: none;
+	color: var(--text-normal);
+	background: var(--background-secondary);
+}
+
+code {
+	font-size: .875rem;
+	line-height: 1.125rem;
+	text-indent: 0;
+	text-indent: 0;
+	white-space: pre-wrap;
+	background: var(--background-secondary);
+	border: 1px solid var(--background-tertiary);
+}
+
+pre {
+	box-sizing: border-box;
+	border-radius: 4px;
+	padding: 0;
+	font-family: var(--font-code);
+	font-size: .75rem;
+	line-height: 1rem;
+	margin-top: 6px;
+	max-width: 90%;
+	white-space: pre-wrap;
+	background-clip: border-box;
+}

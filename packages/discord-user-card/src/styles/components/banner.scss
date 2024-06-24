@@ -1,0 +1,19 @@
+.duc_banner_wrapper {
+	z-index: 0;
+	contain: paint;
+}
+
+.duc_banner {
+	transition: background-color 0.1s;
+	width: 100%;
+	border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+	height: var(--custom-user-banner-banner-height-popout);
+}
+
+.duc_banner_premium {
+	height: var(--custom-user-banner-premium-banner-height-popout);
+	min-height: var(--custom-user-banner-premium-banner-height-popout);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
