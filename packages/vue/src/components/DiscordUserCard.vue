@@ -1,28 +1,68 @@
 <script setup lang="ts">
+import "discord-user-card/style.css";
 import type {
 	DiscordUserCardProperties,
 } from "discord-user-card";
-import {
+import setupDiscordUserCard, {
 	defaultUserCardProperties,
 } from "discord-user-card";
-import { withDefaults } from "vue";
-import Original from "./Original.vue";
+import { onBeforeUnmount, ref, toRefs, watch, withDefaults } from "vue";
 
-withDefaults(
-	defineProps<DiscordUserCardProperties & { style?: "Original" }>(),
+const props = withDefaults(
+	defineProps<DiscordUserCardProperties & {
+		style?: "original";
+		type?: "card";
+	}>(),
 	{
 		user: () => defaultUserCardProperties.user,
 		activities: () => defaultUserCardProperties.activities,
-		style: "Original",
-		theme: "dark",
+		style: "original",
+		type: "card",
 	},
 );
+const { user, activities } = toRefs(props);
+
+const div = ref<HTMLDivElement>(document.createElement("div"));
+const renderer = setupDiscordUserCard(div.value, {
+	style: props.style,
+	type: props.type,
+});
+
+await renderer.render({
+	user: user.value,
+	activities: activities.value,
+});
+
+const innerHTML = ref(div.value.innerHTML);
+const styles = ref(div.value.style.cssText);
+const classes = ref(div.value.className);
+const ariaLabel = ref(div.value.getAttribute("aria-label"));
+
+watch(
+	[user, activities],
+	async () => {
+		await renderer.render({
+			user: user.value,
+			activities: activities.value,
+		});
+		innerHTML.value = div.value.innerHTML;
+		styles.value = div.value.style.cssText;
+		classes.value = div.value.className;
+		ariaLabel.value = div.value.getAttribute("aria-label");
+	},
+	{ deep: true },
+);
+
+onBeforeUnmount(() => {
+	renderer.destroy();
+});
 </script>
 
 <template>
-	<Suspense>
-		<template v-if="style === 'Original'">
-			<Original :activities="activities" :user="user" :theme="theme" />
-		</template>
-	</Suspense>
+	<div
+		:class="classes"
+		:style="styles"
+		:aria-label="ariaLabel || undefined"
+		v-html="innerHTML"
+	/>
 </template>

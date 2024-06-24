@@ -1,3 +1,3 @@
-import HelloWorld from "./components/DiscordUserCard.vue";
+import DiscordUserCard from "./components/DiscordUserCard.vue";
 
-export { HelloWorld };
+export { DiscordUserCard };

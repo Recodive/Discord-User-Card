@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import "discord-user-card/style.css";
 import {
 	type DiscordUserCardProperties,
 	PresenceUpdateStatus,
 	flagsToBadges,
 } from "discord-user-card";
+import { type Ref, ref, watch } from "vue";
 import DiscordUserCard from "./components/DiscordUserCard.vue";
 
-const a: DiscordUserCardProperties = {
+const a: Ref<DiscordUserCardProperties> = ref({
 	user: {
 		id: "223238938716798978",
 		username: "timeraa",
@@ -30,7 +30,7 @@ const a: DiscordUserCardProperties = {
 		},
 	},
 	activities: [],
-};
+});
 const b: DiscordUserCardProperties = {
 	user: {
 		id: "936175826330877963",
@@ -56,13 +56,28 @@ const c: DiscordUserCardProperties = {
 	},
 	activities: [],
 };
+
+const text = ref(a.value.user!.username);
+
+watch(text, (value) => {
+	a.value.user!.username = value;
+});
 </script>
 
 <template>
 	<div style="display: flex; max-height: 100vh; flex-wrap: wrap">
-		<DiscordUserCard :user="a.user" :activities="a.activities" />
-		<DiscordUserCard :user="b.user" :activities="b.activities" />
-		<DiscordUserCard :user="c.user" :activities="c.activities" />
-		<DiscordUserCard />
+		<Suspense>
+			<DiscordUserCard :user="a.user" :activities="a.activities" />
+		</Suspense>
+		<Suspense>
+			<DiscordUserCard :user="b.user" :activities="b.activities" />
+		</Suspense>
+		<Suspense>
+			<DiscordUserCard :user="c.user" :activities="c.activities" />
+		</Suspense>
+		<Suspense>
+			<DiscordUserCard />
+		</Suspense>
+		<input v-model="text" type="text">
 	</div>
 </template>

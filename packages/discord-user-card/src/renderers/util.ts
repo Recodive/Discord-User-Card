@@ -85,6 +85,8 @@ export async function renderChildren<
 export function destoryChildren(children: {
 	[key: string]: Renderer<unknown> | Element | undefined;
 }) {
+	if (!children)
+		return;
 	for (const child of Object.values(children)) {
 		if (child && "destroy" in child)
 			child.destroy();
