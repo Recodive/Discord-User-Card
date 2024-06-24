@@ -32,15 +32,13 @@
 		"dev": "pnpm dev:ts & pnpm dev:scss",
 		"build": "pnpm build:ts && pnpm build:scss"
 	},
-	"dependencies": {
+	"devDependencies": {
 		"@discord-user-card/core": "workspace:*",
 		"@discord-user-card/emojis": "workspace:*",
 		"@discord-user-card/markdown": "workspace:*",
 		"@discord-user-card/profile-effects": "workspace:*",
-		"chroma-js": "^2.4.2"
-	},
-	"devDependencies": {
 		"@types/chroma-js": "^2.4.4",
+		"chroma-js": "^2.4.2",
 		"sass": "^1.77.2",
 		"vite": "^5.2.11",
 		"vite-plugin-checker": "^0.6.4",

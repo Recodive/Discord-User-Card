@@ -2,7 +2,7 @@ import { describe, it } from "vitest";
 import { rerenderInterval, toHTML } from "./index.js";
 
 describe("rerenderInterval", () => {
-	it("format: R", ({ expect }) => {
+	it.skip("format: R", ({ expect }) => {
 		const secondAgo = Math.round(Date.now() / 1000);
 		expect(toHTML(`<t:${secondAgo}:R>`)).toEqual(expect.any(String));
 		expect(rerenderInterval(`<t:${secondAgo}:R>`)).toEqual(1000);

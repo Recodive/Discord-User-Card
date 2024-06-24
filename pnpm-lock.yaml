@@ -48,7 +48,7 @@ importers:
   packages/core: {}
 
   packages/discord-user-card:
-    dependencies:
+    devDependencies:
       '@discord-user-card/core':
         specifier: workspace:*
         version: link:../core
@@ -61,13 +61,12 @@ importers:
       '@discord-user-card/profile-effects':
         specifier: workspace:*
         version: link:../profile-effects
-      chroma-js:
-        specifier: ^2.4.2
-        version: 2.4.2
-    devDependencies:
       '@types/chroma-js':
         specifier: ^2.4.4
         version: 2.4.4
+      chroma-js:
+        specifier: ^2.4.2
+        version: 2.4.2
       sass:
         specifier: ^1.77.2
         version: 1.77.2
@@ -2357,7 +2356,7 @@ packages:
 
   /chroma-js@2.4.2:
     resolution: {integrity: sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==}
-    dev: false
+    dev: true
 
   /ci-info@4.0.0:
     resolution: {integrity: sha512-TdHqgGf9odd8SXNuxtUBVx8Nv+qZOejE6qyqiy5NtbYYQOeFa6zmHkxlPzmaLxWWHsU6nJmB7AETdVPi+2NBUg==}

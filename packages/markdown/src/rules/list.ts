@@ -49,7 +49,7 @@ export const list: Rule = {
 				const indentationRegExp = RegExp(`^ {1,${start != null ? start[0].length : 0}}`, "gm");
 				const strippedLine = item.replace(indentationRegExp, "").replace(LIST_START, "");
 				const isLastItem = index === items.length - 1;
-				const isMultiline = strippedLine.includes("\n\n") || isLastItem && multiLine;
+				const isMultiline = strippedLine.includes("\n\n") || (isLastItem && multiLine);
 				multiLine = isMultiline;
 				const inline = state.inline;
 				const list = state._list;

@@ -32,15 +32,16 @@
 		"types": "vue-tsc",
 		"preview": "vite preview"
 	},
-	"dependencies": {
-		"discord-user-card": "workspace:*",
-		"vue": "^3.4.27"
+	"peerDependencies": {
+		"vue": "^3.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.12.12",
 		"@vitejs/plugin-vue": "^5.0.4",
+		"discord-user-card": "workspace:*",
 		"typescript": "^5.4.5",
 		"vite": "^5.2.11",
+		"vue": "^3.4.27",
 		"vue-tsc": "^2.0.19"
 	}
 }

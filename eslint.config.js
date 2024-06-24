@@ -7,4 +7,5 @@ export default antfu({
 		semi: true,
 	},
 	vue: true,
+	ignores: ["lib", "dist", "**/src/emojis/*"],
 });
