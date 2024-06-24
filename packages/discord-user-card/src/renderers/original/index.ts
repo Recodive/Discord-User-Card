@@ -21,6 +21,7 @@ import { BadgesRenderer } from "./profileBadges.js";
 import { AvatarRenderer } from "./avatar.js";
 import { InfoSectionRenderer } from "./infoSection.js";
 import { ProfileEffectsRenderer } from "./profileEffects.js";
+import { PrefetchRenderer } from "./prefetch.js";
 
 export class OriginalDiscordUserCard implements Renderer {
 	masks = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -30,6 +31,7 @@ export class OriginalDiscordUserCard implements Renderer {
 	};
 
 	children: {
+		prefetch: PrefetchRenderer;
 		banner: BannerRenderer;
 		profileEffects: ProfileEffectsRenderer;
 		avatar: AvatarRenderer;
@@ -40,6 +42,7 @@ export class OriginalDiscordUserCard implements Renderer {
 	constructor(public readonly parent: Element) {
 		// ? Set the children in here because this.parent is otherwise not available
 		this.children = {
+			prefetch: new PrefetchRenderer(this.parent),
 			banner: new BannerRenderer(this.containers.inner),
 			profileEffects: new ProfileEffectsRenderer(this.containers.inner, this.parent),
 			avatar: new AvatarRenderer(this.containers.inner),
