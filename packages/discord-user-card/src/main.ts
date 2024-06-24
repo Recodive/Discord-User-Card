@@ -67,7 +67,7 @@ const b: DiscordUserCardProperties = {
 		discriminator: "0",
 		status: PresenceUpdateStatus.Idle,
 		bannerColor: 145990,
-		bio: "<a:ViViClap:639956089990807572>",
+		bio: "<a:ViViClap:639956089990807572>\n||foo||",
 	},
 	activities: [
 		{

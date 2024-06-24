@@ -15,6 +15,7 @@ import { heading } from "./rules/heading.js";
 import { here } from "./rules/here.js";
 import { inlineCode } from "./rules/inlineCode.js";
 import { link } from "./rules/link.js";
+import { list } from "./rules/list.js";
 import { newline } from "./rules/newline.js";
 import { role } from "./rules/role.js";
 import { spoiler } from "./rules/spoiler.js";
@@ -26,7 +27,6 @@ import { twemoji } from "./rules/twemoji.js";
 import { underline } from "./rules/underline.js";
 import { url } from "./rules/url.js";
 import { user } from "./rules/user.js";
-// export type { Rule } from "./functions/extendRule.js";
 
 export const rules = {
 	autolink,
@@ -43,6 +43,7 @@ export const rules = {
 	here,
 	inlineCode,
 	link,
+	list,
 	newline,
 	role,
 	spoiler,

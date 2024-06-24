@@ -27,6 +27,7 @@ export const spoiler: Rule = {
 				"aria-expanded": "false",
 				"role": "button",
 				"tabindex": "0",
+				"onclick": "this.setAttribute('aria-expanded', 'true'); this.querySelector('.duc_spoiler_content').setAttribute('aria-hidden', 'false');",
 			},
 		);
 	},

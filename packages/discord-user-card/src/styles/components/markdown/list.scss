@@ -1,0 +1,18 @@
+ul, ol {
+	margin: 4px 0 0 16px;
+	list-style-position: outside;
+}
+
+ul {
+	list-style-type: disc;
+}
+
+ol {
+	list-style-type: decimal;
+	margin-left: calc(.4em + .6em* var(--totalCharacters));
+}
+
+li {
+	white-space: break-spaces;
+	margin-bottom: 4px;
+}

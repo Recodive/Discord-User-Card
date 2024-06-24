@@ -1,6 +1,8 @@
 export function renderElement(element: HTMLElement, newElement: HTMLElement): void {
 	// ? Go over each attribute of the new element and set it to the element if it is not already set
 	for (const { name, value } of newElement.attributes) {
+		if (name === "aria-expanded" || name === "aria-hidden")
+			continue;
 		if (element.getAttribute(name) !== value)
 			element.setAttribute(name, value);
 	}

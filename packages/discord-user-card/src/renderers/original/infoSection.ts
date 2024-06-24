@@ -4,12 +4,12 @@ import type {
 import {
 	userIdToTimestamp,
 } from "@discord-user-card/core";
-import { rerenderInterval, toHTML } from "@discord-user-card/markdown";
 import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, setClasses } from "../util.js";
+import { addElement, clearUnexpectedAttributes, destoryChildren, setClasses } from "../util.js";
 import { UsernameRenderer } from "./username.js";
 import { CustomStatusRenderer } from "./customStatus.js";
 import { ActivitiesRender } from "./activities.js";
+import { AboutMeRender } from "./aboutMe.js";
 
 export class InfoSectionRenderer implements Renderer {
 	elements = {
@@ -58,82 +58,6 @@ export class InfoSectionRenderer implements Renderer {
 
 	destroy(): void {
 		destoryChildren(this.elements);
-	}
-}
-
-class AboutMeRender implements Renderer {
-	elements = {
-		section: document.createElement("div"),
-		title: document.createElement("h2"),
-		markdown: document.createElement("div"),
-	};
-
-	timeout: NodeJS.Timeout | null = null;
-
-	constructor(public readonly parent: Element) { }
-
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
-		const { user } = props;
-		if (!user.bio) {
-			return removeElement(this.parent, this.elements.section);
-		}
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-
-		// ? Clear unexpected attributes from the elements
-		clearUnexpectedAttributes(this.elements.section, ["class"]);
-		clearUnexpectedAttributes(this.elements.title, ["class"]);
-		clearUnexpectedAttributes(this.elements.markdown, ["class"]);
-
-		// ? Set the class of the elements
-		setClasses(this.elements.section, {
-			duc_section: true,
-		});
-		setClasses(this.elements.title, {
-			duc_section_title: true,
-		});
-		setClasses(this.elements.markdown, {
-			duc_section_text: true,
-			duc_markdown: true,
-		});
-
-		// ? Set the text of the title element
-		this.elements.title.textContent = "About Me";
-
-		// ? Generate the HTML for the bio
-		const newHTML = toHTML(user.bio);
-
-		// ? Set the HTML of the markdown element (if it changed, aria-expanded, aria-hidden)
-		const currentWithoutChangeables = this.elements.markdown.innerHTML.replace(/aria-(expanded|hidden)="(true|false)"/g, "");
-		if (currentWithoutChangeables !== newHTML.replace(/aria-(expanded|hidden)="(true|false)"/g, "")) {
-			this.elements.markdown.innerHTML = newHTML;
-		}
-
-		this.elements.markdown.querySelectorAll(".duc_spoiler_container").forEach((element) => {
-			// ? When the spoiler is clicked, set aria-expanded to true
-			element.addEventListener("click", () => {
-				element.setAttribute("aria-expanded", "true");
-				element.querySelector(".duc_spoiler_obscured")?.setAttribute("aria-hidden", "false");
-			});
-		});
-
-		const interval = rerenderInterval(user.bio);
-		if (interval)
-			this.timeout = setTimeout(() => this.render(props), interval);
-
-		// ? Render the elements
-		addElement(this.parent, this.elements.section);
-		addElement(this.elements.section, this.elements.title);
-		addElement(this.elements.section, this.elements.markdown);
-	}
-
-	destroy(): void {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
 	}
 }
 
