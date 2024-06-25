@@ -6,6 +6,7 @@ export * from "./generic.js";
 export * from "./user.js";
 export * from "./discordApiTypes.js";
 export * from "./badges.js";
+export * from "./roles.js";
 
 export interface DiscordUserCardProperties {
 	/**

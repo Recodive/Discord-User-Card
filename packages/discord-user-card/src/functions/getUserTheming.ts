@@ -9,6 +9,8 @@ export function getUserTheming(user: DiscordUserCardUser): {
 	buttonColor: string;
 	backgroundColor: string;
 	dividerColor: string;
+	roleBackgroundColor: string;
+	roleBorderColor: string;
 	themeMixBaseHsl?: string;
 	themeMixBase?: string;
 	themeMixText?: string;
@@ -24,6 +26,8 @@ export function getUserTheming(user: DiscordUserCardUser): {
 			buttonColor: "var(--button-secondary-background)",
 			backgroundColor: "var(--background-floating)",
 			dividerColor: "var(--background-modifier-accent)",
+			roleBackgroundColor: "var(--background-secondary-alt)",
+			roleBorderColor: "var(--interactive-normal)",
 		};
 	}
 
@@ -51,6 +55,8 @@ export function getUserTheming(user: DiscordUserCardUser): {
 		buttonColor: getHslString(buttonColor),
 		dividerColor: getHslString(diverColor, dividerOpactity),
 		themeOverwrite: theme,
+		roleBackgroundColor: theme === "dark" ? "hsl(var(--primary-660-hsl) / .5)" : "hsl(var(--white-500-hsl) / .5)",
+		roleBorderColor: theme === "dark" ? "hsl(var(--white-500-hsl) / .2)" : "hsl(var(--primary-660-hsl) / .2)",
 		...getThemeMix({
 			primaryColor: user.themeColors.primary,
 			secondaryColor: user.themeColors.secondary,

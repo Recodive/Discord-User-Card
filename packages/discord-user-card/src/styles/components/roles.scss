@@ -1,0 +1,62 @@
+.duc_roles {
+	position: relative;
+	flex-wrap: wrap;
+	display: flex;
+	margin-top: 2px;
+	color: var(--text-normal);
+
+	.duc_role {
+		border: 1px solid;
+		border-color: var(--profile-role-pill-border-color);
+		background-color: var(--profile-role-pill-background-color);
+		align-items: center;
+		display: flex;
+		font-size: 12px;
+		font-weight: 500;
+		border-radius: 4px;
+		box-sizing: border-box;
+		height: 22px;
+		margin: 0 4px 4px 0;
+		padding: 4px;
+
+		.duc_role_circle {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			width: 12px;
+			height: 12px;
+			padding: 0;
+			margin: 0 4px;
+			flex-shrink: 0;
+			forced-color-adjust: none;
+		}
+
+		.duc_role_icon {
+			margin-right: 4px;
+			vertical-align: middle;
+			display: inline-block;
+			overflow: hidden;
+			object-fit: contain;
+			width: 16px;
+			height: 16px;
+		}
+
+		.duc_role_name_container {
+			max-width: 200px;
+			margin-right: 4px;
+			overflow: hidden;
+
+			.duc_role_name {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				font-family: var(--font-primary);
+				font-size: 12px;
+				line-height: 1.3333333333333333;
+				font-weight: 500;
+				color: var(--text-normal);
+			}
+		}
+	}
+}

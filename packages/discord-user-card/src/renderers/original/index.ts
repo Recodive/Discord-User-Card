@@ -91,6 +91,8 @@ export class OriginalDiscordUserCard implements Renderer {
 			themeMixBaseHsl,
 			themeMixText,
 			themeOverwrite,
+			roleBackgroundColor,
+			roleBorderColor,
 		} = getUserTheming(user);
 
 		const stylesOuterContainer: StyleObject = {
@@ -100,6 +102,8 @@ export class OriginalDiscordUserCard implements Renderer {
 			"--profile-gradient-button-color": buttonColor,
 			"--profile-body-background-color": backgroundColor,
 			"--profile-body-divider-color": dividerColor,
+			"--profile-role-pill-background-color": roleBackgroundColor,
+			"--profile-role-pill-border-color": roleBorderColor,
 			"--custom-theme-mix-base-hsl":
 				"198.46153846153845 100% 5.098039215686274%",
 			"--custom-theme-mix-base": "rgb(0,18,26)",

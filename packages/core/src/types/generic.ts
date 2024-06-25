@@ -21,4 +21,5 @@ export type DiscordImageScope =
 	| "app-icons"
 	| "app-assets"
 	| "embed/avatars"
-	| "badge-icons";
+	| "badge-icons"
+	| "role-icons";

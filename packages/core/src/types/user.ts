@@ -5,6 +5,7 @@ import type {
 } from "./badges.js";
 
 import type { DiscordUserCardImage } from "./generic.js";
+import type { DiscordUserCardRole } from "./roles.js";
 
 export interface DiscordUserCardUser {
 	/**
@@ -80,4 +81,8 @@ export interface DiscordUserCardUser {
 	 * The user's profile effect
 	 */
 	profileEffect?: string;
+	/**
+	 * The user's roles
+	 */
+	roles?: DiscordUserCardRole[];
 }

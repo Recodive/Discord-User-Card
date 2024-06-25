@@ -35,6 +35,41 @@ const a: DiscordUserCardProperties = {
 			secondary: 4827185,
 		},
 		profileEffect: "1139323099251232829",
+		roles: [
+			{
+				id: "726513805328121856",
+				name: "Minecraft",
+				position: 9,
+				color: 0,
+				emoji: "🎮",
+			},
+			{
+				id: "673682085608816652",
+				name: "Project Management",
+				position: 35,
+				color: 15158332,
+				icon: {
+					animated: false,
+					id: "758ae4cad89ea4a2bec55951fe38a40d",
+				},
+			},
+			{
+				id: "852978081358282763",
+				name: "Muted",
+				position: 2,
+				color: 1,
+			},
+			{
+				id: "1027665813525778436",
+				name: "Software Engineer",
+				position: 33,
+				color: 0,
+				icon: {
+					animated: false,
+					id: "45ad1e95b921f1a975b2bbb6ea676f58",
+				},
+			},
+		],
 	},
 	activities: [
 		{

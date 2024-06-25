@@ -10,6 +10,7 @@ import { UsernameRenderer } from "./username.js";
 import { CustomStatusRenderer } from "./customStatus.js";
 import { ActivitiesRender } from "./activities.js";
 import { AboutMeRender } from "./aboutMe.js";
+import { RolesRenderer } from "./roles.js";
 
 export class InfoSectionRenderer implements Renderer {
 	elements = {
@@ -24,6 +25,7 @@ export class InfoSectionRenderer implements Renderer {
 		aboutMe: new AboutMeRender(this.elements.scroller),
 		memberSince: new MemberSinceRenderer(this.elements.scroller),
 		activities: new ActivitiesRender(this.elements.scroller),
+		roles: new RolesRenderer(this.elements.scroller),
 	};
 
 	constructor(public readonly parent: Element) { }
@@ -54,6 +56,7 @@ export class InfoSectionRenderer implements Renderer {
 		await this.children.aboutMe.render(props);
 		await this.children.memberSince.render(props);
 		await this.children.activities.render(props);
+		await this.children.roles.render(props);
 	}
 
 	destroy(): void {
