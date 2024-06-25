@@ -54,9 +54,8 @@
 		}
 
 		&.duc_has_small_image {
-			mask: url(https://cdn.rcd.gg/discord/activity-mask.svg);
+			mask: url(https://cdn.rcd.gg/discord/activity-mask-60.svg);
 		}
-
 	}
 
 	.duc_activity_image_small {
@@ -75,6 +74,7 @@
 	margin-left: 10px;
 	flex: 1 1 auto;
 	overflow: hidden;
+	font-family: var(--font-primary);
 
 	.duc_activity_details_line {
 		display: block;
@@ -167,6 +167,7 @@
 		background-color: var(--profile-gradient-button-color);
     color: var(--white-500);
     transition: opacity .2s ease-in-out;
+		font-family: var(--font-primary);
 
 		&:hover {
 			opacity: .8;
@@ -178,6 +179,48 @@
 			overflow: hidden;
 			text-overflow: ellipsis;
 			background-image: linear-gradient(to top,transparent,transparent var(--custom-button-link-underline-offset),var(--button--underline-color)var(--custom-button-link-underline-offset),var(--button--underline-color)var(--custom-button-link-underline-stop),transparent var(--custom-button-link-underline-stop));
+		}
+	}
+}
+
+
+.duc_activity_profile {
+	padding: 16px;
+
+	.duc_activity_content {
+		align-items: center;
+	}
+
+	.duc_activity_image_large {
+		width: 90px;
+		height: 90px;
+
+		&.duc_activity_image_hang {
+			width: 60px;
+			height: 60px;
+		}
+
+		&.duc_has_small_image {
+			mask: url(https://cdn.rcd.gg/discord/activity-mask-90.svg);
+		}
+	}
+
+	.duc_activity_image_small {
+		width: 30px;
+		height: 30px;
+	}
+
+	.duc_activity_buttons {
+		align-items: center;
+		display: flex;
+
+		.duc_activity_button {
+			margin-top: 0;
+			margin-left: 20px;
+
+			&:not(:first-child) {
+				margin-top: 8px;
+			}
 		}
 	}
 }

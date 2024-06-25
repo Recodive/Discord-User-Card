@@ -10,8 +10,8 @@ import {
 	renderChildren,
 	setClasses,
 	setStyles,
-} from "../util.js";
-import type { Renderer } from "../../functions/Renderer.js";
+} from "../../util.js";
+import type { Renderer } from "../../../functions/Renderer.js";
 
 export class AvatarRenderer implements Renderer {
 	elements = {
@@ -25,8 +25,8 @@ export class AvatarRenderer implements Renderer {
 		rect: document.createElementNS("http://www.w3.org/2000/svg", "rect"),
 	};
 
-	children = {
-		avatarDecoration: new AvatarDecorationRenderer(this.elements.inner),
+	children: {
+		avatarDecoration: AvatarDecorationRenderer;
 	};
 
 	lastProps: Required<DiscordUserCardProperties> | null = null;
@@ -40,7 +40,10 @@ export class AvatarRenderer implements Renderer {
 	boundRerender = this.rerender.bind(this);
 	reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-	constructor(public readonly parent: Element) {
+	constructor(public readonly parent: Element, private readonly style: "card" | "profile") {
+		this.children = {
+			avatarDecoration: new AvatarDecorationRenderer(this.elements.inner, this.style),
+		};
 		window.addEventListener("focus", this.boundRerender);
 		window.addEventListener("blur", this.boundRerender);
 		this.reduceMotion.addEventListener("change", this.boundRerender);
@@ -63,8 +66,9 @@ export class AvatarRenderer implements Renderer {
 		// ? Set the class of the wrapper element
 		setClasses(this.elements.wrapper, {
 			duc_avatar_wrapper: true,
-			duc_avatar_position_premium: !!user.banner,
-			duc_avatar_position_normal: !user.banner,
+			duc_avatar_position_premium: !!user.banner && this.style === "card",
+			duc_avatar_position_normal: !user.banner && this.style === "card",
+			duc_avatar_position_profile: this.style === "profile",
 		});
 
 		// ? Find the user's status
@@ -86,9 +90,9 @@ export class AvatarRenderer implements Renderer {
 		});
 
 		// ? Set the attributes of the svg element
-		this.elements.svg.setAttribute("width", "92");
-		this.elements.svg.setAttribute("height", "92");
-		this.elements.svg.setAttribute("viewBox", "0 0 92 92");
+		this.elements.svg.setAttribute("width", this.style === "card" ? "92" : "138");
+		this.elements.svg.setAttribute("height", this.style === "card" ? "92" : "138");
+		this.elements.svg.setAttribute("viewBox", this.style === "card" ? "0 0 92 92" : "0 0 138 138");
 		this.elements.svg.setAttribute("aria-hidden", "true");
 		setClasses(this.elements.svg, {
 			duc_avatar_svg: true,
@@ -97,9 +101,9 @@ export class AvatarRenderer implements Renderer {
 		// ? Set the attributes of the foreignObject element
 		this.elements.foreignObject.setAttribute("x", "0");
 		this.elements.foreignObject.setAttribute("y", "0");
-		this.elements.foreignObject.setAttribute("width", "80");
-		this.elements.foreignObject.setAttribute("height", "80");
-		this.elements.foreignObject.setAttribute("mask", "url(#svg-mask-avatar-status-round-80)");
+		this.elements.foreignObject.setAttribute("width", this.style === "card" ? "80" : "120");
+		this.elements.foreignObject.setAttribute("height", this.style === "card" ? "80" : "120");
+		this.elements.foreignObject.setAttribute("mask", this.style === "card" ? "url(#svg-mask-avatar-status-round-80)" : "url(#svg-mask-avatar-status-round-120)");
 
 		// ? Set the attributes of the stack element
 		setClasses(this.elements.stack, {
@@ -107,7 +111,7 @@ export class AvatarRenderer implements Renderer {
 		});
 
 		// ? Set the attributes of the img element
-		this.elements.img.setAttribute("src", `${getUserAvatar(user)}?size=80`);
+		this.elements.img.setAttribute("src", `${getUserAvatar(user)}?size=${this.style === "card" ? "80" : "128"}`);
 		this.elements.img.setAttribute("alt", " ");
 		setClasses(this.elements.img, {
 			duc_avatar: true,
@@ -115,18 +119,18 @@ export class AvatarRenderer implements Renderer {
 
 		// ? Set the attributes of the circle element
 		this.elements.circle.setAttribute("fill", circleColor);
-		this.elements.circle.setAttribute("r", "14");
-		this.elements.circle.setAttribute("cx", "68");
-		this.elements.circle.setAttribute("cy", "68");
+		this.elements.circle.setAttribute("r", this.style === "card" ? "14" : "20");
+		this.elements.circle.setAttribute("cx", this.style === "card" ? "68" : "100");
+		this.elements.circle.setAttribute("cy", this.style === "card" ? "68" : "100");
 		setStyles(this.elements.circle, {
 			opacity: "0.45",
 		});
 
 		// ? Set the attributes of the rect element
-		this.elements.rect.setAttribute("width", "16");
-		this.elements.rect.setAttribute("height", "16");
-		this.elements.rect.setAttribute("x", "60");
-		this.elements.rect.setAttribute("y", "60");
+		this.elements.rect.setAttribute("width", this.style === "card" ? "16" : "24");
+		this.elements.rect.setAttribute("height", this.style === "card" ? "16" : "24");
+		this.elements.rect.setAttribute("x", this.style === "card" ? "60" : "88");
+		this.elements.rect.setAttribute("y", this.style === "card" ? "60" : "88");
 		this.elements.rect.setAttribute("fill", statusColor);
 		this.elements.rect.setAttribute("mask", `url(#svg-mask-status-${status})`);
 
@@ -145,6 +149,7 @@ export class AvatarRenderer implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.wrapper);
 		window.removeEventListener("focus", this.boundRerender);
 		window.removeEventListener("blur", this.boundRerender);
 		this.reduceMotion.removeEventListener("change", this.boundRerender);
@@ -159,7 +164,7 @@ class AvatarDecorationRenderer implements Renderer {
 		img: document.createElement("img"),
 	};
 
-	constructor(public readonly parent: Element) { }
+	constructor(public readonly parent: Element, private readonly style: "card" | "profile") { }
 
 	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
 		const { user } = props;
@@ -175,9 +180,9 @@ class AvatarDecorationRenderer implements Renderer {
 		clearUnexpectedAttributes(this.elements.img, ["src", "alt", "class", "aria-hidden"]);
 
 		// ? Set the attributes of the svg element
-		this.elements.svg.setAttribute("width", "108");
-		this.elements.svg.setAttribute("height", "96");
-		this.elements.svg.setAttribute("viewBox", "0 0 108 96");
+		this.elements.svg.setAttribute("width", this.style === "card" ? "108" : "162");
+		this.elements.svg.setAttribute("height", this.style === "card" ? "96" : "144");
+		this.elements.svg.setAttribute("viewBox", this.style === "card" ? "0 0 108 96" : "0 0 162 144");
 		this.elements.svg.setAttribute("aria-hidden", "true");
 		setClasses(this.elements.svg, {
 			duc_avatar_decoration: true,
@@ -186,9 +191,9 @@ class AvatarDecorationRenderer implements Renderer {
 		// ? Set the attributes of the foreignObject element
 		this.elements.foreignObject.setAttribute("x", "0");
 		this.elements.foreignObject.setAttribute("y", "0");
-		this.elements.foreignObject.setAttribute("width", "96");
-		this.elements.foreignObject.setAttribute("height", "96");
-		this.elements.foreignObject.setAttribute("mask", "url(#svg-mask-avatar-decoration-status-round-80)");
+		this.elements.foreignObject.setAttribute("width", this.style === "card" ? "96" : "144");
+		this.elements.foreignObject.setAttribute("height", this.style === "card" ? "96" : "144");
+		this.elements.foreignObject.setAttribute("mask", this.style === "card" ? "url(#svg-mask-avatar-decoration-status-round-80)" : "url(#svg-mask-avatar-decoration-status-round-120)");
 
 		// ? Set the attributes of the stack element
 		setClasses(this.elements.stack, {
@@ -196,7 +201,7 @@ class AvatarDecorationRenderer implements Renderer {
 		});
 
 		// ? Set the attributes of the img element
-		this.elements.img.setAttribute("src", `${decoration}&size=96`);
+		this.elements.img.setAttribute("src", `${decoration}&size=${this.style === "card" ? "96" : "160"}`);
 		this.elements.img.setAttribute("alt", " ");
 		this.elements.img.setAttribute("aria-hidden", "true");
 		setClasses(this.elements.img, {
@@ -210,5 +215,7 @@ class AvatarDecorationRenderer implements Renderer {
 		addElement(this.elements.stack, this.elements.img);
 	}
 
-	destroy(): void { }
+	destroy(): void {
+		removeElement(this.parent, this.elements.svg);
+	}
 }

@@ -12,17 +12,20 @@
 	margin-bottom: 4px;
 }
 
+.duc_profile_tab_scroller::-webkit-scrollbar,
 .duc_scroller::-webkit-scrollbar {
 	width: 8px;
 	height: 8px;
 }
 
+.duc_profile_tab_scroller::-webkit-scrollbar-track,
 .duc_scroller::-webkit-scrollbar-track {
 	border: 2px solid var(--scrollbar-thin-track);
 	background-color: var(--scrollbar-thin-track);
 	border-color: var(--scrollbar-thin-track);
 }
 
+.duc_profile_tab_scroller::-webkit-scrollbar-thumb,
 .duc_scroller::-webkit-scrollbar-thumb {
 	background-clip: padding-box;
 	border: 2px solid transparent;
@@ -31,6 +34,7 @@
 	min-height: 40px;
 }
 
+.duc_profile_tab_scroller::-webkit-scrollbar-corner,
 .duc_scroller::-webkit-scrollbar-corner {
 	background-color: transparent;
 }

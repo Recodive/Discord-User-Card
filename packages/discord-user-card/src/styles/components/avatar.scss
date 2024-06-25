@@ -6,7 +6,6 @@
 
 .duc_avatar {
 	display: block;
-	-o-object-fit: cover;
 	object-fit: cover;
 	pointer-events: none;
 	width: 100%;
@@ -44,6 +43,13 @@
 
 .duc_avatar_position_normal {
 	top: 16px;
+}
+
+.duc_avatar_position_profile {
+	top: calc(-.5*(var(--custom-user-profile-modal-header-avatar-size) + var(--custom-user-profile-modal-header-total-avatar-border-size)));
+	left: 22px;
+	width: 120px;
+	height: 120px;
 }
 
 .duc_avatar_wrapper_inner {

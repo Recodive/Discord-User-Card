@@ -5,8 +5,8 @@ import {
 	badgeToUrl,
 	orderBadges,
 } from "@discord-user-card/core";
-import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, setClasses } from "../util.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, removeElement, setClasses } from "../../util.js";
 
 export class BadgesRenderer implements Renderer {
 	elements = {
@@ -16,7 +16,7 @@ export class BadgesRenderer implements Renderer {
 		},
 	};
 
-	constructor(public readonly parent: Element) { }
+	constructor(public readonly parent: Element, private readonly style: "card" | "profile") { }
 
 	async render({ user }: Required<DiscordUserCardProperties>): Promise<void> {
 		// ? Clear unexpected attributes from the elements
@@ -27,6 +27,8 @@ export class BadgesRenderer implements Renderer {
 		// ? Set the class of the wrapper element
 		setClasses(this.elements.wrapper, {
 			duc_profile_badges: true,
+			duc_user_card: this.style === "card",
+			duc_user_profile: this.style === "profile",
 		});
 
 		// ? Loop through the badges of the user and create an element for each badge
@@ -62,5 +64,7 @@ export class BadgesRenderer implements Renderer {
 		addElement(this.parent, this.elements.wrapper);
 	}
 
-	destroy(): void {}
+	destroy(): void {
+		removeElement(this.parent, this.elements.wrapper);
+	}
 }

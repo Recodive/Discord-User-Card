@@ -1,0 +1,67 @@
+.duc_user_profile_themed,
+.duc_user_card_themed {
+	background: linear-gradient(
+		var(--profile-gradient-primary-color),
+		var(--profile-gradient-secondary-color)
+	);
+}
+
+.duc_user_profile_outer.duc_user_profile_themed,
+.duc_user_card_outer.duc_user_card_themed {
+	padding: 4px;
+}
+
+.duc_user_profile_outer {
+	--custom-user-popout-outside-components-height: 1px;
+	width: var(--custom-user-profile-themed-container-user-profile-modal-width);
+	overflow: hidden;
+	position: relative;
+	border-radius: var(--radius-sm);
+}
+
+.duc_user_card_outer {
+	--custom-user-popout-outside-components-height: 1px;
+	box-shadow: var(--elevation-high);
+	max-height: calc(
+		100vh - 20px - var(--custom-user-popout-outside-components-height)
+	);
+	width: var(--custom-user-profile-themed-container-user-popout-width);
+	overflow: hidden;
+	position: relative;
+	border-radius: var(--radius-sm);
+}
+
+.duc_user_profile_inner {
+	height: 100%;
+}
+
+.duc_user_card_inner {
+	max-height: calc(
+		100vh - 28px - var(--custom-user-popout-outside-components-height)
+	);
+}
+
+.duc_user_card_inner,
+.duc_user_profile_inner {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+	background: linear-gradient(
+		var(--profile-gradient-primary-color),
+		var(--profile-gradient-primary-color)
+			var(--custom-user-banner-premium-banner-height-popout),
+		var(--profile-gradient-secondary-color)
+	);
+}
+
+.duc_user_profile_inner::before,
+.duc_user_card_inner::before {
+	content: "";
+	position: absolute;
+	background: var(--profile-gradient-overlay-color);
+	pointer-events: none;
+	border-radius: var(--radius-xs);
+	width: calc(100% - 8px);
+	height: calc(100% - 8px);
+}

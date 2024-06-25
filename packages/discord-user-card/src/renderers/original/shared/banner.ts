@@ -4,10 +4,11 @@ import {
 	clearUnexpectedAttributes,
 	getUserBanner,
 	getUserBannerColor,
+	removeElement,
 	setClasses,
 	setStyles,
-} from "../util.js";
-import type { Renderer } from "../../functions/Renderer.js";
+} from "../../util.js";
+import type { Renderer } from "../../../functions/Renderer.js";
 
 export class BannerRenderer implements Renderer {
 	elements = {
@@ -32,7 +33,7 @@ export class BannerRenderer implements Renderer {
 	boundRerender = this.rerender.bind(this);
 	reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-	constructor(public readonly parent: Element) {
+	constructor(public readonly parent: Element, private readonly style: "card" | "profile") {
 		window.addEventListener("focus", this.boundRerender);
 		window.addEventListener("blur", this.boundRerender);
 		this.reduceMotion.addEventListener("change", this.boundRerender);
@@ -59,12 +60,16 @@ export class BannerRenderer implements Renderer {
 		const bannerColor = await getUserBannerColor(user);
 
 		// ? Set the viewBox of the wrapper element
-		this.elements.wrapper.setAttribute("viewBox", user.banner ? "0 0 340 120" : "0 0 340 60");
+		this.elements.wrapper.setAttribute("viewBox", this.style === "card"
+			? user.banner ? "0 0 340 120" : "0 0 340 60"
+			: user.banner ? "0 0 600 212" : "0 0 600 106");
 
 		// ? Set the style of the wrapper element
 		setStyles(this.elements.wrapper, {
-			"min-width": "340px",
-			"min-height": banner ? "120px" : "60px",
+			"min-width": this.style === "card" ? "340px" : "600px",
+			"min-height": this.style === "card"
+				? banner ? "120px" : "60px"
+				: banner ? "212px" : "106px",
 		});
 
 		// ? Set the id of the mask element
@@ -79,9 +84,13 @@ export class BannerRenderer implements Renderer {
 
 		// ? Set the attributes of the circle element
 		this.elements.circle.setAttribute("fill", "black");
-		this.elements.circle.setAttribute("cx", user.banner ? "58" : "62");
-		this.elements.circle.setAttribute("cy", user.banner ? "112" : "56");
-		this.elements.circle.setAttribute("r", "46");
+		this.elements.circle.setAttribute("cx", this.style === "card"
+			? user.banner ? "58" : "62"
+			: "82");
+		this.elements.circle.setAttribute("cy", this.style === "card"
+			? user.banner ? "112" : "56"
+			: user.banner ? "207" : "101");
+		this.elements.circle.setAttribute("r", this.style === "card" ? "46" : "68");
 
 		// ? Set the attributes of the foreignObject element
 		this.elements.foreignObject.setAttribute("x", "0");
@@ -95,6 +104,8 @@ export class BannerRenderer implements Renderer {
 		setClasses(this.elements.div, {
 			duc_banner: true,
 			duc_banner_premium: !!banner,
+			duc_user_card: this.style === "card",
+			duc_user_profile: this.style === "profile",
 		});
 
 		// ? Set the style of the div element
@@ -115,6 +126,7 @@ export class BannerRenderer implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.wrapper);
 		window.removeEventListener("focus", this.boundRerender);
 		window.removeEventListener("blur", this.boundRerender);
 		this.reduceMotion.removeEventListener("change", this.boundRerender);

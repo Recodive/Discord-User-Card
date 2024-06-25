@@ -46,4 +46,12 @@ export const masks = `
 		<circle fill="white" cx="0.5" cy="0.5" r="0.5"></circle>
 		<circle fill="black" cx="0.85" cy="0.85" r="0.175"></circle>
 	</mask>
+	<mask
+		id="svg-mask-avatar-status-round-120"
+		maskContentUnits="objectBoundingBox"
+		viewBox="0 0 1 1"
+	>
+		<circle fill="white" cx="0.5" cy="0.5" r="0.5"></circle>
+		<circle fill="black" cx="0.8333333333333334" cy="0.8333333333333334" r="0.16666666666666666"></circle>
+	</mask>
 `;

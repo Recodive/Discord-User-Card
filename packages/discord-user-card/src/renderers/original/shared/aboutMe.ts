@@ -1,8 +1,8 @@
 import type { DiscordUserCardProperties } from "@discord-user-card/core";
 import { rerenderInterval, toHTML } from "@discord-user-card/markdown";
-import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, removeElement, setClasses } from "../util.js";
-import { renderElement } from "../../functions/renderElement.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, removeElement, setClasses } from "../../util.js";
+import { renderElement } from "../../../functions/renderElement.js";
 
 export class AboutMeRender implements Renderer {
 	elements = {
@@ -76,6 +76,7 @@ export class AboutMeRender implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.section);
 		if (this.timeout) {
 			clearTimeout(this.timeout);
 			this.timeout = null;

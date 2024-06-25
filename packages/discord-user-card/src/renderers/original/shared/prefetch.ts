@@ -7,13 +7,13 @@ import {
 import type { SingleASTNode } from "@discord-user-card/markdown";
 import { parseMarkdown } from "@discord-user-card/markdown";
 import { AnimationType, findProfileEffect } from "@discord-user-card/profile-effects";
-import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, removeElement } from "../util.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, removeElement } from "../../util.js";
 
 export class PrefetchRenderer implements Renderer {
 	elements: HTMLLinkElement[] = [];
 
-	constructor(public readonly parent: Element) { }
+	constructor(public readonly parent: Element, private readonly style: "card" | "profile") { }
 
 	async render({ user, activities }: Required<DiscordUserCardProperties>): Promise<void> {
 		const linksToPrefetch = new Set<string>();
@@ -32,8 +32,8 @@ export class PrefetchRenderer implements Renderer {
 					scope: "avatars",
 				}),
 			];
-			linksToPrefetch.add(`${avatarUrlAnimated}?size=80`);
-			linksToPrefetch.add(`${avatarUrlStatic}?size=80`);
+			linksToPrefetch.add(`${avatarUrlAnimated}?size=${this.style === "card" ? "80" : "128"}`);
+			linksToPrefetch.add(`${avatarUrlStatic}?size=${this.style === "card" ? "80" : "128"}`);
 		}
 
 		if (user.avatarDecoration?.animated) {
@@ -51,8 +51,8 @@ export class PrefetchRenderer implements Renderer {
 					scope: "avatar-decoration-presets",
 				}),
 			];
-			linksToPrefetch.add(`${decorationUrlAnimated}&size=96`);
-			linksToPrefetch.add(`${decorationUrlStatic}&size=96`);
+			linksToPrefetch.add(`${decorationUrlAnimated}&size=${this.style === "card" ? "96" : "160"}`);
+			linksToPrefetch.add(`${decorationUrlStatic}&size=${this.style === "card" ? "96" : "160"}`);
 		}
 
 		if (user.banner?.animated) {
@@ -172,5 +172,10 @@ export class PrefetchRenderer implements Renderer {
 			addElement(this.parent, linkElement);
 	}
 
-	destroy(): void {}
+	destroy(): void {
+		for (const linkElement of this.elements) {
+			removeElement(this.parent, linkElement);
+		}
+		this.elements = [];
+	}
 }

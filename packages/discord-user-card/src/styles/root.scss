@@ -8,8 +8,13 @@
 		(1 - var(--decoration-to-avatar-ratio)) / 2 * 100%
 	);
 	--custom-user-banner-banner-height-popout: 60px;
+	--custom-user-banner-banner-height-profile: 106px;
 	--custom-user-banner-premium-banner-height-popout: 120px;
+	--custom-user-banner-premium-banner-height-profile: 212px;
 	--custom-user-profile-themed-container-user-popout-width: 340px;
+	--custom-user-profile-themed-container-user-profile-modal-width: 600px;
+	--custom-user-profile-modal-header-avatar-size: 120px;
+	--custom-user-profile-modal-header-total-avatar-border-size: 16px;
 	--custom-emoji-size-emoji: 1.375em;
 
 	--custom-button-link-underline-width: 1px;
@@ -46,6 +51,8 @@
 	--primary-660-hsl: 228 calc(var(--saturation-factor, 1) * 6.7%) 14.7%;
 	--primary-700: hsl(var(--primary-700-hsl) / 1);
 	--primary-700-hsl: 225 calc(var(--saturation-factor, 1) * 6.3%) 12.5%;
+	--primary-730: hsl(var(--primary-730-hsl) / 1);
+	--primary-730-hsl: 225 calc(var(--saturation-factor, 1) * 7.1%) 11%;
 	--primary-800: hsl(var(--primary-800-hsl) / 1);
 	--primary-800-hsl: 220 calc(var(--saturation-factor, 1) * 8.1%) 7.3%;
 	--primary-860: hsl(var(--primary-860-hsl) / 1);
@@ -63,18 +70,41 @@
 	--brand-260-hsl: 235 calc(var(--saturation-factor, 1) * 86.2%) 88.6%;
 	--brand-500: hsl(var(--brand-500-hsl) / 1);
 	--brand-500-hsl: 235 calc(var(--saturation-factor, 1) * 85.6%) 64.7%;
+
+	--theme-base-color-light-hsl: 157.64705882352942 100% 90%;
+	--theme-base-color-light: rgb(204,255,236);
+	--theme-text-color-light: rgb(0,47,128);
+	--theme-base-color-dark-hsl: 219.23076923076923 100% 5.098039215686274%;
+	--theme-base-color-dark: rgb(0,9,26);
+	--theme-text-color-dark: rgb(229,255,245);
+	--theme-base-color-amount: 50%;
+	--theme-text-color-amount: 25%;
 }
 
-.duc_root {
+.duc_root.duc_user_card {
 	line-height: 1;
 	margin: 0;
 	padding: 0;
 	font-family: var(--font-primary);
 	overflow: hidden;
-	-webkit-user-select: none;
-	-moz-user-select: none;
 	user-select: none;
 	background: transparent;
+}
+
+.duc_root.duc_user_profile {
+	opacity: 1;
+	transform: scale(1);
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+	width: auto;
+	max-height: none;
+	min-height: 200px;
+	background-color: var(--modal-background);
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	pointer-events: all;
 }
 
 .duc_root {
@@ -171,7 +201,6 @@
 	}
 	a {
 		color: var(--text-link);
-		-webkit-text-decoration: none;
 		text-decoration: none;
 		cursor: pointer;
 	}

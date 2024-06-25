@@ -1,6 +1,6 @@
 import type { DiscordUserCardProperties } from "@discord-user-card/core";
-import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses } from "../util.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses } from "../../util.js";
 
 export class UsernameRenderer implements Renderer {
 	elements = {
@@ -29,6 +29,7 @@ export class UsernameRenderer implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.section);
 		destoryChildren(this.children);
 	}
 }
@@ -55,6 +56,7 @@ class UsernameInnerWrapperRenderer implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.div);
 		destoryChildren(this.children);
 	}
 }
@@ -100,6 +102,7 @@ export class UsernameTextRenderer implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.display);
 		destoryChildren(this.children);
 	}
 }
@@ -129,7 +132,9 @@ class DiscriminatorRenderer implements Renderer {
 		addElement(this.parent, this.elements.discriminator);
 	}
 
-	destroy(): void {}
+	destroy(): void {
+		removeElement(this.parent, this.elements.discriminator);
+	}
 }
 
 class BotTagRenderer implements Renderer {
@@ -181,7 +186,9 @@ class BotTagRenderer implements Renderer {
 		addElement(this.elements.wrapper, this.elements.text);
 	}
 
-	destroy(): void { }
+	destroy(): void {
+		removeElement(this.parent, this.elements.wrapper);
+	}
 }
 
 class PronounsRenderer implements Renderer {
@@ -209,5 +216,7 @@ class PronounsRenderer implements Renderer {
 		addElement(this.parent, this.elements.pronouns);
 	}
 
-	destroy(): void { }
+	destroy(): void {
+		removeElement(this.parent, this.elements.pronouns);
+	}
 }

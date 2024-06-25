@@ -1,11 +1,29 @@
-import { ActivityType, type DiscordUserCardActivityCompeting, type DiscordUserCardActivityHang, type DiscordUserCardActivityListening, type DiscordUserCardActivityPlaying, type DiscordUserCardActivityStreaming, type DiscordUserCardActivityWatching, type DiscordUserCardProperties, formatTimestamp, imageToUrl } from "@discord-user-card/core";
+import {
+	ActivityType,
+	type DiscordUserCardActivityCompeting,
+	type DiscordUserCardActivityHang,
+	type DiscordUserCardActivityListening,
+	type DiscordUserCardActivityPlaying,
+	type DiscordUserCardActivityStreaming,
+	type DiscordUserCardActivityWatching,
+	formatTimestamp,
+	imageToUrl,
+} from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
-import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses, setStyles } from "../util.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import {
+	addElement,
+	clearUnexpectedAttributes,
+	destoryChildren,
+	removeElement,
+	renderChildren,
+	setClasses,
+	setStyles,
+} from "../../util.js";
 
 const appIconCache = new Map<string, string>();
 
-interface Activity {
+export interface Activity {
 	activity:
 		| DiscordUserCardActivityPlaying
 		| DiscordUserCardActivityStreaming
@@ -19,135 +37,70 @@ interface Activity {
 	line3: string | undefined;
 };
 
-export class ActivitiesRender implements Renderer {
-	elements = {
-		section: document.createElement("div"),
-		headerContainer: document.createElement("div"),
-		header: document.createElement("h2"),
-		content: document.createElement("div"),
-	};
-
-	children = {
-		content: new ActivityContentRenderer(this.elements.content),
-		timebar: new TimebarRenderer(this.elements.section),
-		buttons: new ButtonsRenderer(this.elements.section),
-	};
-
-	constructor(public readonly parent: Element) { }
-
-	getActivity({ activities }: Required<DiscordUserCardProperties>): Activity | undefined {
-		const activity = activities.find(activity => activity.type !== ActivityType.Custom);
-		if (!activity)
+export function mapActivity(activity: DiscordUserCardActivityPlaying | DiscordUserCardActivityStreaming | DiscordUserCardActivityListening | DiscordUserCardActivityWatching | DiscordUserCardActivityCompeting | DiscordUserCardActivityHang): Activity | undefined {
+	let title = "";
+	let line1: string | undefined;
+	let line2: string | undefined;
+	let line3: string | undefined;
+	switch (activity.type) {
+		case ActivityType.Playing: {
+			title = "Playing a game";
+			line1 = activity.name;
+			line2 = activity.details;
+			line3 = activity.state;
+			break;
+		}
+		case ActivityType.Streaming: {
+			title = `Live on ${activity.name}`;
+			line1 = activity.details;
+			line2 = activity.state;
+			line3 = activity.largeImageText;
+			break;
+		}
+		case ActivityType.Listening: {
+			const isSpotify = activity.name === "Spotify" && activity.largeImage?.startsWith("spotify:");
+			title = `Listening to ${activity.name}`;
+			line1 = activity.details;
+			line2 = `${isSpotify ? "by " : ""}${activity.state}`;
+			line3 = `${isSpotify ? "on " : ""}${activity.largeImageText}`;
+			break;
+		}
+		case ActivityType.Watching: {
+			title = `Watching ${activity.name}`;
+			line1 = activity.details;
+			line2 = activity.state;
+			line3 = activity.largeImageText;
+			break;
+		}
+		case ActivityType.Competing: {
+			title = `Competing in ${activity.name}`;
+			line1 = activity.details;
+			line2 = activity.state;
+			line3 = activity.largeImageText;
+			break;
+		}
+		case ActivityType.Hang: {
+			title = "Right now, I'm -";
+			line1 = {
+				"eating": "Grubbin",
+				"gaming": "GAMING",
+				"chilling": "Chilling",
+				"focusing": "In the zone",
+				"brb": "Gonna BRB",
+				"in-transit": "Wandering IRL",
+				"watching": "Watchin' stuff",
+				"custom": activity.details,
+			}[activity.state];
+			line2 = "in a Voice Channel";
+			break;
+		}
+		default:
 			return;
-
-		let title = "";
-		let line1: string | undefined;
-		let line2: string | undefined;
-		let line3: string | undefined;
-		switch (activity.type) {
-			case ActivityType.Playing: {
-				title = "Playing a game";
-				line1 = activity.name;
-				line2 = activity.details;
-				line3 = activity.state;
-				break;
-			}
-			case ActivityType.Streaming: {
-				title = `Live on ${activity.name}`;
-				line1 = activity.details;
-				line2 = activity.state;
-				line3 = activity.largeImageText;
-				break;
-			}
-			case ActivityType.Listening: {
-				const isSpotify = activity.name === "Spotify" && activity.largeImage?.startsWith("spotify:");
-				title = `Listening to ${activity.name}`;
-				line1 = activity.details;
-				line2 = `${isSpotify ? "by " : ""}${activity.state}`;
-				line3 = `${isSpotify ? "on " : ""}${activity.largeImageText}`;
-				break;
-			}
-			case ActivityType.Watching: {
-				title = `Watching ${activity.name}`;
-				line1 = activity.details;
-				line2 = activity.state;
-				line3 = activity.largeImageText;
-				break;
-			}
-			case ActivityType.Competing: {
-				title = `Competing in ${activity.name}`;
-				line1 = activity.details;
-				line2 = activity.state;
-				line3 = activity.largeImageText;
-				break;
-			}
-			case ActivityType.Hang: {
-				title = "Right now, I'm -";
-				line1 = {
-					"eating": "Grubbin",
-					"gaming": "GAMING",
-					"chilling": "Chilling",
-					"focusing": "In the zone",
-					"brb": "Gonna BRB",
-					"in-transit": "Wandering IRL",
-					"watching": "Watchin' stuff",
-					"custom": activity.details,
-				}[activity.state];
-				line2 = "in a Voice Channel";
-				break;
-			}
-			default:
-				return;
-		}
-		return { activity, title, line1, line2, line3 };
 	}
-
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
-		// ? Get the activity
-		const activity = this.getActivity(props);
-
-		// ? If there is no activity, remove the element
-		if (!activity) {
-			return removeElement(this.parent, this.elements.section);
-		}
-
-		// ? Clear unexpected attributes from the elements
-		clearUnexpectedAttributes(this.elements.section, ["class"]);
-		clearUnexpectedAttributes(this.elements.headerContainer, ["class"]);
-		clearUnexpectedAttributes(this.elements.header, ["class"]);
-		clearUnexpectedAttributes(this.elements.content, ["class"]);
-
-		// ? Set the class of the elements
-		setClasses(this.elements.section, {
-			duc_section: true,
-			duc_activity: true,
-		});
-		setClasses(this.elements.headerContainer, {
-			duc_activity_header_container: true,
-		});
-		setClasses(this.elements.header, {
-			duc_section_title: true,
-			duc_activity_header: true,
-		});
-		setClasses(this.elements.content, {
-			duc_activity_content: true,
-		});
-
-		// ? Render the elements
-		addElement(this.parent, this.elements.section);
-		addElement(this.elements.section, this.elements.headerContainer);
-		this.elements.header.textContent = activity.title;
-		addElement(this.elements.headerContainer, this.elements.header);
-		addElement(this.elements.section, this.elements.content);
-		await renderChildren(this.children, activity);
-	}
-
-	destroy(): void {
-		destoryChildren(this.children);
-	}
+	return { activity, title, line1, line2, line3 };
 }
 
-class ActivityContentRenderer implements Renderer<Activity> {
+export class ActivityContentRenderer implements Renderer<Activity> {
 	elements = {
 		imageContainer: document.createElement("div"),
 		largeImage: document.createElement("img"),
@@ -200,6 +153,7 @@ class ActivityContentRenderer implements Renderer<Activity> {
 			duc_activity_image_hang: activity.type === ActivityType.Hang || "emoji" in activity,
 			duc_spotify_image: activity.type !== ActivityType.Hang && activity.name === "Spotify" && !!activity.largeImage?.startsWith("spotify:"),
 			duc_activity_image_app_icon: activity.type !== ActivityType.Hang && !("largeImage" in activity) && !!activity.applicationId,
+			duc_has_small_image: activity.type !== ActivityType.Hang && !!activity.smallImage,
 		});
 		setClasses(this.elements.smallImage, {
 			duc_activity_image_small: true,
@@ -382,6 +336,7 @@ class ActivityContentRenderer implements Renderer<Activity> {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.imageContainer);
 		window.removeEventListener("focus", this.boundRerender);
 		window.removeEventListener("blur", this.boundRerender);
 		this.prefersReducedMotion.removeEventListener("change", this.boundRerender);
@@ -467,6 +422,7 @@ class ElapsedLeftLineRenderer implements Renderer<Activity> {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.line);
 		if (this.timeout) {
 			clearTimeout(this.timeout);
 			this.timeout = null;
@@ -474,7 +430,7 @@ class ElapsedLeftLineRenderer implements Renderer<Activity> {
 	}
 }
 
-class TimebarRenderer implements Renderer<Activity> {
+export class TimebarRenderer implements Renderer<Activity> {
 	elements = {
 		container: document.createElement("div"),
 		timebar: document.createElement("div"),
@@ -554,6 +510,7 @@ class TimebarRenderer implements Renderer<Activity> {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.container);
 		if (this.timeout) {
 			clearTimeout(this.timeout);
 			this.timeout = null;
@@ -566,7 +523,7 @@ function formatDate(date: Date, padMinutes = 2) {
 	return `${hours}${date.getUTCMinutes().toString().padStart(padMinutes, "0")}:${date.getUTCSeconds().toString().padStart(2, "0")}`;
 }
 
-class ButtonsRenderer implements Renderer<Activity> {
+export class ButtonsRenderer implements Renderer<Activity> {
 	elements = {
 		buttons: document.createElement("div"),
 		one: document.createElement("a"),
@@ -628,5 +585,7 @@ class ButtonsRenderer implements Renderer<Activity> {
 		}
 	}
 
-	destroy(): void {}
+	destroy(): void {
+		removeElement(this.parent, this.elements.buttons);
+	}
 }

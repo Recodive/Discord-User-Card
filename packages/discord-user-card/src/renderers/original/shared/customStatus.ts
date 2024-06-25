@@ -8,8 +8,8 @@ import {
 	imageToUrl,
 } from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
-import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, removeElement, setClasses } from "../util.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, removeElement, setClasses } from "../../util.js";
 
 export class CustomStatusRenderer implements Renderer {
 	elements = {
@@ -87,6 +87,7 @@ export class CustomStatusRenderer implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.status);
 		window.removeEventListener("focus", this.boundRerender);
 		window.removeEventListener("blur", this.boundRerender);
 		this.reduceMotion.removeEventListener("change", this.boundRerender);

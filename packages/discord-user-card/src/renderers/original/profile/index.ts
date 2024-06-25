@@ -4,26 +4,25 @@ import type {
 import type {
 	ClassObject,
 	StyleObject,
-} from "../util.js";
+} from "../../util.js";
 import {
 	addElement,
 	clearUnexpectedAttributes,
 	destoryChildren,
+	removeElement,
 	renderChildren,
 	setClasses,
 	setStyles,
-} from "../util.js";
-import { getUserTheming } from "../../functions/getUserTheming.js";
-import type { Renderer } from "../../functions/Renderer.js";
-import { masks } from "./masks.js";
-import { BannerRenderer } from "./banner.js";
-import { BadgesRenderer } from "./profileBadges.js";
-import { AvatarRenderer } from "./avatar.js";
-import { InfoSectionRenderer } from "./infoSection.js";
-import { ProfileEffectsRenderer } from "./profileEffects.js";
-import { PrefetchRenderer } from "./prefetch.js";
+} from "../../util.js";
+import { getUserTheming } from "../../../functions/getUserTheming.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import { PrefetchRenderer } from "../shared/prefetch.js";
+import { masks } from "../shared/masks.js";
+import { ProfileEffectsRenderer } from "../shared/profileEffects.js";
+import { HeaderRenderer } from "./header.js";
+import { BodyRenderer } from "./body.js";
 
-export class OriginalDiscordUserCard implements Renderer {
+export class OriginalDiscordUserProfile implements Renderer {
 	masks = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 	containers = {
 		outer: document.createElement("div"),
@@ -32,22 +31,18 @@ export class OriginalDiscordUserCard implements Renderer {
 
 	children: {
 		prefetch: PrefetchRenderer;
-		banner: BannerRenderer;
 		profileEffects: ProfileEffectsRenderer;
-		avatar: AvatarRenderer;
-		badges: BadgesRenderer;
-		infoSection: InfoSectionRenderer;
+		header: HeaderRenderer;
+		body: BodyRenderer;
 	};
 
 	constructor(public readonly parent: Element) {
 		// ? Set the children in here because this.parent is otherwise not available
 		this.children = {
-			prefetch: new PrefetchRenderer(this.parent),
-			banner: new BannerRenderer(this.containers.inner),
-			profileEffects: new ProfileEffectsRenderer(this.containers.inner, this.parent),
-			avatar: new AvatarRenderer(this.containers.inner),
-			badges: new BadgesRenderer(this.containers.inner),
-			infoSection: new InfoSectionRenderer(this.containers.inner),
+			prefetch: new PrefetchRenderer(this.parent, "profile"),
+			profileEffects: new ProfileEffectsRenderer(this.parent, this.parent),
+			header: new HeaderRenderer(this.containers.inner),
+			body: new BodyRenderer(this.containers.inner),
 		};
 
 		this.masks.setAttribute("viewBox", "0 0 1 1");
@@ -75,7 +70,7 @@ export class OriginalDiscordUserCard implements Renderer {
 
 		// ? Set the aria-label and class of the parent element
 		this.parent.setAttribute("aria-label", user.username);
-		setClasses(this.parent, { duc_root: true });
+		setClasses(this.parent, { duc_root: true, duc_user_profile: true });
 
 		// ? Generate the style for the user card
 		const {
@@ -146,6 +141,7 @@ export class OriginalDiscordUserCard implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.containers.outer);
 		destoryChildren(this.children);
 	}
 }

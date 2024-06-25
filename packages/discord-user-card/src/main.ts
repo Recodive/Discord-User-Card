@@ -18,6 +18,7 @@ const a: DiscordUserCardProperties = {
 		id: "223238938716798978",
 		username: "timeraa",
 		displayName: "Timeraa",
+		pronouns: "he/him",
 		avatar: {
 			id: "782b098327195dbc3d07619c67778a65",
 			animated: false,
@@ -197,6 +198,32 @@ const d: DiscordUserCardProperties = {
 				},
 			],
 		},
+		{
+			type: 0,
+			name: "The Forest",
+			startTimestamp: 1718981704172,
+			applicationId: "363409179668512788",
+		},
+		{
+			type: 2,
+			name: "Spotify",
+			state: "YOUHA",
+			details: "오늘 조금 취해서 그래",
+			startTimestamp: now,
+			endTimestamp: now + 200173,
+			largeImage: "spotify:ab67616d0000b273ead72e8dd961206f05079de7",
+			largeImageText: "오늘 조금 취해서 그래",
+			buttons: [
+				{
+					label: "Listen Along",
+					url: "https://open.spotify.com/track/1pU5SijPp89lNrZHJL0166",
+				},
+				{
+					label: "View Album",
+					url: "https://open.spotify.com/album/6QpIl0FPITcpoJTn5HP4vD",
+				},
+			],
+		},
 	],
 };
 const e: DiscordUserCardProperties = {
@@ -218,24 +245,72 @@ root.innerHTML = `
 		<div id="card-4"></div>
 		<div id="card-5"></div>
 		<div id="card-6"></div>
+		<div id="profile-1"></div>
+		<div id="profile-2"></div>
+		<div id="profile-3"></div>
+		<div id="profile-4"></div>
+		<div id="profile-5"></div>
+		<div id="profile-6"></div>
 	</div>
 `;
 
-setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-1")!).render(
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-1")!, {
+	type: "card",
+}).render(
 	{},
 );
-setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-2")!).render(
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-2")!, {
+	type: "card",
+}).render(
 	a,
 );
-setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-3")!).render(
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-3")!, {
+	type: "card",
+}).render(
 	b,
 );
-setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-4")!).render(
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-4")!, {
+	type: "card",
+}).render(
 	c,
 );
-setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-5")!).render(
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-5")!, {
+	type: "card",
+}).render(
 	d,
 );
-setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-6")!).render(
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#card-6")!, {
+	type: "card",
+}).render(
+	e,
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#profile-1")!, {
+	type: "profile",
+}).render(
+	{},
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#profile-2")!, {
+	type: "profile",
+}).render(
+	a,
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#profile-3")!, {
+	type: "profile",
+}).render(
+	b,
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#profile-4")!, {
+	type: "profile",
+}).render(
+	c,
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#profile-5")!, {
+	type: "profile",
+}).render(
+	d,
+);
+setupDiscordUserCard(document.querySelector<HTMLDivElement>("#profile-6")!, {
+	type: "profile",
+}).render(
 	e,
 );

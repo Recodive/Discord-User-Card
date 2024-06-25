@@ -1,7 +1,7 @@
 import { ColorUtils, type DiscordUserCardProperties, type DiscordUserCardRole, imageToUrl } from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
-import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, setClasses } from "../util.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, setClasses } from "../../util.js";
 
 export class RolesRenderer implements Renderer {
 	elements = {
@@ -54,9 +54,7 @@ export class RolesRenderer implements Renderer {
 		const orderedRoles = roles.sort((a, b) => b.position - a.position);
 
 		// ? Render the roles
-		for (let i = 0; i < orderedRoles.length; i++) {
-			const role = orderedRoles[i]!;
-			const index = i.toString();
+		for (const [index, role] of orderedRoles.entries()) {
 			if (!this.children[index]) {
 				this.children[index] = new RoleRenderer(this.elements.roles);
 			}
@@ -72,6 +70,7 @@ export class RolesRenderer implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.section);
 		destoryChildren(this.children);
 	}
 }
@@ -157,5 +156,7 @@ class RoleRenderer implements Renderer<DiscordUserCardRole> {
 		addElement(this.elements.nameContainer, this.elements.name);
 	}
 
-	destroy(): void { }
+	destroy(): void {
+		removeElement(this.parent, this.elements.role);
+	}
 }

@@ -1,6 +1,7 @@
 import { defaultUserCardProperties } from "@discord-user-card/core";
 import type { Renderer, RendererType } from "../functions/Renderer.js";
-import { OriginalDiscordUserCard } from "./original/index.js";
+import { OriginalDiscordUserCard } from "./original/card/index.js";
+import { OriginalDiscordUserProfile } from "./original/profile/index.js";
 
 export function setupDiscordUserCard(
 	element: HTMLDivElement,
@@ -8,8 +9,8 @@ export function setupDiscordUserCard(
 		style,
 		type,
 	}: {
-		style: "original"; // implement the new style
-		type: "card"; // "card" | "profile"
+		style?: "original"; // | "2024";
+		type?: "card" | "profile";
 	} = {
 		style: "original",
 		type: "card",
@@ -19,12 +20,18 @@ export function setupDiscordUserCard(
 	if (!element || element.tagName !== "DIV")
 		throw new Error("Invalid element");
 
+	style ??= "original";
+	type ??= "card";
+
 	let renderer: Renderer;
 	switch (style) {
 		case "original": {
 			switch (type) {
 				case "card":
 					renderer = new OriginalDiscordUserCard(element);
+					break;
+				case "profile":
+					renderer = new OriginalDiscordUserProfile(element);
 					break;
 				default:
 					throw new Error(`Invalid type "${type}"`);

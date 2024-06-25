@@ -1,5 +1,6 @@
 .duc_root .theme-light {
 	--header-primary: var(--primary-860);
+	--header-secondary: var(--primary-500);
 	--text-normal: var(--primary-600);
 	--text-link: var(--blue-430);
 
@@ -14,14 +15,24 @@
 	--border-faint: hsl(var(--black-500-hsl) / 0.04);
 	--background-tertiary:var(--primary-200);
 	--interactive-normal: var(--primary-500);
+	--interactive-active: var(--primary-860);
+	--interactive-hover: var(--primary-600);
 	--interactive-muted: var(--primary-300);
 	--mention-background: hsl(var(--brand-500-hsl) / 0.15);
 	--mention-foreground: var(--brand-500);
+	--modal-background: var(--white-500);
+
+	--scrollbar-thin-thumb: hsl(var(--primary-500-hsl) / 0.3);
+	--scrollbar-thin-track: hsl(var(--black-500-hsl) / 0);
 
 	--__spoiler-background-color--revealed: hsl(var(--black-500-hsl) / 0.1);
 	--__spoiler-text-color--hidden: transparent;
 	--__spoiler-background-color--hidden: var(--primary-300);
   --__spoiler-background-color--hidden--hover: hsl(var(--primary-300-hsl) / 0.8);
+
+	--theme-base-color: var(--theme-base-color-light);
+	--theme-text-color: var(--theme-text-color-light);
+	--theme-base-color-hsl: var(--theme-base-color-light-hsl);
 }
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)) {
 	.duc_root .theme-light {
@@ -30,6 +41,12 @@
 			var(--primary-860) 100%,
 			var(--custom-theme-mix-text, black)
 				var(--custom-theme-mix-amount-text, 0%)
+		);
+		--header-secondary: color-mix(
+			in oklab,
+			var(--primary-500) 100%,
+			var(--theme-text-color, black)
+				var(--theme-text-color-amount, 0%)
 		);
 		--text-normal: color-mix(
 			in oklab,
@@ -92,6 +109,18 @@
 			var(--custom-theme-mix-text, black)
 				var(--custom-theme-mix-amount-text, 0%)
 		);
+		--interactive-active: color-mix(
+			in oklab,
+			var(--primary-860) 100%,
+			var(--theme-text-color, black)
+				var(--theme-text-color-amount, 0%)
+		);
+		--interactive-hover: color-mix(
+			in oklab,
+			var(--primary-600) 100%,
+			var(--theme-text-color, black)
+				var(--theme-text-color-amount, 0%)
+		);
 		--interactive-muted: color-mix(
 			in oklab,
 			var(--primary-300) 100%,
@@ -109,6 +138,25 @@
 			var(--brand-500) 100%,
 			var(--theme-text-color, black)
 				var(--theme-text-color-amount, 0%)
+		);
+		--modal-background: color-mix(
+			in oklab,
+			var(--white-500) 100%,
+			var(--theme-base-color, black)
+				var(--theme-base-color-amount, 0%)
+		);
+
+		--scrollbar-thin-thumb: color-mix(
+			in oklab,
+			hsl(var(--primary-500-hsl) / 0.3) 100%,
+			hsl(var(--theme-base-color-hsl, 0 0% 0%) / 0.3)
+				var(--theme-base-color-amount, 0%)
+		);
+		--scrollbar-thin-track: color-mix(
+			in oklab,
+			hsl(var(--black-500-hsl) / 0) 100%,
+			hsl(var(--theme-base-color-hsl, 0 0% 0%) / 0)
+				var(--theme-base-color-amount, 0%)
 		);
 	}
 }

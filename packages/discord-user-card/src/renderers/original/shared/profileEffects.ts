@@ -1,9 +1,9 @@
 import type { DiscordUserCardProperties } from "@discord-user-card/core";
 import type { Effect, ProfileEffectIntermittent, ProfileEffectPersistent } from "@discord-user-card/profile-effects";
 import { AnimationType, DiscordProductType, findProfileEffect } from "@discord-user-card/profile-effects";
-import type { Renderer } from "../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, removeElement, setClasses, setStyles } from "../util.js";
-import { useAnimationFrame } from "../../functions/useAnimationFrame.js";
+import type { Renderer } from "../../../functions/Renderer.js";
+import { addElement, clearUnexpectedAttributes, removeElement, setClasses, setStyles } from "../../util.js";
+import { useAnimationFrame } from "../../../functions/useAnimationFrame.js";
 
 const introDelay = 500;
 const placeholderImage = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
@@ -216,6 +216,7 @@ export class ProfileEffectsRenderer implements Renderer {
 	}
 
 	destroy(): void {
+		removeElement(this.parent, this.elements.container);
 		window.removeEventListener("focus", this.focus);
 		window.removeEventListener("blur", this.blur);
 		this.root.removeEventListener("mouseenter", this.addHoverEffect);

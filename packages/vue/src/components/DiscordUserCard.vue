@@ -11,7 +11,7 @@ import { onBeforeUnmount, ref, toRefs, watch, withDefaults } from "vue";
 const props = withDefaults(
 	defineProps<DiscordUserCardProperties & {
 		style?: "original";
-		type?: "card";
+		type?: "card" | "profile";
 	}>(),
 	{
 		user: () => defaultUserCardProperties.user,
@@ -23,7 +23,7 @@ const props = withDefaults(
 const { user, activities } = toRefs(props);
 
 const div = ref<HTMLDivElement>(document.createElement("div"));
-const renderer = setupDiscordUserCard(div.value, {
+let renderer = setupDiscordUserCard(div.value, {
 	style: props.style,
 	type: props.type,
 });
@@ -38,6 +38,13 @@ const styles = ref(div.value.style.cssText);
 const classes = ref(div.value.className);
 const ariaLabel = ref(div.value.getAttribute("aria-label"));
 
+function updateRefs() {
+	innerHTML.value = div.value.innerHTML;
+	styles.value = div.value.style.cssText;
+	classes.value = div.value.className;
+	ariaLabel.value = div.value.getAttribute("aria-label");
+}
+
 watch(
 	[user, activities],
 	async () => {
@@ -45,10 +52,24 @@ watch(
 			user: user.value,
 			activities: activities.value,
 		});
-		innerHTML.value = div.value.innerHTML;
-		styles.value = div.value.style.cssText;
-		classes.value = div.value.className;
-		ariaLabel.value = div.value.getAttribute("aria-label");
+		updateRefs();
+	},
+	{ deep: true },
+);
+
+watch(
+	[props.style, props.type],
+	async () => {
+		renderer.destroy();
+		renderer = setupDiscordUserCard(div.value, {
+			style: props.style,
+			type: props.type,
+		});
+		await renderer.render({
+			user: user.value,
+			activities: activities.value,
+		});
+		updateRefs();
 	},
 	{ deep: true },
 );
