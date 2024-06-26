@@ -49,10 +49,7 @@ const a: DiscordUserCardProperties = {
 				name: "Project Management",
 				position: 35,
 				color: 15158332,
-				icon: {
-					animated: false,
-					id: "758ae4cad89ea4a2bec55951fe38a40d",
-				},
+				icon: "758ae4cad89ea4a2bec55951fe38a40d",
 			},
 			{
 				id: "852978081358282763",
@@ -65,10 +62,7 @@ const a: DiscordUserCardProperties = {
 				name: "Software Engineer",
 				position: 33,
 				color: 0,
-				icon: {
-					animated: false,
-					id: "45ad1e95b921f1a975b2bbb6ea676f58",
-				},
+				icon: "45ad1e95b921f1a975b2bbb6ea676f58",
 			},
 		],
 	},
@@ -104,6 +98,11 @@ const b: DiscordUserCardProperties = {
 		status: PresenceUpdateStatus.Idle,
 		bannerColor: 145990,
 		bio: "<a:ViViClap:639956089990807572>\n||foo||",
+		clan: {
+			identityGuildId: "1184379679621255168",
+			tag: "\u14DA\u160F\u15E2",
+			badge: "f2da48f1d6c79e605a787aefbf2c4bf1",
+		},
 	},
 	activities: [
 		{
@@ -141,6 +140,11 @@ const d: DiscordUserCardProperties = {
 		avatar: {
 			id: "4d1e5fef85948a52a93ef8146fddc4b0",
 			animated: true,
+		},
+		clan: {
+			identityGuildId: "1184379679621255168",
+			tag: "\u14DA\u160F\u15E2",
+			badge: "f2da48f1d6c79e605a787aefbf2c4bf1",
 		},
 		discriminator: "0",
 		badges: [

@@ -2,8 +2,6 @@ import { setupDiscordUserCard } from "./renderers/index.js";
 
 export {
 	ActivityType,
-	type APIUser,
-	type APIAvatarDecorationData,
 	type DiscordUserCardActivity,
 	type DiscordUserCardActivityAssets,
 	type DiscordUserCardActivityBase,
@@ -23,10 +21,7 @@ export {
 	type DiscordUserCardUser,
 	PresenceUpdateStatus,
 	type Snowflake,
-	UserFlags,
-	UserPremiumType,
 	defaultUserCardProperties,
-	mapDiscordApiUser,
 	flagsToBadges,
 } from "@discord-user-card/core";
 export { setupDiscordUserCard } from "./renderers/index.js";

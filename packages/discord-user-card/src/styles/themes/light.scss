@@ -21,6 +21,8 @@
 	--mention-background: hsl(var(--brand-500-hsl) / 0.15);
 	--mention-foreground: var(--brand-500);
 	--modal-background: var(--white-500);
+	--bg-mod-faint: hsl(var(--primary-400-hsl) / 0.08);
+	--bg-mod-strong: hsl(var(--primary-400-hsl) / 0.24);
 
 	--scrollbar-thin-thumb: hsl(var(--primary-500-hsl) / 0.3);
 	--scrollbar-thin-track: hsl(var(--black-500-hsl) / 0);
@@ -143,6 +145,18 @@
 			in oklab,
 			var(--white-500) 100%,
 			var(--theme-base-color, black)
+				var(--theme-base-color-amount, 0%)
+		);
+		--bg-mod-faint: color-mix(
+			in oklab,
+			hsl(var(--primary-400-hsl) / 0.08) 100%,
+			hsl(var(--theme-base-color-hsl, 0 0% 0%) / 0.08)
+				var(--theme-base-color-amount, 0%)
+		);
+		--bg-mod-strong: color-mix(
+			in oklab,
+			hsl(var(--primary-400-hsl) / 0.24) 100%,
+			hsl(var(--theme-base-color-hsl, 0 0% 0%) / 0.24)
 				var(--theme-base-color-amount, 0%)
 		);
 

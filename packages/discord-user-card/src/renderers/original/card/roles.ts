@@ -1,4 +1,4 @@
-import { ColorUtils, type DiscordUserCardProperties, type DiscordUserCardRole, imageToUrl } from "@discord-user-card/core";
+import { ColorUtils, type DiscordUserCardProperties, type DiscordUserCardRole, imageToUrl, mapDiscordImageHash } from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
 import type { Renderer } from "../../../functions/Renderer.js";
 import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, setClasses } from "../../util.js";
@@ -119,7 +119,7 @@ class RoleRenderer implements Renderer<DiscordUserCardRole> {
 		});
 		if (icon) {
 			this.elements.img.src = `${imageToUrl({
-				image: icon,
+				image: mapDiscordImageHash(icon)!,
 				scope: "role-icons",
 				animation: false,
 				relatedId: id,

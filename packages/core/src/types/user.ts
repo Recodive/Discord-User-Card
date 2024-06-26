@@ -6,6 +6,7 @@ import type {
 
 import type { DiscordUserCardImage } from "./generic.js";
 import type { DiscordUserCardRole } from "./roles.js";
+import type { DiscordUserCardClan } from "./clan.js";
 
 export interface DiscordUserCardUser {
 	/**
@@ -85,4 +86,8 @@ export interface DiscordUserCardUser {
 	 * The user's roles
 	 */
 	roles?: DiscordUserCardRole[];
+	/**
+	 * The user's clan
+	 */
+	clan?: DiscordUserCardClan;
 }

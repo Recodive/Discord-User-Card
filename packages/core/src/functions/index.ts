@@ -1,4 +1,3 @@
-export * from "./mapDiscordApiUser.js";
 export * from "./mapDiscordImageHash.js";
 export * from "./imageToUrl.js";
 export * from "./ColorUtils.js";

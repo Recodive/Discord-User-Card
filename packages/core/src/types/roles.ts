@@ -1,5 +1,4 @@
 import type { Snowflake } from "./discordApiTypes.js";
-import type { DiscordUserCardImage } from "./generic.js";
 
 export interface DiscordUserCardRole {
 	/**
@@ -17,7 +16,7 @@ export interface DiscordUserCardRole {
 	/**
 	 * The role's icon hash
 	 */
-	icon?: DiscordUserCardImage;
+	icon?: string;
 	/**
 	 * The role's unicode emoji as a standard emoji
 	 */

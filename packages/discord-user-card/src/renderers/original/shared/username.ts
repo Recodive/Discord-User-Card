@@ -1,4 +1,4 @@
-import type { DiscordUserCardProperties } from "@discord-user-card/core";
+import { type DiscordUserCardProperties, imageToUrl, mapDiscordImageHash } from "@discord-user-card/core";
 import type { Renderer } from "../../../functions/Renderer.js";
 import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses } from "../../util.js";
 
@@ -9,7 +9,7 @@ export class UsernameRenderer implements Renderer {
 
 	children = {
 		username: new UsernameInnerWrapperRenderer(this.elements.section),
-		clan: undefined as Renderer | undefined,
+		clan: new ClanRenderer(this.elements.section),
 	};
 
 	constructor(public readonly parent: Element) { }
@@ -61,7 +61,64 @@ class UsernameInnerWrapperRenderer implements Renderer {
 	}
 }
 
-export class UsernameTextRenderer implements Renderer {
+class ClanRenderer implements Renderer {
+	elements = {
+		outer: document.createElement("div"),
+		inner: document.createElement("span"),
+		img: document.createElement("img"),
+		text: document.createElement("span"),
+	};
+
+	constructor(public readonly parent: Element) { }
+
+	async render({ user: { clan } }: Required<DiscordUserCardProperties>): Promise<void> {
+		if (!clan) {
+			return removeElement(this.parent, this.elements.outer);
+		}
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.outer, ["class"]);
+		clearUnexpectedAttributes(this.elements.inner, ["class"]);
+		clearUnexpectedAttributes(this.elements.img, ["src", "alt", "class"]);
+		clearUnexpectedAttributes(this.elements.text, ["class"]);
+
+		// ? Set the class of the elements
+		setClasses(this.elements.outer, {
+			duc_clan: true,
+		});
+		setClasses(this.elements.inner, {
+			duc_clan_inner: true,
+		});
+		setClasses(this.elements.img, {
+			duc_clan_img: true,
+		});
+		setClasses(this.elements.text, {
+			duc_clan_text: true,
+		});
+
+		// ? Set the attributes of the elements
+		this.elements.img.src = `${imageToUrl({
+			image: mapDiscordImageHash(clan.badge)!,
+			scope: "clan-badges",
+			relatedId: clan.identityGuildId,
+			animation: false,
+		})}?size=16`;
+		this.elements.img.alt = `[${clan.tag}]`;
+		this.elements.text.textContent = clan.tag;
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.outer);
+		addElement(this.elements.outer, this.elements.inner);
+		addElement(this.elements.inner, this.elements.img);
+		addElement(this.elements.inner, this.elements.text);
+	}
+
+	destroy(): void {
+		removeElement(this.parent, this.elements.outer);
+	}
+}
+
+class UsernameTextRenderer implements Renderer {
 	elements = {
 		display: document.createElement("h1"),
 		tag: document.createElement("div"),

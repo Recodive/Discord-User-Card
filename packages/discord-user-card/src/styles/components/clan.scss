@@ -1,0 +1,33 @@
+.duc_clan {
+	margin-top: 2px;
+
+	.duc_clan_inner {
+		line-height: 16px;
+		display: inline-block;
+		padding: 0 4px;
+		background: var(--bg-mod-strong);
+		border-radius: 4px;
+		vertical-align: middle;
+		transition: background .1s ease-in-out;
+		color: var(--text-normal);
+		font-family: var(--font-primary);
+		font-size: 12px;
+		font-weight: 600;
+
+		&:hover {
+			background: var(--bg-mod-faint);
+		}
+
+		.duc_clan_img {
+			width: 12px;
+			height: 12px;
+			margin-right: 2px;
+			margin-top: 0;
+			margin-bottom: -1px;
+		}
+
+		.duc_clan_text {
+			user-select: none;
+		}
+	}
+}
