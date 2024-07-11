@@ -57,6 +57,8 @@ export function addElement(
 	parent: Element,
 	childToAppend: Element,
 ) {
+	if (!parent || !childToAppend)
+		return;
 	if (parent.contains(childToAppend))
 		return;
 	parent.appendChild(childToAppend);
@@ -66,6 +68,8 @@ export function removeElement(
 	parent: Element,
 	childToRemove: Element,
 ) {
+	if (!parent || !childToRemove)
+		return;
 	if (!parent.contains(childToRemove))
 		return;
 	parent.removeChild(childToRemove);
