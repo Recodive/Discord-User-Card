@@ -35,10 +35,12 @@
 	"peerDependencies": {
 		"vue": "^3.0.0"
 	},
+	"dependencies": {
+		"discord-user-card": "workspace:*"
+	},
 	"devDependencies": {
 		"@types/node": "^20.12.12",
 		"@vitejs/plugin-vue": "^5.0.4",
-		"discord-user-card": "workspace:*",
 		"typescript": "^5.4.5",
 		"vite": "^5.2.11",
 		"vue": "^3.4.27",

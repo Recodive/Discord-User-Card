@@ -32,8 +32,10 @@
 		"dev": "pnpm dev:ts & pnpm dev:scss",
 		"build": "pnpm build:ts && pnpm build:scss"
 	},
+	"dependencies": {
+		"@discord-user-card/core": "workspace:*"
+	},
 	"devDependencies": {
-		"@discord-user-card/core": "workspace:*",
 		"@discord-user-card/emojis": "workspace:*",
 		"@discord-user-card/markdown": "workspace:*",
 		"@discord-user-card/profile-effects": "workspace:*",

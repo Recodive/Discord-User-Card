@@ -16,6 +16,7 @@ export default defineConfig({
 		},
 		outDir: "lib",
 		rollupOptions: {
+			external: ["@discord-user-card/core"],
 			output: {
 				banner: `/* Discord-User-Card v${version} */`,
 				exports: "named",

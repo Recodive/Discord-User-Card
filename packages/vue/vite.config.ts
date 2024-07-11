@@ -17,9 +17,9 @@ export default defineConfig({
 		},
 		outDir: "lib",
 		rollupOptions: {
-			external: ["vue"],
+			external: ["vue", "discord-user-card"],
 			output: {
-				banner: `/* Discord-User-Card v${version} */`,
+				banner: `/* Discord-User-Card (Vue) v${version} */`,
 				exports: "named",
 				globals: {
 					vue: "Vue",

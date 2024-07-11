@@ -45,10 +45,11 @@ importers:
   packages/core: {}
 
   packages/discord-user-card:
-    devDependencies:
+    dependencies:
       '@discord-user-card/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       '@discord-user-card/emojis':
         specifier: workspace:*
         version: link:../emojis
@@ -97,6 +98,10 @@ importers:
   packages/profile-effects: {}
 
   packages/vue:
+    dependencies:
+      discord-user-card:
+        specifier: workspace:*
+        version: link:../discord-user-card
     devDependencies:
       '@types/node':
         specifier: ^20.12.12
@@ -104,9 +109,6 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^5.0.4
         version: 5.0.4(vite@5.2.11(@types/node@20.12.12)(sass@1.77.6))(vue@3.4.27(typescript@5.4.5))
-      discord-user-card:
-        specifier: workspace:*
-        version: link:../discord-user-card
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
