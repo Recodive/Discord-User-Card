@@ -20,6 +20,9 @@ export default defineConfig({
 			output: {
 				banner: `/* Discord-User-Card v${version} */`,
 				exports: "named",
+				globals: {
+					"@discord-user-card/core": "DUCCore",
+				},
 			},
 		},
 		sourcemap: true,

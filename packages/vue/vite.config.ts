@@ -22,7 +22,8 @@ export default defineConfig({
 				banner: `/* Discord-User-Card (Vue) v${version} */`,
 				exports: "named",
 				globals: {
-					vue: "Vue",
+					"vue": "Vue",
+					"discord-user-card": "DiscordUserCard",
 				},
 			},
 		},
