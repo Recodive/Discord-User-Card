@@ -20,12 +20,12 @@ const props = withDefaults(
 		type: "card",
 	},
 );
-const { user, activities } = toRefs(props);
+const { user, activities, style, type } = toRefs(props);
 
 const div = ref<HTMLDivElement>(document.createElement("div"));
 let renderer = setupDiscordUserCard(div.value, {
-	style: props.style,
-	type: props.type,
+	style: style.value,
+	type: type.value,
 });
 
 await renderer.render({
@@ -58,12 +58,12 @@ watch(
 );
 
 watch(
-	[props.style, props.type],
+	[style, type],
 	async () => {
 		renderer.destroy();
 		renderer = setupDiscordUserCard(div.value, {
-			style: props.style,
-			type: props.type,
+			style: style.value,
+			type: type.value,
 		});
 		await renderer.render({
 			user: user.value,
