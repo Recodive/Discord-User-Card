@@ -1,7 +1,7 @@
 {
 	"name": "@discord-user-card/generate-emojis",
 	"type": "module",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"private": true,
 	"description": "Get all the emojis supported by Discord",
 	"scripts": {
