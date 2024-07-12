@@ -49,10 +49,10 @@ export function setupDiscordUserCard(
 				...props,
 			};
 			await renderer.render({
-				activities,
+				activities: activities.filter(Boolean),
 				user,
 			});
 		},
-		destroy: renderer.destroy,
+		destroy: renderer.destroy.bind(renderer),
 	};
 }
