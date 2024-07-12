@@ -62,8 +62,8 @@ export function mapActivity(activity: DiscordUserCardActivityPlaying | DiscordUs
 			const isSpotify = activity.name === "Spotify" && activity.largeImage?.startsWith("spotify:");
 			title = `Listening to ${activity.name}`;
 			line1 = activity.details;
-			line2 = `${isSpotify ? "by " : ""}${activity.state}`;
-			line3 = `${isSpotify ? "on " : ""}${activity.largeImageText}`;
+			line2 = activity.state ? `${isSpotify ? "by " : ""}${activity.state}` : undefined;
+			line3 = activity.largeImageText ? `${isSpotify ? "on " : ""}${activity.largeImageText}` : undefined;
 			break;
 		}
 		case ActivityType.Watching: {
