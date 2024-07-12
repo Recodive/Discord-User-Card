@@ -8,6 +8,7 @@ import {
 	discrimToAvatar,
 	getColorFromImage,
 	imageToUrl,
+	mapDiscordImageHash,
 } from "@discord-user-card/core";
 import type { Renderer } from "../functions/Renderer.js";
 
@@ -101,14 +102,11 @@ export function getUserAvatar(user: DiscordUserCardUser) {
 	if (!user.avatar)
 		return discrimToAvatar(user.id, user.discriminator);
 
-	if (typeof user.avatar === "string") {
-		if (isUrl(user.avatar))
-			return user.avatar;
-		return discrimToAvatar(user.id, user.discriminator);
-	}
+	if (isUrl(user.avatar))
+		return user.avatar;
 
 	return imageToUrl({
-		image: user.avatar,
+		image: mapDiscordImageHash(user.avatar)!,
 		scope: "avatars",
 		relatedId: user.id,
 		animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -119,14 +117,11 @@ export function getUserBanner(user: DiscordUserCardUser) {
 	if (!user.banner)
 		return;
 
-	if (typeof user.banner === "string") {
-		if (isUrl(user.banner))
-			return user.banner;
-		return;
-	}
+	if (isUrl(user.banner))
+		return user.banner;
 
 	return imageToUrl({
-		image: user.banner,
+		image: mapDiscordImageHash(user.banner)!,
 		scope: "banners",
 		relatedId: user.id,
 		animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -162,10 +157,11 @@ export function getUserStatus(user: DiscordUserCardUser): {
 }
 
 export function getUserAvatarDecoration(user: DiscordUserCardUser) {
-	if (!user.avatarDecoration)
+	const image = mapDiscordImageHash(user.avatarDecoration);
+	if (!image)
 		return;
 	return imageToUrl({
-		image: user.avatarDecoration,
+		image,
 		scope: "avatar-decoration-presets",
 		relatedId: user.id,
 		animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,

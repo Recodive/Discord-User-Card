@@ -17,7 +17,6 @@ export {
 	type DiscordUserCardActivityWatching,
 	DiscordUserCardBadges,
 	DiscordUserCardBotBadges,
-	type DiscordUserCardImage,
 	type DiscordUserCardProperties,
 	type DiscordUserCardUser,
 	PresenceUpdateStatus,

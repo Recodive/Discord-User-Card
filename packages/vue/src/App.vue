@@ -12,16 +12,10 @@ const a: Ref<DiscordUserCardProperties> = ref({
 		id: "223238938716798978",
 		username: "timeraa",
 		displayName: "Timeraa",
-		avatar: {
-			id: "782b098327195dbc3d07619c67778a65",
-			animated: false,
-		},
+		avatar: "782b098327195dbc3d07619c67778a65",
 		discriminator: "0",
 		badges: flagsToBadges(4194432),
-		banner: {
-			id: "92dfc45d41b3936613f5882df1aa45a6",
-			animated: false,
-		},
+		banner: "92dfc45d41b3936613f5882df1aa45a6",
 		bio: "\u2B50 Creator of **PreMiD**  \u2B50\n\n\uD83D\uDCEE Feel free to dm\n\uD83D\uDC0E Brony  \u2642\uFE0F  **22**\n\uD83D\uDC68\u200D\uD83D\uDCBB  **GitHub**: @Timeraa",
 		status: PresenceUpdateStatus.Online,
 		themeColors: {
@@ -36,10 +30,7 @@ const b: DiscordUserCardProperties = {
 		id: "936175826330877963",
 		username: "autoflexbas",
 		displayName: "Bas van Zanten",
-		avatar: {
-			id: "39e168510cf8a39c6a3a01ac331ff342",
-			animated: false,
-		},
+		avatar: "39e168510cf8a39c6a3a01ac331ff342",
 		discriminator: "0",
 		status: PresenceUpdateStatus.Idle,
 		bannerColor: 145990,

@@ -8,6 +8,7 @@ import {
 	type DiscordUserCardActivityWatching,
 	formatTimestamp,
 	imageToUrl,
+	mapDiscordImageHash,
 } from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
 import type { Renderer } from "../../../functions/Renderer.js";
@@ -216,12 +217,12 @@ export class ActivityContentRenderer implements Renderer<Activity> {
 			} | undefined;
 
 			// ? If the emoji is a custom emoji, get the emoji from the API using the ID
-			if ("id" in activity.emoji) {
+			if ("hash" in activity.emoji) {
 				emoji = {
 					name: activity.emoji.name,
 					url: imageToUrl({
 						scope: "emojis",
-						image: activity.emoji,
+						image: mapDiscordImageHash(activity.emoji.hash)!,
 						animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 					}),
 				};

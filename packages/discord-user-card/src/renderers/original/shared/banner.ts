@@ -84,12 +84,22 @@ export class BannerRenderer implements Renderer {
 
 		// ? Set the attributes of the circle element
 		this.elements.circle.setAttribute("fill", "black");
-		this.elements.circle.setAttribute("cx", this.style === "card"
-			? user.banner ? "58" : "62"
-			: "82");
-		this.elements.circle.setAttribute("cy", this.style === "card"
-			? user.banner ? "112" : "56"
-			: user.banner ? "207" : "101");
+		this.elements.circle.setAttribute(
+			"cx",
+			this.style === "card"
+				? user.banner
+					? user.themeColors ? "58" : "62"
+					: "62"
+				: "82",
+		);
+		this.elements.circle.setAttribute(
+			"cy",
+			this.style === "card"
+				? user.banner
+					? user.themeColors ? "112" : "116"
+					: "56"
+				: user.banner ? "207" : "101",
+		);
 		this.elements.circle.setAttribute("r", this.style === "card" ? "46" : "68");
 
 		// ? Set the attributes of the foreignObject element

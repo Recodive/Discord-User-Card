@@ -3,12 +3,13 @@ import type {
 } from "@discord-user-card/core";
 import {
 	imageToUrl,
+	mapDiscordImageHash,
 } from "@discord-user-card/core";
 import type { SingleASTNode } from "@discord-user-card/markdown";
 import { parseMarkdown } from "@discord-user-card/markdown";
 import { AnimationType, findProfileEffect } from "@discord-user-card/profile-effects";
 import type { Renderer } from "../../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, removeElement } from "../../util.js";
+import { addElement, clearUnexpectedAttributes, isUrl, removeElement } from "../../util.js";
 
 export class PrefetchRenderer implements Renderer {
 	elements: HTMLLinkElement[] = [];
@@ -17,16 +18,17 @@ export class PrefetchRenderer implements Renderer {
 
 	async render({ user, activities }: Required<DiscordUserCardProperties>): Promise<void> {
 		const linksToPrefetch = new Set<string>();
-		if (typeof user.avatar !== "string" && user.avatar?.animated) {
+		if (user.avatar && !isUrl(user.avatar) && user.avatar.startsWith("a_")) {
+			const image = mapDiscordImageHash(user.avatar)!;
 			const [avatarUrlAnimated, avatarUrlStatic] = [
 				imageToUrl({
-					image: user.avatar,
+					image,
 					relatedId: user.id,
 					animation: true,
 					scope: "avatars",
 				}),
 				imageToUrl({
-					image: user.avatar,
+					image,
 					relatedId: user.id,
 					animation: false,
 					scope: "avatars",
@@ -36,16 +38,17 @@ export class PrefetchRenderer implements Renderer {
 			linksToPrefetch.add(`${avatarUrlStatic}?size=${this.style === "card" ? "80" : "128"}`);
 		}
 
-		if (user.avatarDecoration?.animated) {
+		if (user.avatarDecoration?.startsWith("a_")) {
+			const image = mapDiscordImageHash(user.avatarDecoration)!;
 			const [decorationUrlAnimated, decorationUrlStatic] = [
 				imageToUrl({
-					image: user.avatarDecoration,
+					image,
 					relatedId: user.id,
 					animation: true,
 					scope: "avatar-decoration-presets",
 				}),
 				imageToUrl({
-					image: user.avatarDecoration,
+					image,
 					relatedId: user.id,
 					animation: false,
 					scope: "avatar-decoration-presets",
@@ -55,16 +58,17 @@ export class PrefetchRenderer implements Renderer {
 			linksToPrefetch.add(`${decorationUrlStatic}&size=${this.style === "card" ? "96" : "160"}`);
 		}
 
-		if (typeof user.banner !== "string" && user.banner?.animated) {
+		if (user.banner && !isUrl(user.banner) && user.banner.startsWith("a_")) {
+			const image = mapDiscordImageHash(user.banner)!;
 			const [bannerUrlAnimated, bannerUrlStatic] = [
 				imageToUrl({
-					image: user.banner,
+					image,
 					relatedId: user.id,
 					animation: true,
 					scope: "banners",
 				}),
 				imageToUrl({
-					image: user.banner,
+					image,
 					relatedId: user.id,
 					animation: false,
 					scope: "banners",
@@ -125,15 +129,16 @@ export class PrefetchRenderer implements Renderer {
 
 		if (activities.length) {
 			for (const activity of activities) {
-				if ("emoji" in activity && activity.emoji && "id" in activity.emoji && activity.emoji.animated) {
+				if ("emoji" in activity && activity.emoji && "hash" in activity.emoji && activity.emoji.hash.startsWith("a_")) {
+					const image = mapDiscordImageHash(activity.emoji.hash)!;
 					const [animatedUrl, staticUrl] = [
 						imageToUrl({
-							image: activity.emoji,
+							image,
 							animation: true,
 							scope: "emojis",
 						}),
 						imageToUrl({
-							image: activity.emoji,
+							image,
 							animation: false,
 							scope: "emojis",
 						}),

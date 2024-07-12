@@ -1,7 +1,5 @@
 import type { ActivityType } from "./discordApiTypes.js";
 
-import type { DiscordUserCardImage } from "./generic.js";
-
 export type DiscordUserCardActivity =
 	| DiscordUserCardActivityPlaying
 	| DiscordUserCardActivityStreaming
@@ -226,4 +224,4 @@ export interface DiscordUserCardActivityHang extends DiscordUserCardActivityBase
 	emoji?: ActivityEmoji;
 }
 
-export type ActivityEmoji = { name: string } | (DiscordUserCardImage & { name: string });
+export type ActivityEmoji = { name: string } | ({ name: string; hash: string });

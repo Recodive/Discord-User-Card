@@ -19,16 +19,10 @@ const a: DiscordUserCardProperties = {
 		username: "timeraa",
 		displayName: "Timeraa",
 		pronouns: "he/him",
-		avatar: {
-			id: "782b098327195dbc3d07619c67778a65",
-			animated: false,
-		},
+		avatar: "782b098327195dbc3d07619c67778a65",
 		discriminator: "0",
 		badges: flagsToBadges(4194432),
-		banner: {
-			id: "92dfc45d41b3936613f5882df1aa45a6",
-			animated: false,
-		},
+		banner: "92dfc45d41b3936613f5882df1aa45a6",
 		bio: "\u2B50 Creator of **PreMiD**  \u2B50\n\n\uD83D\uDCEE Feel free to dm\n\uD83D\uDC0E Brony  \u2642\uFE0F  **22**\n\uD83D\uDC68\u200D\uD83D\uDCBB  **GitHub**: @Timeraa",
 		status: PresenceUpdateStatus.Online,
 		themeColors: {
@@ -78,9 +72,8 @@ const a: DiscordUserCardProperties = {
 			state: "custom",
 			details: "Horsing rounds",
 			emoji: {
-				id: "511956534578774056",
+				hash: "a_511956534578774056",
 				name: "FlyingTimeraa",
-				animated: true,
 			},
 		},
 	],
@@ -90,10 +83,7 @@ const b: DiscordUserCardProperties = {
 		id: "936175826330877963",
 		username: "autoflexbas",
 		displayName: "Bas van Zanten",
-		avatar: {
-			id: "39e168510cf8a39c6a3a01ac331ff342",
-			animated: false,
-		},
+		avatar: "39e168510cf8a39c6a3a01ac331ff342",
 		discriminator: "0",
 		status: PresenceUpdateStatus.Idle,
 		bannerColor: 145990,
@@ -137,10 +127,7 @@ const d: DiscordUserCardProperties = {
 		id: "241278257335500811",
 		username: "bas950",
 		displayName: "Bas950",
-		avatar: {
-			id: "4d1e5fef85948a52a93ef8146fddc4b0",
-			animated: true,
-		},
+		avatar: "a_4d1e5fef85948a52a93ef8146fddc4b0",
 		clan: {
 			identityGuildId: "1184379679621255168",
 			tag: "\u14DA\u160F\u15E2",
@@ -156,21 +143,15 @@ const d: DiscordUserCardProperties = {
 			DiscordUserCardBadges.EARLY_SUPPORTER,
 			DiscordUserCardBadges.PREMIUM,
 		],
-		banner: {
-			id: "6e16d7173d8e1201095c3ca57bcc3eb5",
-			animated: true,
-		},
+		banner: "a_6e16d7173d8e1201095c3ca57bcc3eb5",
 		bannerColor: 1579292,
 		bio: "조급할 필요 없어 My Pace\n비교 따윈 하지 마\n천천히 달려도 괜찮아\n나의 길을 따라 My lane\n급한 맘 내려놔\n앞만 보고 달려가",
 		status: PresenceUpdateStatus.DoNotDisturb,
-		themeColors: {
-			primary: 16755370,
-			secondary: 7506394,
-		},
-		avatarDecoration: {
-			id: "3e1fc3c7ee2e34e8176f4737427e8f4f",
-			animated: true,
-		},
+		// themeColors: {
+		// 	primary: 16755370,
+		// 	secondary: 7506394,
+		// },
+		avatarDecoration: "a_3e1fc3c7ee2e34e8176f4737427e8f4f",
 		profileEffect: "1174460912699191336",
 	},
 	activities: [
@@ -178,9 +159,8 @@ const d: DiscordUserCardProperties = {
 			type: 4,
 			name: "Custom Status",
 			emoji: {
-				id: "440704948653785101",
+				hash: "a_440704948653785101",
 				name: "DayoungKms",
-				animated: true,
 			},
 			state: "Life is a rollercoaster...",
 		},

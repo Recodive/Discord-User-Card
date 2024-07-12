@@ -4,7 +4,6 @@ import type {
 	DiscordUserCardBotBadges,
 } from "./badges.js";
 
-import type { DiscordUserCardImage } from "./generic.js";
 import type { DiscordUserCardRole } from "./roles.js";
 import type { DiscordUserCardClan } from "./clan.js";
 
@@ -20,15 +19,15 @@ export interface DiscordUserCardUser {
 	/**
 	 * The user's avatar hash or you can pass an URL
 	 */
-	avatar?: DiscordUserCardImage | string;
+	avatar?: string;
 	/**
 	 * The user's avatar decoration hash
 	 */
-	avatarDecoration?: DiscordUserCardImage;
+	avatarDecoration?: string;
 	/**
 	 * The user's banner hash or you can pass an URL
 	 */
-	banner?: DiscordUserCardImage | string;
+	banner?: string;
 	/**
 	 * The user's banner color encoded as an integer representation of hexadecimal color code
 	 */

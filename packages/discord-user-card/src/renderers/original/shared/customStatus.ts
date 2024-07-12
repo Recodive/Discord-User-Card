@@ -6,6 +6,7 @@ import type {
 import {
 	ActivityType,
 	imageToUrl,
+	mapDiscordImageHash,
 } from "@discord-user-card/core";
 import { findEmoji } from "@discord-user-card/emojis";
 import type { Renderer } from "../../../functions/Renderer.js";
@@ -108,12 +109,12 @@ function findCustomStatus(activities: DiscordUserCardActivity[]) {
 			url: string;
 		}
 		| undefined;
-	if (activity.emoji && "id" in activity.emoji) {
+	if (activity.emoji && "hash" in activity.emoji) {
 		emoji = {
 			name: activity.emoji.name,
 			url: imageToUrl({
 				scope: "emojis",
-				image: activity.emoji,
+				image: mapDiscordImageHash(activity.emoji.hash)!,
 				animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 			}),
 		};
