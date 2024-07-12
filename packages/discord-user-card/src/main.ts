@@ -147,10 +147,10 @@ const d: DiscordUserCardProperties = {
 		bannerColor: 1579292,
 		bio: "조급할 필요 없어 My Pace\n비교 따윈 하지 마\n천천히 달려도 괜찮아\n나의 길을 따라 My lane\n급한 맘 내려놔\n앞만 보고 달려가",
 		status: PresenceUpdateStatus.DoNotDisturb,
-		// themeColors: {
-		// 	primary: 16755370,
-		// 	secondary: 7506394,
-		// },
+		themeColors: {
+			primary: 16755370,
+			secondary: 7506394,
+		},
 		avatarDecoration: "a_3e1fc3c7ee2e34e8176f4737427e8f4f",
 		profileEffect: "1174460912699191336",
 	},
@@ -176,6 +176,10 @@ const d: DiscordUserCardProperties = {
 			smallImageText: "Visual Studio Code",
 			applicationId: "383226320970055681",
 			buttons: [
+				{
+					label: "View Repository",
+					url: "https://github.com/Recodive/Discord-User-Card",
+				},
 				{
 					label: "View Repository",
 					url: "https://github.com/Recodive/Discord-User-Card",
