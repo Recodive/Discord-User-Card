@@ -15,6 +15,7 @@ import {
 	addElement,
 	clearUnexpectedAttributes,
 	destoryChildren,
+	isUrl,
 	removeElement,
 	renderChildren,
 	setClasses,
@@ -321,6 +322,9 @@ export class ActivityContentRenderer implements Renderer<Activity> {
 
 		if (asset.startsWith("spotify:"))
 			return `https://i.scdn.co/image/${asset.replace("spotify:", "")}`;
+
+		if (isUrl(asset))
+			return asset;
 
 		const animated = asset.startsWith("a_");
 

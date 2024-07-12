@@ -6,6 +6,7 @@
 .duc_banner {
 	transition: background-color 0.1s;
 	width: 100%;
+	min-width: 100%;
 	border-radius: var(--radius-xs) var(--radius-xs) 0 0;
 }
 

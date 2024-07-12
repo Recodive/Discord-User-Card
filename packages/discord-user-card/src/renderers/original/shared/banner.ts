@@ -112,7 +112,10 @@ export class BannerRenderer implements Renderer {
 		setStyles(this.elements.div, {
 			"background-color": bannerColor,
 			...(banner && {
-				"background-image": `url('${banner}?size=480')`,
+				"background-image":
+					banner.includes("cdn.discordapp.com")
+						? `url('${banner}?size=480')`
+						: `url('${banner}')`,
 			}),
 		});
 

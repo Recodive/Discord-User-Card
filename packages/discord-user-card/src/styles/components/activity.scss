@@ -30,6 +30,8 @@
 	.duc_activity_image_large {
 		width: 60px;
 		height: 60px;
+		min-width: 60px;
+		min-height: 60px;
 		object-fit: cover;
 		display: block;
 		border-radius: 8px;
@@ -38,12 +40,16 @@
 		&.duc_activity_image_hang {
 			width: 40px;
 			height: 40px;
+			min-width: 40px;
+			min-height: 40px;
 			font-size: 100%;
 		}
 
 		&.duc_activity_image_app_icon {
 			width: 40px;
 			height: 40px;
+			min-width: 40px;
+			min-height: 40px;
 			border-radius: 12px;
 			background-size: 100%;
 			color: var(--header-primary);
@@ -61,6 +67,8 @@
 	.duc_activity_image_small {
 		width: 20px;
 		height: 20px;
+		min-width: 20px;
+		min-height: 20px;
 		position: absolute;
 		bottom: -4px;
 		right: -4px;
@@ -194,10 +202,14 @@
 	.duc_activity_image_large {
 		width: 90px;
 		height: 90px;
+		min-width: 90px;
+		min-height: 90px;
 
 		&.duc_activity_image_hang {
 			width: 60px;
 			height: 60px;
+			min-width: 60px;
+			min-height: 60px;
 		}
 
 		&.duc_has_small_image {
@@ -208,6 +220,8 @@
 	.duc_activity_image_small {
 		width: 30px;
 		height: 30px;
+		min-width: 30px;
+		min-height: 30px;
 	}
 
 	.duc_activity_buttons {

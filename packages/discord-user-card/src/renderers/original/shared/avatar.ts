@@ -111,7 +111,13 @@ export class AvatarRenderer implements Renderer {
 		});
 
 		// ? Set the attributes of the img element
-		this.elements.img.setAttribute("src", `${getUserAvatar(user)}?size=${this.style === "card" ? "80" : "128"}`);
+		const avatar = getUserAvatar(user);
+		this.elements.img.setAttribute(
+			"src",
+			avatar.includes("cdn.discordapp.com")
+				? `${avatar}?size=${this.style === "card" ? "80" : "128"}`
+				: avatar,
+		);
 		this.elements.img.setAttribute("alt", " ");
 		setClasses(this.elements.img, {
 			duc_avatar: true,

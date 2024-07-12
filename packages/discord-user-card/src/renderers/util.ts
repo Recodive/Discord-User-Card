@@ -100,6 +100,13 @@ export function destoryChildren(children: {
 export function getUserAvatar(user: DiscordUserCardUser) {
 	if (!user.avatar)
 		return discrimToAvatar(user.id, user.discriminator);
+
+	if (typeof user.avatar === "string") {
+		if (isUrl(user.avatar))
+			return user.avatar;
+		return discrimToAvatar(user.id, user.discriminator);
+	}
+
 	return imageToUrl({
 		image: user.avatar,
 		scope: "avatars",
@@ -111,6 +118,13 @@ export function getUserAvatar(user: DiscordUserCardUser) {
 export function getUserBanner(user: DiscordUserCardUser) {
 	if (!user.banner)
 		return;
+
+	if (typeof user.banner === "string") {
+		if (isUrl(user.banner))
+			return user.banner;
+		return;
+	}
+
 	return imageToUrl({
 		image: user.banner,
 		scope: "banners",
@@ -156,4 +170,14 @@ export function getUserAvatarDecoration(user: DiscordUserCardUser) {
 		relatedId: user.id,
 		animation: document.hasFocus() && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 	});
+}
+
+export function isUrl(url: string) {
+	try {
+		void new URL(url);
+		return true;
+	}
+	catch {
+		return false;
+	}
 }

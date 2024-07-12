@@ -17,7 +17,7 @@ export class PrefetchRenderer implements Renderer {
 
 	async render({ user, activities }: Required<DiscordUserCardProperties>): Promise<void> {
 		const linksToPrefetch = new Set<string>();
-		if (user.avatar?.animated) {
+		if (typeof user.avatar !== "string" && user.avatar?.animated) {
 			const [avatarUrlAnimated, avatarUrlStatic] = [
 				imageToUrl({
 					image: user.avatar,
@@ -55,7 +55,7 @@ export class PrefetchRenderer implements Renderer {
 			linksToPrefetch.add(`${decorationUrlStatic}&size=${this.style === "card" ? "96" : "160"}`);
 		}
 
-		if (user.banner?.animated) {
+		if (typeof user.banner !== "string" && user.banner?.animated) {
 			const [bannerUrlAnimated, bannerUrlStatic] = [
 				imageToUrl({
 					image: user.banner,

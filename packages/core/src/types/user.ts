@@ -18,17 +18,17 @@ export interface DiscordUserCardUser {
 	 */
 	username: string;
 	/**
-	 * The user's avatar hash
+	 * The user's avatar hash or you can pass an URL
 	 */
-	avatar?: DiscordUserCardImage;
+	avatar?: DiscordUserCardImage | string;
 	/**
 	 * The user's avatar decoration hash
 	 */
 	avatarDecoration?: DiscordUserCardImage;
 	/**
-	 * The user's banner hash
+	 * The user's banner hash or you can pass an URL
 	 */
-	banner?: DiscordUserCardImage;
+	banner?: DiscordUserCardImage | string;
 	/**
 	 * The user's banner color encoded as an integer representation of hexadecimal color code
 	 */
