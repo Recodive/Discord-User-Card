@@ -54,4 +54,20 @@ export const masks = `
 		<circle fill="white" cx="0.5" cy="0.5" r="0.5"></circle>
 		<circle fill="black" cx="0.8333333333333334" cy="0.8333333333333334" r="0.16666666666666666"></circle>
 	</mask>
+	<mask
+		id="svg-mask-avatar-decoration-status-round-80"
+		maskContentUnits="objectBoundingBox"
+		viewBox="0 0 1 1"
+	>
+		<rect fill="white" x="0" y="0" width="100%" height="100%"></rect>
+		<circle fill="black" cx="0.7916666666666667" cy="0.7916666666666667" r="0.14583333333333334"></circle>
+	</mask>
+	<mask
+		id="svg-mask-avatar-decoration-status-round-120"
+		maskContentUnits="objectBoundingBox"
+		viewBox="0 0 1 1"
+	>
+		<rect fill="white" x="0" y="0" width="100%" height="100%"></rect>
+		<circle fill="black" cx="0.7777777777777779" cy="0.7777777777777779" r="0.1388888888888889"></circle>
+	</mask>
 `;
