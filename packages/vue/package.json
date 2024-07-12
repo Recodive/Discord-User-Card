@@ -1,7 +1,7 @@
 {
 	"name": "@discord-user-card/vue",
 	"type": "module",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Display Discord users' profile cards just like in Discord.",
 	"keywords": [
 		"discord",

@@ -1,7 +1,7 @@
 {
 	"name": "@discord-user-card/core",
 	"type": "module",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "The core behind the Discord User Card project.",
 	"keywords": [
 		"discord",
