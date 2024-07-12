@@ -1,7 +1,7 @@
 {
 	"name": "discord-user-card",
 	"type": "module",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "Display Discord users' profile cards just like in Discord.",
 	"keywords": [
 		"discord",
