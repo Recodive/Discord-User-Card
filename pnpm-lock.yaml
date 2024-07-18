@@ -125,8 +125,8 @@ importers:
   tools/generate-emojis:
     dependencies:
       arktype:
-        specifier: 2.0.0-dev.18
-        version: 2.0.0-dev.18
+        specifier: 2.0.0-dev.12-cjs
+        version: 2.0.0-dev.12-cjs
       ky:
         specifier: ^1.2.4
         version: 1.2.4
@@ -192,11 +192,11 @@ packages:
   '@antfu/utils@0.7.8':
     resolution: {integrity: sha512-rWQkqXRESdjXtc+7NRfK9lASQjpXJu1ayp7qi1d23zZorY+wBHVLHHoVcMsEnkqEBWTFqbztO7/QdJFzyEcLTg==}
 
-  '@arktype/schema@0.1.10':
-    resolution: {integrity: sha512-soPxL3D4Ad0f7LIhMlah9WD0lo1LpGuE3tMg9emJSMROkA0cirRXAfnsO16QLpoeqUa5QP8zAnnqjEJhKSa6uA==}
+  '@arktype/schema@0.1.4-cjs':
+    resolution: {integrity: sha512-mk/9CoASlEl3NQErqc9WMfs7cGiy4BdQpsmOKqWZHIpnuzvn59XbzXZ3LXtEylIOOovPvplP1VndPkiZhb8v0Q==}
 
-  '@arktype/util@0.0.46':
-    resolution: {integrity: sha512-Sll+sNpGV61f5JKd16Zn/y5tDRf/MoGgQTSMkcx9rineZvjGDKJlQ17zgH6I7YzSa2ta+BJrSlECk0C0HQNaMQ==}
+  '@arktype/util@0.0.41-cjs':
+    resolution: {integrity: sha512-JuijNPUx7CSGhw36+z12mrzsR2bRmqeL5W/h0kWlR+hUCgqNc4GLY8JRL5ERg2GwidDQCVe4lvJOpiPffuOCrQ==}
 
   '@babel/code-frame@7.24.2':
     resolution: {integrity: sha512-y5+tLQyV8pg3fsiln67BVLD1P13Eg4lh5RW9mF0zUuvLrv9uIQ4MCL+CRT+FTsBlBjcIan6PGsLcBN0m3ClUyQ==}
@@ -1197,8 +1197,8 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
-  arktype@2.0.0-dev.18:
-    resolution: {integrity: sha512-UdAElu/1DgO14AvzpxLeb8Df/OOFvNPUGGTILPz9d5vGRg+140Xojk7KdIR1U7/NRTYErnMWN4HArgi++uBsEQ==}
+  arktype@2.0.0-dev.12-cjs:
+    resolution: {integrity: sha512-bACCf7FLER9H3e7NY/aaxQwlUK3e36PjLRbbOgwDQiXJ2cE5EOFwb30JAt8uoFL2fFBTHipnDOhxoincUI2Ogw==}
 
   array-ify@1.0.0:
     resolution: {integrity: sha512-c5AMf34bKdvPhQ7tBGhqkgKNUzMr4WUs+WDtC2ZUGOUncbxKMTvqxYctiseW3+L4bA8ec+GcZ6/A/FW4m8ukng==}
@@ -3371,11 +3371,11 @@ snapshots:
 
   '@antfu/utils@0.7.8': {}
 
-  '@arktype/schema@0.1.10':
+  '@arktype/schema@0.1.4-cjs':
     dependencies:
-      '@arktype/util': 0.0.46
+      '@arktype/util': 0.0.41-cjs
 
-  '@arktype/util@0.0.46': {}
+  '@arktype/util@0.0.41-cjs': {}
 
   '@babel/code-frame@7.24.2':
     dependencies:
@@ -4480,10 +4480,10 @@ snapshots:
 
   argparse@2.0.1: {}
 
-  arktype@2.0.0-dev.18:
+  arktype@2.0.0-dev.12-cjs:
     dependencies:
-      '@arktype/schema': 0.1.10
-      '@arktype/util': 0.0.46
+      '@arktype/schema': 0.1.4-cjs
+      '@arktype/util': 0.0.41-cjs
 
   array-ify@1.0.0: {}
 
