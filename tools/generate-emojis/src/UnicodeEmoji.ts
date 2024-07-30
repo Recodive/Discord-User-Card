@@ -32,7 +32,7 @@ export class UnicodeEmoji {
 			process.exit(1);
 		}
 
-		return `https://discord.com/assets/${foundInMap}`;
+		return `https://discord.com${foundInMap}`;
 	}
 
 	get processedSurrogates() {

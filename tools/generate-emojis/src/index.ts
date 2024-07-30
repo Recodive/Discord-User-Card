@@ -131,14 +131,14 @@ function svgMap2FromJSIndex(js: string, index: number) {
 	console.log("Found svgMap2!");
 	/**
 	 * They look like this:
-	 * 949555: function(e, t, n) {
+	 * 949555: function(e) {
 	 *  "use strict";
-	 *  e.exports = n.p + "ddac74b80f5e387325cb.svg"
+	 *  e.exports="/assets/34a608640e959c459411.svg"
 	 * },
 	 *
 	 * Note that the number can include e (2e3 = 2000)
 	 */
-	const regex = /([\de]+):[\s\S]*?"([\da-f]+\.svg)"/g;
+	const regex = /([\de]+):[\s\S]*?"(\/assets\/[\da-f]+\.svg)"/g;
 	for (const match of js.slice(index).matchAll(regex)) {
 		const mapToCorrectNumber = String(Number(match[1]!));
 		svgMap2[mapToCorrectNumber] = match[2]!;
