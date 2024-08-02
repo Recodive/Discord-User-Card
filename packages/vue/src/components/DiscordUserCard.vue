@@ -6,7 +6,7 @@ import type {
 import setupDiscordUserCard, {
 	defaultUserCardProperties,
 } from "discord-user-card";
-import { onBeforeUnmount, ref, toRefs, watch, withDefaults } from "vue";
+import { onBeforeUnmount, ref, toRefs, watch } from "vue";
 
 const props = withDefaults(
 	defineProps<DiscordUserCardProperties & {
