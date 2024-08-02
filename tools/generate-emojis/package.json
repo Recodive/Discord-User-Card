@@ -10,8 +10,8 @@
 		"generate": "node --env-file .env dist/index.js"
 	},
 	"dependencies": {
-		"arktype": "2.0.0-dev.18",
-		"ky": "^1.2.4",
+		"arktype": "^2.0.0-beta.2",
+		"ky": "^1.5.0",
 		"twemoji": "^14.0.2"
 	}
 }
