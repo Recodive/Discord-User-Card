@@ -1,6 +1,6 @@
 import type { DiscordUserCardProperties } from "@discord-user-card/core";
 import type { Renderer } from "../../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses } from "../../util.js";
+import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, renderChildrenSkeleton, setClasses } from "../../util.js";
 import { UsernameRenderer } from "../shared/username.js";
 import { CustomStatusRenderer } from "../shared/customStatus.js";
 import { AboutMeRender } from "../shared/aboutMe.js";
@@ -21,7 +21,7 @@ export class BodyRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private setAttributes(): void {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.outer, ["class"]);
 		clearUnexpectedAttributes(this.elements.inner, ["class"]);
@@ -33,11 +33,26 @@ export class BodyRenderer implements Renderer {
 		setClasses(this.elements.inner, {
 			duc_profile_body_inner: true,
 		});
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		// ? Set the attributes of the elements
+		this.setAttributes();
 
 		// ? Render the elements
 		addElement(this.parent, this.elements.outer);
 		addElement(this.elements.outer, this.elements.inner);
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		// ? Set the attributes of the elements
+		this.setAttributes();
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.outer);
+		addElement(this.elements.outer, this.elements.inner);
+		renderChildrenSkeleton(this.children, props);
 	}
 
 	destroy(): void {
@@ -64,7 +79,7 @@ class TabBarRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private _render(skeleton = false): void {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.outer, ["class"]);
 		clearUnexpectedAttributes(this.elements.inner, ["class"]);
@@ -116,9 +131,11 @@ class TabBarRenderer implements Renderer {
 		this.elements.infoTab.textContent = "User Info";
 		this.elements.activityTab.textContent = "Activity";
 
-		// ? Set the onclick of the elements
-		this.elements.infoTab.setAttribute("onclick", "this.setAttribute('aria-selected', 'true'); this.setAttribute('tabindex', '0'); this.parentElement?.parentElement?.parentElement?.querySelector('.duc_profile_info_tab')?.setAttribute('aria-hidden', 'false'); this.nextElementSibling.setAttribute('aria-selected', 'false'); this.nextElementSibling.setAttribute('tabindex', '-1'); this.parentElement?.parentElement?.parentElement?.querySelector('.duc_profile_activity_tab')?.setAttribute('aria-hidden', 'true');");
-		this.elements.activityTab.setAttribute("onclick", "this.setAttribute('aria-selected', 'true'); this.setAttribute('tabindex', '0'); this.parentElement?.parentElement?.parentElement?.querySelector('.duc_profile_activity_tab')?.setAttribute('aria-hidden', 'false'); this.previousElementSibling.setAttribute('aria-selected', 'false'); this.previousElementSibling.setAttribute('tabindex', '-1'); this.parentElement?.parentElement?.parentElement?.querySelector('.duc_profile_info_tab')?.setAttribute('aria-hidden', 'true');");
+		if (!skeleton) {
+			// ? Set the onclick of the elements
+			this.elements.infoTab.setAttribute("onclick", "this.setAttribute('aria-selected', 'true'); this.setAttribute('tabindex', '0'); this.parentElement?.parentElement?.parentElement?.querySelector('.duc_profile_info_tab')?.setAttribute('aria-hidden', 'false'); this.nextElementSibling.setAttribute('aria-selected', 'false'); this.nextElementSibling.setAttribute('tabindex', '-1'); this.parentElement?.parentElement?.parentElement?.querySelector('.duc_profile_activity_tab')?.setAttribute('aria-hidden', 'true');");
+			this.elements.activityTab.setAttribute("onclick", "this.setAttribute('aria-selected', 'true'); this.setAttribute('tabindex', '0'); this.parentElement?.parentElement?.parentElement?.querySelector('.duc_profile_activity_tab')?.setAttribute('aria-hidden', 'false'); this.previousElementSibling.setAttribute('aria-selected', 'false'); this.previousElementSibling.setAttribute('tabindex', '-1'); this.parentElement?.parentElement?.parentElement?.querySelector('.duc_profile_info_tab')?.setAttribute('aria-hidden', 'true');");
+		}
 
 		// ? Render the elements
 		addElement(this.parent, this.elements.outer);
@@ -127,8 +144,16 @@ class TabBarRenderer implements Renderer {
 		addElement(this.elements.inner, this.elements.activityTab);
 		addElement(this.parent, this.elements.scrollerInfo);
 		addElement(this.parent, this.elements.scrollerActivity);
+	}
 
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		this._render();
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		this._render(true);
+		renderChildrenSkeleton(this.children, props);
 	}
 
 	destroy(): void {

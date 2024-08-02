@@ -30,46 +30,33 @@ export class BannerRenderer implements Renderer {
 		this.render(this.lastProps);
 	}
 
+	listenersBound = false;
 	boundRerender = this.rerender.bind(this);
 	reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-	constructor(public readonly parent: Element, private readonly style: "card" | "profile") {
-		window.addEventListener("focus", this.boundRerender);
-		window.addEventListener("blur", this.boundRerender);
-		this.reduceMotion.addEventListener("change", this.boundRerender);
-	}
+	constructor(public readonly parent: Element, private readonly style: "card" | "profile") { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
-		this.lastProps = props;
-		const { user } = props;
-		// ? Clear unexpected attributes from the elements
+	private clearUnexpectedAttributes(skeleton = false) {
 		clearUnexpectedAttributes(this.elements.wrapper, ["class", "viewBox", "style"]);
 		clearUnexpectedAttributes(this.elements.mask, ["id"]);
 		clearUnexpectedAttributes(this.elements.rect, ["fill", "x", "y", "width", "height"]);
 		clearUnexpectedAttributes(this.elements.circle, ["fill", "cx", "cy", "r"]);
 		clearUnexpectedAttributes(this.elements.foreignObject, ["x", "y", "width", "height", "overflow", "mask"]);
-		clearUnexpectedAttributes(this.elements.div, ["class", "style"]);
+		clearUnexpectedAttributes(this.elements.div, skeleton ? ["class"] : ["class", "style"]);
+	}
 
-		// ? Set the class of the wrapper element
-		setClasses(this.elements.wrapper, {
-			duc_banner_wrapper: true,
-		});
-
-		// ? Generate the banner for the user
-		const banner = getUserBanner(user);
-		const bannerColor = await getUserBannerColor(user);
-
+	private setAttributes(hasBanner: boolean, hasThemeColors: boolean) {
 		// ? Set the viewBox of the wrapper element
 		this.elements.wrapper.setAttribute("viewBox", this.style === "card"
-			? user.banner ? "0 0 340 120" : "0 0 340 60"
-			: user.banner ? "0 0 600 212" : "0 0 600 106");
+			? hasBanner ? "0 0 340 120" : "0 0 340 60"
+			: hasBanner ? "0 0 600 212" : "0 0 600 106");
 
 		// ? Set the style of the wrapper element
 		setStyles(this.elements.wrapper, {
 			"min-width": this.style === "card" ? "340px" : "600px",
 			"min-height": this.style === "card"
-				? banner ? "120px" : "60px"
-				: banner ? "212px" : "106px",
+				? hasBanner ? "120px" : "60px"
+				: hasBanner ? "212px" : "106px",
 		});
 
 		// ? Set the id of the mask element
@@ -87,18 +74,18 @@ export class BannerRenderer implements Renderer {
 		this.elements.circle.setAttribute(
 			"cx",
 			this.style === "card"
-				? user.banner
-					? user.themeColors ? "58" : "62"
+				? hasBanner
+					? hasThemeColors ? "58" : "62"
 					: "62"
 				: "82",
 		);
 		this.elements.circle.setAttribute(
 			"cy",
 			this.style === "card"
-				? user.banner
-					? user.themeColors ? "112" : "116"
+				? hasBanner
+					? hasThemeColors ? "112" : "116"
 					: "56"
-				: user.banner ? "207" : "101",
+				: hasBanner ? "207" : "101",
 		);
 		this.elements.circle.setAttribute("r", this.style === "card" ? "46" : "68");
 
@@ -109,6 +96,32 @@ export class BannerRenderer implements Renderer {
 		this.elements.foreignObject.setAttribute("height", "100%");
 		this.elements.foreignObject.setAttribute("overflow", "visible");
 		this.elements.foreignObject.setAttribute("mask", `url(#mask_avatar_${this.id})`);
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		if (!this.listenersBound) {
+			window.addEventListener("focus", this.boundRerender);
+			window.addEventListener("blur", this.boundRerender);
+			this.reduceMotion.addEventListener("change", this.boundRerender);
+			this.listenersBound = true;
+		}
+
+		this.lastProps = props;
+		const { user } = props;
+		// ? Clear unexpected attributes from the elements
+		this.clearUnexpectedAttributes();
+
+		// ? Set the class of the wrapper element
+		setClasses(this.elements.wrapper, {
+			duc_banner_wrapper: true,
+		});
+
+		// ? Generate the banner for the user
+		const banner = getUserBanner(user);
+		const bannerColor = await getUserBannerColor(user);
+
+		// ? Set the attributes of the elements
+		this.setAttributes(!!banner, !!user.themeColors);
 
 		// ? Set the class of the div element
 		setClasses(this.elements.div, {
@@ -127,6 +140,48 @@ export class BannerRenderer implements Renderer {
 						? `url('${banner}?size=480')`
 						: `url('${banner}')`,
 			}),
+		});
+
+		// ? Append the elements to the parent element
+		addElement(this.parent, this.elements.wrapper);
+		addElement(this.elements.wrapper, this.elements.mask);
+		addElement(this.elements.mask, this.elements.rect);
+		addElement(this.elements.mask, this.elements.circle);
+		addElement(this.elements.wrapper, this.elements.foreignObject);
+		addElement(this.elements.foreignObject, this.elements.div);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		if (this.listenersBound) {
+			window.removeEventListener("focus", this.boundRerender);
+			window.removeEventListener("blur", this.boundRerender);
+			this.reduceMotion.removeEventListener("change", this.boundRerender);
+			this.listenersBound = false;
+		}
+
+		this.lastProps = props;
+		const { user } = props;
+		// ? Clear unexpected attributes from the elements
+		this.clearUnexpectedAttributes(true);
+
+		// ? Set the class of the wrapper element
+		setClasses(this.elements.wrapper, {
+			duc_banner_wrapper: true,
+		});
+
+		// ? Generate the banner for the user
+		const hasBanner = !!getUserBanner(user);
+
+		// ? Set the attributes of the elements
+		this.setAttributes(hasBanner, !!user.themeColors);
+
+		// ? Set the class of the div element
+		setClasses(this.elements.div, {
+			duc_banner: true,
+			duc_banner_premium: !!hasBanner,
+			duc_user_card: this.style === "card",
+			duc_user_profile: this.style === "profile",
+			duc_skeleton: true,
 		});
 
 		// ? Append the elements to the parent element

@@ -177,6 +177,13 @@ export class PrefetchRenderer implements Renderer {
 			addElement(this.parent, linkElement);
 	}
 
+	renderSkeleton(): void {
+		// ? No need to render a skeleton for prefetching
+		for (const linkElement of this.elements)
+			removeElement(this.parent, linkElement);
+		this.elements = [];
+	}
+
 	destroy(): void {
 		for (const linkElement of this.elements) {
 			removeElement(this.parent, linkElement);

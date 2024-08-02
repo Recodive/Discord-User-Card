@@ -5,7 +5,7 @@ import {
 	flagsToBadges,
 } from "discord-user-card";
 import { type Ref, ref, watch } from "vue";
-import DiscordUserCard from "./components/DiscordUserCard.vue";
+import { DiscordUserCard } from "./index.js";
 
 const a: Ref<DiscordUserCardProperties> = ref({
 	user: {

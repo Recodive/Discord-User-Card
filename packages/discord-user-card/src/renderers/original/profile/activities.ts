@@ -3,7 +3,7 @@ import { ActivityType } from "@discord-user-card/core";
 import type { Renderer } from "../../../functions/Renderer.js";
 import type { Activity } from "../shared/activities.js";
 import { ActivityContentRenderer, ButtonsRenderer, TimebarRenderer, mapActivity } from "../shared/activities.js";
-import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses } from "../../util.js";
+import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, renderChildrenSkeleton, setClasses } from "../../util.js";
 
 export class ActivitiesRender implements Renderer {
 	children: {
@@ -39,6 +39,10 @@ export class ActivitiesRender implements Renderer {
 			this.children[i]?.destroy();
 			delete this.children[i];
 		}
+	}
+
+	renderSkeleton(): void {
+		renderChildrenSkeleton(this.children, undefined);
 	}
 
 	destroy(): void {
@@ -100,6 +104,11 @@ class ActivityRender implements Renderer<Activity> {
 		addElement(this.elements.headerContainer, this.elements.header);
 		addElement(this.elements.section, this.elements.content);
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(): void {
+		// ? In Profile card the activites are not rendered in skeleton state (it will always be on the "User Info" tab)
+		removeElement(this.parent, this.elements.section);
 	}
 
 	destroy(): void {

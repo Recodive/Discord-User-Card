@@ -28,7 +28,7 @@ export class InfoSectionRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private setAtrributes() {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.section, ["class"]);
 		clearUnexpectedAttributes(this.elements.divider, ["class"]);
@@ -44,6 +44,10 @@ export class InfoSectionRenderer implements Renderer {
 		setClasses(this.elements.scroller, {
 			duc_scroller: true,
 		});
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		this.setAtrributes();
 
 		// ? Render the elements
 		addElement(this.parent, this.elements.section);
@@ -55,6 +59,21 @@ export class InfoSectionRenderer implements Renderer {
 		await this.children.memberSince.render(props);
 		await this.children.activities.render(props);
 		await this.children.roles.render(props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		this.setAtrributes();
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.section);
+		this.children.username.renderSkeleton(props);
+		this.children.customStatus.renderSkeleton(props);
+		addElement(this.elements.section, this.elements.divider);
+		addElement(this.elements.section, this.elements.scroller);
+		this.children.aboutMe.renderSkeleton(props);
+		this.children.memberSince.renderSkeleton();
+		this.children.activities.renderSkeleton(props);
+		this.children.roles.renderSkeleton(props);
 	}
 
 	destroy(): void {

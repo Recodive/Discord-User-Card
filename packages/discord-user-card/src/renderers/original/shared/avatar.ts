@@ -1,13 +1,15 @@
 import type { DiscordUserCardProperties } from "@discord-user-card/core";
-import { ColorUtils } from "@discord-user-card/core";
+import { ColorUtils, PresenceUpdateStatus } from "@discord-user-card/core";
 import {
 	addElement,
 	clearUnexpectedAttributes,
 	getUserAvatar,
 	getUserAvatarDecoration,
 	getUserStatus,
+	placeholderImage,
 	removeElement,
 	renderChildren,
+	renderChildrenSkeleton,
 	setClasses,
 	setStyles,
 } from "../../util.js";
@@ -37,6 +39,7 @@ export class AvatarRenderer implements Renderer {
 		this.render(this.lastProps);
 	}
 
+	listenersBound = false;
 	boundRerender = this.rerender.bind(this);
 	reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -44,12 +47,9 @@ export class AvatarRenderer implements Renderer {
 		this.children = {
 			avatarDecoration: new AvatarDecorationRenderer(this.elements.inner, this.style),
 		};
-		window.addEventListener("focus", this.boundRerender);
-		window.addEventListener("blur", this.boundRerender);
-		this.reduceMotion.addEventListener("change", this.boundRerender);
 	}
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private _render(props: Required<DiscordUserCardProperties>, skeleton = false): void {
 		this.lastProps = props;
 		const { user } = props;
 
@@ -72,7 +72,13 @@ export class AvatarRenderer implements Renderer {
 		});
 
 		// ? Find the user's status
-		const { status, color: statusColor } = getUserStatus(user);
+		const { status, color: statusColor } = getUserStatus(skeleton
+			? {
+					id: "offline",
+					username: "Username",
+					status: PresenceUpdateStatus.Offline,
+				}
+			: user);
 		let circleColor = "black";
 		if (user.themeColors) {
 			circleColor
@@ -111,17 +117,27 @@ export class AvatarRenderer implements Renderer {
 		});
 
 		// ? Set the attributes of the img element
-		const avatar = getUserAvatar(user);
-		this.elements.img.setAttribute(
-			"src",
-			avatar.includes("cdn.discordapp.com")
-				? `${avatar}?size=${this.style === "card" ? "80" : "128"}`
-				: avatar,
-		);
-		this.elements.img.setAttribute("alt", " ");
-		setClasses(this.elements.img, {
-			duc_avatar: true,
-		});
+		if (skeleton) {
+			this.elements.img.setAttribute("src", placeholderImage);
+			this.elements.img.setAttribute("alt", " ");
+			setClasses(this.elements.img, {
+				duc_avatar: true,
+				duc_skeleton: true,
+			});
+		}
+		else {
+			const avatar = getUserAvatar(user);
+			this.elements.img.setAttribute(
+				"src",
+				avatar.includes("cdn.discordapp.com")
+					? `${avatar}?size=${this.style === "card" ? "80" : "128"}`
+					: avatar,
+			);
+			this.elements.img.setAttribute("alt", " ");
+			setClasses(this.elements.img, {
+				duc_avatar: true,
+			});
+		}
 
 		// ? Set the attributes of the circle element
 		this.elements.circle.setAttribute("fill", circleColor);
@@ -149,9 +165,34 @@ export class AvatarRenderer implements Renderer {
 		addElement(this.elements.stack, this.elements.img);
 		addElement(this.elements.svg, this.elements.circle);
 		addElement(this.elements.svg, this.elements.rect);
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		if (!this.listenersBound) {
+			window.addEventListener("focus", this.boundRerender);
+			window.addEventListener("blur", this.boundRerender);
+			this.reduceMotion.addEventListener("change", this.boundRerender);
+			this.listenersBound = true;
+		}
+
+		this._render(props);
 
 		// ? Render the avatar decoration
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		if (this.listenersBound) {
+			window.removeEventListener("focus", this.boundRerender);
+			window.removeEventListener("blur", this.boundRerender);
+			this.reduceMotion.removeEventListener("change", this.boundRerender);
+			this.listenersBound = false;
+		}
+
+		this._render(props, true);
+
+		// ? Render the avatar decoration
+		renderChildrenSkeleton(this.children, props);
 	}
 
 	destroy(): void {
@@ -219,6 +260,11 @@ class AvatarDecorationRenderer implements Renderer {
 		addElement(this.elements.svg, this.elements.foreignObject);
 		addElement(this.elements.foreignObject, this.elements.stack);
 		addElement(this.elements.stack, this.elements.img);
+	}
+
+	renderSkeleton(): void {
+		// ? We don't need to render a skeleton for the avatar decoration
+		removeElement(this.parent, this.elements.svg);
 	}
 
 	destroy(): void {

@@ -11,6 +11,7 @@ import {
 	destoryChildren,
 	removeElement,
 	renderChildren,
+	renderChildrenSkeleton,
 	setClasses,
 	setStyles,
 } from "../../util.js";
@@ -144,6 +145,77 @@ export class OriginalDiscordUserCard implements Renderer {
 		addElement(this.containers.outer, this.containers.inner);
 
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		// ? Destructure the user and activities from the props, and set them to the default values if they are not provided
+		const { user } = props;
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.parent, ["aria-label", "class"]);
+		clearUnexpectedAttributes(this.containers.outer, ["class", "style"]);
+		clearUnexpectedAttributes(this.containers.inner, ["class"]);
+
+		// ? Set the aria-label and class of the parent element
+		this.parent.setAttribute("aria-label", user.username);
+		setClasses(this.parent, { duc_root: true, duc_user_card: true });
+
+		// ? Generate the style for the user card
+		const {
+			themeOverwrite,
+		} = getUserTheming(user);
+		const {
+			backgroundColor,
+			buttonColor,
+			dividerColor,
+			overlayColor,
+			primaryColor,
+			secondaryColor,
+			roleBackgroundColor,
+			roleBorderColor,
+		} = getUserTheming({
+			id: "0",
+			username: "username",
+		});
+
+		const stylesOuterContainer: StyleObject = {
+			"--profile-gradient-primary-color": primaryColor,
+			"--profile-gradient-secondary-color": secondaryColor,
+			"--profile-gradient-overlay-color": overlayColor,
+			"--profile-gradient-button-color": buttonColor,
+			"--profile-body-background-color": backgroundColor,
+			"--profile-body-divider-color": dividerColor,
+			"--profile-role-pill-background-color": roleBackgroundColor,
+			"--profile-role-pill-border-color": roleBorderColor,
+			"--custom-theme-mix-base-hsl":
+				"198.46153846153845 100% 5.098039215686274%",
+			"--custom-theme-mix-base": "rgb(0,18,26)",
+			"--custom-theme-mix-text": "rgb(223,240,214)",
+			"--custom-theme-mix-amount-base": "30%",
+			"--custom-theme-mix-amount-text": "70%",
+		};
+
+		// ? Set the styles of the element
+		setStyles(this.containers.outer, stylesOuterContainer);
+
+		// ? Generate the classes for the user card
+		const classesOuterContainer: ClassObject = {
+			duc_user_card_outer: true,
+			duc_user_card_themed: !!user.themeColors,
+			[`theme-${themeOverwrite ?? "dark"}`]: true,
+			duc_theme_skeleton: true,
+		};
+
+		// ? Set the classes of the element
+		setClasses(this.containers.outer, classesOuterContainer);
+		setClasses(this.containers.inner, { duc_user_card_inner: true });
+
+		// ? Render the user card
+		addElement(this.parent, this.masks);
+		addElement(this.parent, this.containers.outer);
+		addElement(this.containers.outer, this.containers.inner);
+
+		renderChildrenSkeleton(this.children, props);
 	}
 
 	destroy(): void {

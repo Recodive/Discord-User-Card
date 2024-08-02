@@ -64,6 +64,23 @@ export class BadgesRenderer implements Renderer {
 		addElement(this.parent, this.elements.wrapper);
 	}
 
+	renderSkeleton(): void {
+		// ? We just add the empty wrapper element
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.wrapper, ["class"]);
+
+		// ? Set the class of the wrapper element
+		setClasses(this.elements.wrapper, {
+			duc_profile_badges: true,
+			duc_user_card: this.style === "card",
+			duc_user_profile: this.style === "profile",
+		});
+
+		// ? Append the wrapper element to the parent element
+		addElement(this.parent, this.elements.wrapper);
+	}
+
 	destroy(): void {
 		removeElement(this.parent, this.elements.wrapper);
 	}

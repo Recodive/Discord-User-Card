@@ -2,11 +2,10 @@ import type { DiscordUserCardProperties } from "@discord-user-card/core";
 import type { Effect, ProfileEffectIntermittent, ProfileEffectPersistent } from "@discord-user-card/profile-effects";
 import { AnimationType, DiscordProductType, findProfileEffect } from "@discord-user-card/profile-effects";
 import type { Renderer } from "../../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, removeElement, setClasses, setStyles } from "../../util.js";
+import { addElement, clearUnexpectedAttributes, placeholderImage, removeElement, setClasses, setStyles } from "../../util.js";
 import { useAnimationFrame } from "../../../functions/useAnimationFrame.js";
 
 const introDelay = 500;
-const placeholderImage = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
 
 export class ProfileEffectsRenderer implements Renderer {
 	elements = {
@@ -26,6 +25,8 @@ export class ProfileEffectsRenderer implements Renderer {
 
 	profileEffectConfig: ProfileEffectPersistent | ProfileEffectIntermittent | null = null;
 	effects: Effect[] = [];
+
+	listenersBound = false;
 
 	addHoverEffect = () => {
 		this.elements.container.classList.add("duc_profile_effect_hover");
@@ -50,15 +51,17 @@ export class ProfileEffectsRenderer implements Renderer {
 		return this.prefersReducedMotionMediaQuery.matches;
 	}
 
-	constructor(public readonly parent: Element, public readonly root: Element) {
-		window.addEventListener("focus", this.focus);
-		window.addEventListener("blur", this.blur);
-		this.root.addEventListener("mouseenter", this.addHoverEffect);
-		this.root.addEventListener("mouseleave", this.removeHoverEffect);
-		this.prefersReducedMotionMediaQuery.addEventListener("change", this.focus);
-	}
+	constructor(public readonly parent: Element, public readonly root: Element) {}
 
 	async render({ user: { profileEffect } }: Required<DiscordUserCardProperties>): Promise<void> {
+		if (!this.listenersBound) {
+			window.addEventListener("focus", this.focus);
+			window.addEventListener("blur", this.blur);
+			this.root.addEventListener("mouseenter", this.addHoverEffect);
+			this.root.addEventListener("mouseleave", this.removeHoverEffect);
+			this.prefersReducedMotionMediaQuery.addEventListener("change", this.focus);
+		}
+
 		// ? If the profile effect is not provided, remove the container
 		if (!profileEffect) {
 			removeElement(this.parent, this.elements.container);
@@ -82,6 +85,11 @@ export class ProfileEffectsRenderer implements Renderer {
 			this.ticker.start();
 		else this.ticker.stop();
 		this.update();
+	}
+
+	renderSkeleton(): void {
+		// ? We don't need to render the skeleton for the profile effect
+		removeElement(this.parent, this.elements.container);
 	}
 
 	setup(effect: ProfileEffectPersistent | ProfileEffectIntermittent): void {

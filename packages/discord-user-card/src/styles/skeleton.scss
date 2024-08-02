@@ -1,0 +1,101 @@
+@keyframes pulse {
+	50% {
+		opacity: .5
+	}
+}
+
+.duc_skeleton {
+	background-color: var(--skeleton-color) !important;
+	animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite;
+}
+
+.duc_skeleton_pill {
+	display: block;
+	background-color: var(--skeleton-color);
+	animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite;
+	border-radius: .25rem;
+	width: 100%;
+	height: 1em;
+	margin: 2px 0;
+}
+
+.duc_skeleton.duc_avatar::before {
+	background-color: unset;
+}
+
+.duc_theme_skeleton {
+	.duc_markdown {
+		position: relative;
+
+		* {
+			opacity: 0;
+		}
+
+		&::after {
+			top: 0;
+			left: 0;
+			content: " ";
+			position: absolute;
+			background-color: var(--skeleton-color);
+			animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite;
+			border-radius: .25rem;
+			width: 100%;
+			height: calc(100% - 2px);
+			margin: 2px 0;
+		}
+	}
+
+	.duc_roles .duc_role {
+		position: relative;
+
+		border: 0;
+
+		* {
+			opacity: 0;
+		}
+
+		&::before {
+			top: 0;
+			left: 0;
+			content: " ";
+			position: absolute;
+			background-color: var(--skeleton-color);
+			animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite;
+			border-radius: .25rem;
+			width: 100%;
+			height: calc(100% - 2px);
+			margin: 2px 0;
+		}
+	}
+
+	.duc_activity_header {
+		width: 100%;
+	}
+
+	.duc_clan_inner {
+		width: 50px;
+	}
+
+	.duc_activity_timebar_container {
+		height: 20px;
+	}
+
+	.duc_profile_tab_bar_item {
+		color: transparent !important;
+		border: 0 !important;
+		cursor: default !important;
+
+		&::before {
+			top: 0;
+			left: 0;
+			content: " ";
+			position: absolute;
+			background-color: var(--skeleton-color);
+			animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite;
+			border-radius: .25rem;
+			width: 100%;
+			height: calc(1em);
+			margin: 2px 0;
+		}
+	}
+}
