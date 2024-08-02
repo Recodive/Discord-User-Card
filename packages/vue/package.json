@@ -39,11 +39,11 @@
 		"discord-user-card": "workspace:*"
 	},
 	"devDependencies": {
-		"@types/node": "^20.12.12",
-		"@vitejs/plugin-vue": "^5.0.4",
-		"typescript": "^5.4.5",
-		"vite": "^5.2.11",
-		"vue": "^3.4.27",
-		"vue-tsc": "^2.0.19"
+		"@types/node": "^22.0.3",
+		"@vitejs/plugin-vue": "^5.1.2",
+		"typescript": "^5.5.4",
+		"vite": "^5.3.5",
+		"vue": "^3.4.35",
+		"vue-tsc": "^2.0.29"
 	}
 }
