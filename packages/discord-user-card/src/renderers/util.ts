@@ -77,8 +77,8 @@ export function removeElement(
 }
 
 export async function renderChildren<
-		Props = Required<DiscordUserCardProperties>,
-	>(children: {
+	Props = Required<DiscordUserCardProperties>,
+>(children: {
 	[key: string]: Renderer<Props> | Element | undefined;
 }, props: Props) {
 	for (const child of Object.values(children)) {
@@ -88,8 +88,8 @@ export async function renderChildren<
 }
 
 export function renderChildrenSkeleton<
-		Props = Required<DiscordUserCardProperties>,
-	>(children: {
+	Props = Required<DiscordUserCardProperties>,
+>(children: {
 	[key: string]: Renderer<Props> | Element | undefined;
 }, props: Props) {
 	for (const child of Object.values(children)) {
