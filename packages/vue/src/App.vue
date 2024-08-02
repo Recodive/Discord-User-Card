@@ -57,18 +57,10 @@ watch(text, (value) => {
 
 <template>
 	<div style="display: flex; max-height: 100vh; flex-wrap: wrap">
-		<Suspense>
-			<DiscordUserCard :user="a.user" :activities="a.activities" />
-		</Suspense>
-		<Suspense>
-			<DiscordUserCard :user="b.user" :activities="b.activities" />
-		</Suspense>
-		<Suspense>
-			<DiscordUserCard :user="c.user" :activities="c.activities" />
-		</Suspense>
-		<Suspense>
-			<DiscordUserCard />
-		</Suspense>
+		<DiscordUserCard :user="a.user" :activities="a.activities" />
+		<DiscordUserCard :user="b.user" :activities="b.activities" />
+		<DiscordUserCard :user="c.user" :activities="c.activities" />
+		<DiscordUserCard />
 		<input v-model="text" type="text">
 	</div>
 </template>
