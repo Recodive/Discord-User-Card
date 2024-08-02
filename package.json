@@ -12,11 +12,8 @@
 	"scripts": {
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
-		"_build": "pnpm clean && tsc -b tsconfig.build.json && pnpm -r build",
-		"build": "pnpm clean && pnpm -r build",
-		"_dev": "pnpm clean && tsc -b tsconfig.build.json -w",
+		"build": "pnpm -r build",
 		"dev": "pnpm -r dev",
-		"clean": "tsc -b tsconfig.build.json --clean",
 		"test": "vitest --run",
 		"test:ui": "vitest --ui",
 		"release": "pnpm i && pnpm -r build && bumpp package.json packages/*/package.json --commit --push --tag"
