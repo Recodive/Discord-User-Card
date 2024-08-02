@@ -17,8 +17,10 @@ import {
 	clearUnexpectedAttributes,
 	destoryChildren,
 	isUrl,
+	placeholderImage,
 	removeElement,
 	renderChildren,
+	renderChildrenSkeleton,
 	setClasses,
 	setStyles,
 } from "../../util.js";
@@ -125,18 +127,13 @@ export class ActivityContentRenderer implements Renderer<Activity> {
 		this.render(this.lastProps);
 	}
 
+	listenersBound = false;
 	boundRerender = this.rerender.bind(this);
 	prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-	constructor(public readonly parent: Element) {
-		window.addEventListener("focus", this.boundRerender);
-		window.addEventListener("blur", this.boundRerender);
-		this.prefersReducedMotion.addEventListener("change", this.boundRerender);
-	}
+	constructor(public readonly parent: Element) {}
 
-	async render(props: Activity): Promise<void> {
-		this.lastProps = props;
-		const { activity, line1, line2, line3 } = props;
+	private setAttributes({ activity }: Activity, skeleton = false) {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.imageContainer, ["class"]);
 		clearUnexpectedAttributes(this.elements.largeImage, ["class", "src", "alt"]);
@@ -156,9 +153,11 @@ export class ActivityContentRenderer implements Renderer<Activity> {
 			duc_spotify_image: activity.type !== ActivityType.Hang && activity.name === "Spotify" && !!activity.largeImage?.startsWith("spotify:"),
 			duc_activity_image_app_icon: activity.type !== ActivityType.Hang && !("largeImage" in activity) && !!activity.applicationId,
 			duc_has_small_image: activity.type !== ActivityType.Hang && !!activity.smallImage,
+			duc_skeleton: skeleton,
 		});
 		setClasses(this.elements.smallImage, {
 			duc_activity_image_small: true,
+			duc_skeleton: skeleton,
 		});
 		setClasses(this.elements.details, {
 			duc_activity_details: true,
@@ -172,6 +171,20 @@ export class ActivityContentRenderer implements Renderer<Activity> {
 		setClasses(this.elements.line3, {
 			duc_activity_details_line: true,
 		});
+	}
+
+	async render(props: Activity): Promise<void> {
+		if (!this.listenersBound) {
+			window.addEventListener("focus", this.boundRerender);
+			window.addEventListener("blur", this.boundRerender);
+			this.prefersReducedMotion.addEventListener("change", this.boundRerender);
+			this.listenersBound = true;
+		}
+
+		this.lastProps = props;
+		const { line1, line2, line3 } = props;
+		// ? Set the attributes of the elements
+		this.setAttributes(props);
 
 		// ? Render the elements
 		const renderLargeImage = await this.setLargeImage(props);
@@ -206,6 +219,66 @@ export class ActivityContentRenderer implements Renderer<Activity> {
 		}
 
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(props: Activity): void {
+		if (this.listenersBound) {
+			window.removeEventListener("focus", this.boundRerender);
+			window.removeEventListener("blur", this.boundRerender);
+			this.prefersReducedMotion.removeEventListener("change", this.boundRerender);
+			this.listenersBound = false;
+		}
+
+		this.lastProps = props;
+		const { line1, line2, line3 } = props;
+		// ? Set the attributes of the elements
+		this.setAttributes(props, true);
+
+		// ? Render the elements
+		if (this.hasLargeImage(props)) {
+			this.elements.largeImage.src = placeholderImage;
+			addElement(this.parent, this.elements.imageContainer);
+			addElement(this.elements.imageContainer, this.elements.largeImage);
+
+			if (this.hasSmallImage(props)) {
+				this.elements.smallImage.src = placeholderImage;
+				addElement(this.elements.imageContainer, this.elements.smallImage);
+			}
+			else {
+				removeElement(this.elements.imageContainer, this.elements.smallImage);
+			}
+		}
+		else {
+			removeElement(this.parent, this.elements.imageContainer);
+		}
+
+		addElement(this.parent, this.elements.details);
+		if (line1) {
+			addElement(this.elements.details, this.elements.line1);
+			const pill = document.createElement("span");
+			setClasses(pill, {
+				duc_skeleton_pill: true,
+			});
+			addElement(this.elements.line1, pill);
+		}
+		if (line2) {
+			addElement(this.elements.details, this.elements.line2);
+			const pill = document.createElement("span");
+			setClasses(pill, {
+				duc_skeleton_pill: true,
+			});
+			addElement(this.elements.line2, pill);
+		}
+		if (line3) {
+			addElement(this.elements.details, this.elements.line3);
+			const pill = document.createElement("span");
+			setClasses(pill, {
+				duc_skeleton_pill: true,
+			});
+			addElement(this.elements.line3, pill);
+		}
+
+		renderChildrenSkeleton(this.children, props);
 	}
 
 	async setLargeImage({ activity }: Activity): Promise<boolean> {
@@ -301,6 +374,14 @@ export class ActivityContentRenderer implements Renderer<Activity> {
 		return true;
 	}
 
+	hasLargeImage({ activity }: Activity): boolean {
+		return ("emoji" in activity && !!activity.emoji) || activity.type === ActivityType.Hang || !!activity.largeImage || !!activity.applicationId;
+	}
+
+	hasSmallImage({ activity }: Activity): boolean {
+		return activity.type !== ActivityType.Hang && !!activity.smallImage;
+	}
+
 	async getAppIcon(applicationId: string): Promise<string | undefined> {
 		if (appIconCache.has(applicationId))
 			return appIconCache.get(applicationId)!;
@@ -356,8 +437,7 @@ class ElapsedLeftLineRenderer implements Renderer<Activity> {
 
 	timeout: NodeJS.Timeout | null = null;
 
-	constructor(public readonly parent: Element) {
-	}
+	constructor(public readonly parent: Element) {}
 
 	async render(props: Activity): Promise<void> {
 		if (this.timeout) {
@@ -424,6 +504,35 @@ class ElapsedLeftLineRenderer implements Renderer<Activity> {
 		// ? Render the elements
 		this.elements.line.textContent = content;
 		addElement(this.parent, this.elements.line);
+	}
+
+	renderSkeleton(props: Activity): void {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+
+		const { activity } = props;
+		// ? If the activity does not have a start or end timestamp, or has both, return
+		if (((!("startTimestamp" in activity) || !activity.startTimestamp) && (!("endTimestamp" in activity) || !activity.endTimestamp)) || (activity.startTimestamp && activity.endTimestamp)) {
+			return removeElement(this.parent, this.elements.line);
+		}
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.line, ["class"]);
+		const pill = document.createElement("span");
+
+		// ? Set the class of the elements
+		setClasses(this.elements.line, {
+			duc_activity_details_line: true,
+		});
+		setClasses(pill, {
+			duc_skeleton_pill: true,
+		});
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.line);
+		addElement(this.elements.line, pill);
 	}
 
 	destroy(): void {
@@ -514,6 +623,28 @@ export class TimebarRenderer implements Renderer<Activity> {
 		addElement(this.elements.time, this.elements.timeRight);
 	}
 
+	renderSkeleton(props: Activity): void {
+		const { activity } = props;
+		if (!("startTimestamp" in activity) || !activity.startTimestamp || !("endTimestamp" in activity) || !activity.endTimestamp)
+			return removeElement(this.parent, this.elements.container);
+
+		// ? Clear unexpected attributes from the elements
+		clearUnexpectedAttributes(this.elements.container, ["class"]);
+
+		// ? Set the class of the elements
+		setClasses(this.elements.container, {
+			duc_activity_timebar_container: true,
+		});
+		const pill = document.createElement("span");
+		setClasses(pill, {
+			duc_skeleton_pill: true,
+		});
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.container);
+		addElement(this.elements.container, pill);
+	}
+
 	destroy(): void {
 		removeElement(this.parent, this.elements.container);
 		if (this.timeout) {
@@ -537,14 +668,9 @@ export class ButtonsRenderer implements Renderer<Activity> {
 		twoLabel: document.createElement("div"),
 	};
 
-	constructor(public readonly parent: Element) {}
+	constructor(public readonly parent: Element) { }
 
-	async render({ activity }: Activity): Promise<void> {
-		if (!("buttons" in activity) || !activity.buttons?.length)
-			return removeElement(this.parent, this.elements.buttons);
-
-		const [button1, button2] = activity.buttons;
-
+	private setAttributes(skeleton = false) {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.buttons, ["class"]);
 		clearUnexpectedAttributes(this.elements.one, ["class", "href", "target"]);
@@ -558,16 +684,28 @@ export class ButtonsRenderer implements Renderer<Activity> {
 		});
 		setClasses(this.elements.one, {
 			duc_activity_button: true,
+			duc_skeleton: skeleton,
 		});
 		setClasses(this.elements.oneLabel, {
 			duc_activity_button_label: true,
 		});
 		setClasses(this.elements.two, {
 			duc_activity_button: true,
+			duc_skeleton: skeleton,
 		});
 		setClasses(this.elements.twoLabel, {
 			duc_activity_button_label: true,
 		});
+	}
+
+	async render({ activity }: Activity): Promise<void> {
+		if (!("buttons" in activity) || !activity.buttons?.length)
+			return removeElement(this.parent, this.elements.buttons);
+
+		const [button1, button2] = activity.buttons;
+
+		// ? Set the attributes of the elements
+		this.setAttributes();
 
 		// ? Set the attributes of the elements and render the elements
 		addElement(this.parent, this.elements.buttons);
@@ -584,6 +722,27 @@ export class ButtonsRenderer implements Renderer<Activity> {
 			this.elements.twoLabel.textContent = button2.label;
 			addElement(this.elements.buttons, this.elements.two);
 			addElement(this.elements.two, this.elements.twoLabel);
+		}
+		else {
+			removeElement(this.elements.buttons, this.elements.two);
+		}
+	}
+
+	renderSkeleton({ activity }: Activity): void {
+		if (!("buttons" in activity) || !activity.buttons?.length)
+			return removeElement(this.parent, this.elements.buttons);
+
+		const [, button2] = activity.buttons;
+
+		// ? Set the attributes of the elements
+		this.setAttributes(true);
+
+		// ? Set the attributes of the elements and render the elements
+		addElement(this.parent, this.elements.buttons);
+		addElement(this.elements.buttons, this.elements.one);
+
+		if (button2) {
+			addElement(this.elements.buttons, this.elements.two);
 		}
 		else {
 			removeElement(this.elements.buttons, this.elements.two);

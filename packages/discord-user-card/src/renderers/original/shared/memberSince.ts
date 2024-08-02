@@ -12,9 +12,7 @@ export class MemberSinceRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
-		const { user } = props;
-
+	private setAttributes() {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.section, ["class"]);
 		clearUnexpectedAttributes(this.elements.title, ["class"]);
@@ -30,6 +28,19 @@ export class MemberSinceRenderer implements Renderer {
 		setClasses(this.elements.text, {
 			duc_section_text: true,
 		});
+	}
+
+	private _render() {
+		addElement(this.parent, this.elements.section);
+		addElement(this.elements.section, this.elements.title);
+		addElement(this.elements.section, this.elements.text);
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		const { user } = props;
+
+		// ? Set the attributes of the elements
+		this.setAttributes();
 
 		// ? Set the text of the title element
 		this.elements.title.textContent = "Member Since";
@@ -45,9 +56,27 @@ export class MemberSinceRenderer implements Renderer {
 		this.elements.text.textContent = memberSince;
 
 		// ? Render the elements
-		addElement(this.parent, this.elements.section);
-		addElement(this.elements.section, this.elements.title);
-		addElement(this.elements.section, this.elements.text);
+		this._render();
+	}
+
+	renderSkeleton(): void {
+		// ? Set the attributes of the elements
+		this.setAttributes();
+
+		// ? Set the text of the title element
+		const titlePill = document.createElement("span");
+		setClasses(titlePill, {
+			duc_skeleton_pill: true,
+		});
+		const textPill = document.createElement("span");
+		setClasses(textPill, {
+			duc_skeleton_pill: true,
+		});
+
+		// ? Render the elements
+		this._render();
+		addElement(this.elements.title, titlePill);
+		addElement(this.elements.text, textPill);
 	}
 
 	destroy(): void {

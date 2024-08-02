@@ -53,6 +53,16 @@ export function setupDiscordUserCard(
 				user,
 			});
 		},
+		renderSkeleton: (props) => {
+			const { activities, user } = {
+				...defaultUserCardProperties,
+				...props,
+			};
+			renderer.renderSkeleton({
+				activities: activities.filter(Boolean),
+				user,
+			});
+		},
 		destroy: renderer.destroy.bind(renderer),
 	};
 }

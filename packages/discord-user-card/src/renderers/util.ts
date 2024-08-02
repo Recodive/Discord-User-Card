@@ -87,6 +87,17 @@ export async function renderChildren<
 	}
 }
 
+export function renderChildrenSkeleton<
+		Props = Required<DiscordUserCardProperties>,
+	>(children: {
+	[key: string]: Renderer<Props> | Element | undefined;
+}, props: Props) {
+	for (const child of Object.values(children)) {
+		if (child && "renderSkeleton" in child)
+			child.renderSkeleton(props);
+	}
+}
+
 export function destoryChildren(children: {
 	[key: string]: Renderer<unknown> | Element | undefined;
 }) {
@@ -177,3 +188,5 @@ export function isUrl(url: string) {
 		return false;
 	}
 }
+
+export const placeholderImage = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";

@@ -20,7 +20,7 @@ export class HeaderRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private setAttributes(): void {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.header, ["class"]);
 		clearUnexpectedAttributes(this.elements.inner, ["class"]);
@@ -36,6 +36,11 @@ export class HeaderRenderer implements Renderer {
 		setClasses(this.elements.positioner, {
 			duc_profile_header_positioner: true,
 		});
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		// ? Set the attributes of the elements
+		this.setAttributes();
 
 		// ? Render the elements
 		addElement(this.parent, this.elements.header);
@@ -44,6 +49,19 @@ export class HeaderRenderer implements Renderer {
 		await this.children.avatar.render(props);
 		addElement(this.elements.inner, this.elements.positioner);
 		await this.children.badges.render(props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		// ? Set the attributes of the elements
+		this.setAttributes();
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.header);
+		this.children.banner.renderSkeleton(props);
+		addElement(this.elements.header, this.elements.inner);
+		this.children.avatar.renderSkeleton(props);
+		addElement(this.elements.inner, this.elements.positioner);
+		this.children.badges.renderSkeleton();
 	}
 
 	destroy(): void {

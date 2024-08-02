@@ -1,6 +1,6 @@
 import { type DiscordUserCardProperties, imageToUrl, mapDiscordImageHash } from "@discord-user-card/core";
 import type { Renderer } from "../../../functions/Renderer.js";
-import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses } from "../../util.js";
+import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, renderChildrenSkeleton, setClasses } from "../../util.js";
 
 export class UsernameRenderer implements Renderer {
 	elements = {
@@ -14,7 +14,7 @@ export class UsernameRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private _render() {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.section, ["class"]);
 
@@ -25,7 +25,16 @@ export class UsernameRenderer implements Renderer {
 
 		// ? Render the elements
 		addElement(this.parent, this.elements.section);
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		this._render();
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		this._render();
+		renderChildrenSkeleton(this.children, props);
 	}
 
 	destroy(): void {
@@ -46,13 +55,22 @@ class UsernameInnerWrapperRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private _render() {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.div, []);
 
 		// ? Render the elements
 		addElement(this.parent, this.elements.div);
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		this._render();
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		this._render();
+		renderChildrenSkeleton(this.children, props);
 	}
 
 	destroy(): void {
@@ -71,11 +89,7 @@ class ClanRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render({ user: { clan } }: Required<DiscordUserCardProperties>): Promise<void> {
-		if (!clan) {
-			return removeElement(this.parent, this.elements.outer);
-		}
-
+	private setAttributes() {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.outer, ["class"]);
 		clearUnexpectedAttributes(this.elements.inner, ["class"]);
@@ -95,6 +109,23 @@ class ClanRenderer implements Renderer {
 		setClasses(this.elements.text, {
 			duc_clan_text: true,
 		});
+	}
+
+	private _render() {
+		// ? Render the elements
+		addElement(this.parent, this.elements.outer);
+		addElement(this.elements.outer, this.elements.inner);
+		addElement(this.elements.inner, this.elements.img);
+		addElement(this.elements.inner, this.elements.text);
+	}
+
+	async render({ user: { clan } }: Required<DiscordUserCardProperties>): Promise<void> {
+		if (!clan) {
+			return removeElement(this.parent, this.elements.outer);
+		}
+
+		// ? Set the attributes of the elements
+		this.setAttributes();
 
 		// ? Set the attributes of the elements
 		this.elements.img.src = `${imageToUrl({
@@ -107,10 +138,25 @@ class ClanRenderer implements Renderer {
 		this.elements.text.textContent = clan.tag;
 
 		// ? Render the elements
+		this._render();
+	}
+
+	renderSkeleton({ user: { clan } }: Required<DiscordUserCardProperties>): void {
+		if (!clan) {
+			return removeElement(this.parent, this.elements.outer);
+		}
+
+		// ? Set the attributes of the elements
+		this.setAttributes();
+
+		// ? Render the elements
 		addElement(this.parent, this.elements.outer);
 		addElement(this.elements.outer, this.elements.inner);
-		addElement(this.elements.inner, this.elements.img);
-		addElement(this.elements.inner, this.elements.text);
+		const pill = document.createElement("span");
+		setClasses(pill, {
+			duc_skeleton_pill: true,
+		});
+		addElement(this.elements.inner, pill);
 	}
 
 	destroy(): void {
@@ -132,7 +178,7 @@ class UsernameTextRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private _render(props: Required<DiscordUserCardProperties>, skeleton = false) {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.display, ["class"]);
 		clearUnexpectedAttributes(this.elements.tag, ["class"]);
@@ -141,21 +187,36 @@ class UsernameTextRenderer implements Renderer {
 		// ? Set the class of the elements
 		setClasses(this.elements.display, {
 			duc_display_name: true,
+			duc_skeleton_pill: skeleton,
 		});
 		setClasses(this.elements.tag, {
 			duc_user_tag: true,
 		});
 		setClasses(this.elements.username, {
 			duc_user_tag_username: true,
+			duc_skeleton_pill: skeleton,
 		});
 
 		// ? Render the elements
-		this.elements.display.textContent = props.user.displayName ?? props.user.username;
+		if (!skeleton) {
+			this.elements.display.textContent = props.user.displayName ?? props.user.username;
+		}
 		addElement(this.parent, this.elements.display);
 		addElement(this.parent, this.elements.tag);
-		this.elements.username.textContent = props.user.username;
+		if (!skeleton) {
+			this.elements.username.textContent = props.user.username;
+		}
 		addElement(this.elements.tag, this.elements.username);
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		this._render(props);
 		await renderChildren(this.children, props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		this._render(props, true);
+		renderChildrenSkeleton(this.children, props);
 	}
 
 	destroy(): void {
@@ -187,6 +248,11 @@ class DiscriminatorRenderer implements Renderer {
 		// ? Render the elements
 		this.elements.discriminator.textContent = `#${props.user.discriminator}`;
 		addElement(this.parent, this.elements.discriminator);
+	}
+
+	renderSkeleton(): void {
+		// ? We don't need to render the discriminator in the skeleton
+		removeElement(this.parent, this.elements.discriminator);
 	}
 
 	destroy(): void {
@@ -243,6 +309,11 @@ class BotTagRenderer implements Renderer {
 		addElement(this.elements.wrapper, this.elements.text);
 	}
 
+	renderSkeleton(): void {
+		// ? We don't need to render the bot tag in the skeleton
+		removeElement(this.parent, this.elements.wrapper);
+	}
+
 	destroy(): void {
 		removeElement(this.parent, this.elements.wrapper);
 	}
@@ -255,7 +326,7 @@ class PronounsRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private _render(props: Required<DiscordUserCardProperties>, skeleton = false) {
 		if (!props.user.pronouns) {
 			return removeElement(this.parent, this.elements.pronouns);
 		}
@@ -266,11 +337,22 @@ class PronounsRenderer implements Renderer {
 		// ? Set the class of the elements
 		setClasses(this.elements.pronouns, {
 			duc_pronouns: true,
+			duc_skeleton_pill: skeleton,
 		});
 
 		// ? Render the elements
-		this.elements.pronouns.textContent = props.user.pronouns;
+		if (!skeleton) {
+			this.elements.pronouns.textContent = props.user.pronouns;
+		}
 		addElement(this.parent, this.elements.pronouns);
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		this._render(props);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		this._render(props, true);
 	}
 
 	destroy(): void {

@@ -16,12 +16,7 @@ export class RolesRenderer implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
-		const { user: { roles } } = props;
-		if (!roles?.length) {
-			return removeElement(this.parent, this.elements.section);
-		}
-
+	private setAttributes(skeleton = false): void {
 		// ? Clear unexpected attributes from the elements
 		clearUnexpectedAttributes(this.elements.section, ["class"]);
 		clearUnexpectedAttributes(this.elements.title, ["class"]);
@@ -37,13 +32,30 @@ export class RolesRenderer implements Renderer {
 		setClasses(this.elements.roles, {
 			duc_roles: true,
 		});
-
-		// ? Set the text of the title element
-		this.elements.title.textContent = "Roles";
+		if (skeleton) {
+			const titlePill = document.createElement("span");
+			setClasses(titlePill, {
+				duc_skeleton_pill: true,
+			});
+			addElement(this.elements.title, titlePill);
+		}
 
 		// ? Set some attributes of the roles element
 		this.elements.roles.setAttribute("role", "list");
 		this.elements.roles.setAttribute("tabindex", "0");
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		const { user: { roles } } = props;
+		if (!roles?.length) {
+			return removeElement(this.parent, this.elements.section);
+		}
+
+		// ? Set the attributes of the elements
+		this.setAttributes();
+
+		// ? Set the text of the title element
+		this.elements.title.textContent = "Roles";
 
 		// ? Render the elements
 		addElement(this.parent, this.elements.section);
@@ -59,6 +71,39 @@ export class RolesRenderer implements Renderer {
 				this.children[index] = new RoleRenderer(this.elements.roles);
 			}
 			await this.children[index].render(role);
+		}
+
+		// ? Remove any extra roles
+		for (let i = orderedRoles.length; i < Object.keys(this.children).length; i++) {
+			const index = i.toString();
+			this.children[index]?.destroy();
+			delete this.children[index];
+		}
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		const { user: { roles } } = props;
+		if (!roles?.length) {
+			return removeElement(this.parent, this.elements.section);
+		}
+
+		// ? Set the attributes of the elements
+		this.setAttributes(true);
+
+		// ? Render the elements
+		addElement(this.parent, this.elements.section);
+		addElement(this.elements.section, this.elements.title);
+		addElement(this.elements.section, this.elements.roles);
+
+		// ? Sort the roles by position (highest to lowest)
+		const orderedRoles = roles.sort((a, b) => b.position - a.position);
+
+		// ? Render the roles
+		for (const [index, role] of orderedRoles.entries()) {
+			if (!this.children[index]) {
+				this.children[index] = new RoleRenderer(this.elements.roles);
+			}
+			this.children[index].renderSkeleton(role);
 		}
 
 		// ? Remove any extra roles
@@ -86,7 +131,7 @@ class RoleRenderer implements Renderer<DiscordUserCardRole> {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: DiscordUserCardRole): Promise<void> {
+	private _render(props: DiscordUserCardRole): void {
 		const { id, name, color, icon, emoji } = props;
 
 		// ? Clear unexpected attributes from the elements
@@ -154,6 +199,14 @@ class RoleRenderer implements Renderer<DiscordUserCardRole> {
 		}
 		addElement(this.elements.role, this.elements.nameContainer);
 		addElement(this.elements.nameContainer, this.elements.name);
+	}
+
+	async render(props: DiscordUserCardRole): Promise<void> {
+		this._render(props);
+	}
+
+	renderSkeleton(props: DiscordUserCardRole): void {
+		this._render(props);
 	}
 
 	destroy(): void {

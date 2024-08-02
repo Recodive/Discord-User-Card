@@ -2,7 +2,7 @@ import type { DiscordUserCardProperties } from "@discord-user-card/core";
 import { ActivityType } from "@discord-user-card/core";
 import type { Renderer } from "../../../functions/Renderer.js";
 import { ActivityContentRenderer, ButtonsRenderer, TimebarRenderer, mapActivity } from "../shared/activities.js";
-import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, setClasses } from "../../util.js";
+import { addElement, clearUnexpectedAttributes, destoryChildren, removeElement, renderChildren, renderChildrenSkeleton, setClasses } from "../../util.js";
 
 export class ActivitiesRender implements Renderer {
 	elements = {
@@ -20,7 +20,7 @@ export class ActivitiesRender implements Renderer {
 
 	constructor(public readonly parent: Element) { }
 
-	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+	private _render(props: Required<DiscordUserCardProperties>, skeleton = false) {
 		// ? Get the activity
 		const { activities } = props;
 		const rawActivity = activities.find(activity => activity.type !== ActivityType.Custom);
@@ -63,10 +63,32 @@ export class ActivitiesRender implements Renderer {
 		// ? Render the elements
 		addElement(this.parent, this.elements.section);
 		addElement(this.elements.section, this.elements.headerContainer);
-		this.elements.header.textContent = activity.title;
+		if (skeleton) {
+			const titlePill = document.createElement("span");
+			setClasses(titlePill, {
+				duc_skeleton_pill: true,
+			});
+			addElement(this.elements.header, titlePill);
+		}
+		else {
+			this.elements.header.textContent = activity.title;
+		}
 		addElement(this.elements.headerContainer, this.elements.header);
 		addElement(this.elements.section, this.elements.content);
-		await renderChildren(this.children, activity);
+
+		return activity;
+	}
+
+	async render(props: Required<DiscordUserCardProperties>): Promise<void> {
+		const activity = this._render(props);
+		if (activity)
+			await renderChildren(this.children, activity);
+	}
+
+	renderSkeleton(props: Required<DiscordUserCardProperties>): void {
+		const activity = this._render(props, true);
+		if (activity)
+			renderChildrenSkeleton(this.children, activity);
 	}
 
 	destroy(): void {

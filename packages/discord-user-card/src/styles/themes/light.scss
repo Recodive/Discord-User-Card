@@ -35,6 +35,8 @@
 	--theme-base-color: var(--theme-base-color-light);
 	--theme-text-color: var(--theme-text-color-light);
 	--theme-base-color-hsl: var(--theme-base-color-light-hsl);
+
+	--skeleton-color: rgb(226 232 240);
 }
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)) {
 	.duc_root .theme-light {

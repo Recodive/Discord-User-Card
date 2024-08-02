@@ -1,6 +1,12 @@
 import DiscordUserCard from "./components/DiscordUserCard.vue";
+import Export from "./components/Export.vue";
+import DiscordUserCardSkeleton from "./components/DiscordUserCardSkeleton.vue";
 
-export { DiscordUserCard };
+export {
+	Export as DiscordUserCard,
+	DiscordUserCardSkeleton,
+	DiscordUserCard as DiscordUserCardAsync,
+};
 export {
 	ActivityType,
 	type DiscordUserCardActivity,
