@@ -59,7 +59,7 @@ watch(
 
 watch(
 	[style, type],
-	async () => {
+	() => {
 		renderer.destroy();
 		renderer = setupDiscordUserCard(div.value, {
 			style: style.value,
