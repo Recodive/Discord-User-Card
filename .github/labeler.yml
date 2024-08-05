@@ -1,0 +1,23 @@
+Discord-User-Card:
+  - changed-files:
+      - any-glob-to-any-file: "packages/discord-user-card/**"
+
+"@Discord-User-Card/Vue":
+  - changed-files:
+      - any-glob-to-any-file: "packages/vue/**"
+
+"@Discord-User-Card/Emojis":
+  - changed-files:
+      - any-glob-to-any-file: "packages/emojis/**"
+
+"@Discord-User-Card/Profile-Effects":
+  - changed-files:
+      - any-glob-to-any-file: "packages/profile-effects/**"
+
+"@Discord-User-Card/Mardown":
+  - changed-files:
+      - any-glob-to-any-file: "packages/markdown/**"
+
+"@Discord-User-Card/Core":
+  - changed-files:
+      - any-glob-to-any-file: "packages/core/**"
