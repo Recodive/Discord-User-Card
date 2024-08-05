@@ -25,7 +25,10 @@ export const codeBlock: Rule = {
 			return unknownLang();
 		}
 
-		const result = hljs.highlight(node.lang, node.content, true);
+		const result = hljs.highlight(node.content, {
+			language: node.lang,
+			ignoreIllegals: true,
+		});
 		if (!result)
 			return unknownLang();
 
