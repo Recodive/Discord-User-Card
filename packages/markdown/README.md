@@ -29,3 +29,12 @@ console.log(toHTML(markdown)); // string (Raw HTML)
 // Parse markdown and get the rerender interval (some markdown elements need to be rerendered periodically to work properly)
 console.log(rerenderInterval(markdown)); // number | undefined (Interval in milliseconds, undefined if no interval)
 ```
+
+You can also import the styles from the package:
+
+```TypeScript
+// css
+import "@discord-user-card/markdown/style.css";
+// scss
+import "@discord-user-card/markdown/style.scss";
+```

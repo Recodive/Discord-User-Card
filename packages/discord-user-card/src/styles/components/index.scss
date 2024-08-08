@@ -5,7 +5,7 @@
 @import "./clan.scss";
 @import "./customStatus.scss";
 @import "./emoji.scss";
-@import "./markdown/markdown.scss";
+@import "../../../node_modules/@discord-user-card/markdown/lib/style.scss";
 @import "./profile.scss";
 @import "./profileEffect.scss";
 @import "./roles.scss";
