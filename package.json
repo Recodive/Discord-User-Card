@@ -29,6 +29,6 @@
 		"happy-dom": "^14.12.3",
 		"playwright": "^1.45.3",
 		"typescript": "^5.5.4",
-		"vitest": "^2.0.5"
+		"vitest": "^3.0.0"
 	}
 }
