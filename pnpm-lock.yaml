@@ -87,7 +87,7 @@ importers:
         version: link:../profile-effects
       '@types/chroma-js':
         specifier: ^2.4.4
-        version: 2.4.4
+        version: 2.4.5
       chroma-js:
         specifier: ^2.6.0
         version: 2.6.0
@@ -851,8 +851,8 @@ packages:
   '@types/argparse@1.0.38':
     resolution: {integrity: sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==}
 
-  '@types/chroma-js@2.4.4':
-    resolution: {integrity: sha512-/DTccpHTaKomqussrn+ciEvfW4k6NAHzNzs/sts1TCqg333qNxOhy8TNIoQCmbGG3Tl8KdEhkGAssb1n3mTXiQ==}
+  '@types/chroma-js@2.4.5':
+    resolution: {integrity: sha512-6ISjhzJViaPCy2q2e6PgK+8HcHQDQ0V2LDiKmYAh+jJlLqDa6HbwDh0wOevHY0kHHUx0iZwjSRbVD47WOUx5EQ==}
 
   '@types/conventional-commits-parser@5.0.0':
     resolution: {integrity: sha512-loB369iXNmAZglwWATL+WRe+CRMmmBPtpolYzIebFaX4YA3x+BEfLqhUAV9WanycKI3TG1IMr5bMJDajDKLlUQ==}
@@ -4077,7 +4077,7 @@ snapshots:
 
   '@types/argparse@1.0.38': {}
 
-  '@types/chroma-js@2.4.4': {}
+  '@types/chroma-js@2.4.5': {}
 
   '@types/conventional-commits-parser@5.0.0':
     dependencies:
